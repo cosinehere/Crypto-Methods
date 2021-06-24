@@ -6,6 +6,8 @@
 #include "../CryptoMethods/CryptoMethodDefines.h"
 #pragma comment(lib,"../CryptoMethods/Debug/CryptoMethods.lib")
 
+CBC_Mode<AES> aes_cbc;
+
 int main()
 {
     std::cout << "Hello World!\n";
