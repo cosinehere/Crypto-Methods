@@ -1,14 +1,24 @@
 #pragma once
 
 #ifdef _CRYPTOMETHODS_EXPORT_
-#define CRYPTOEXT extern "C" _declspec(dllexport)
+#define CRYPTOEXT extern "C" __declspec(dllexport)
 #else
 #define CRYPTOEXT extern "C" _declspec(dllimport)
 #endif
 
+#define NOVTABLE __declspec(novtable)
+
+#define NAMESPACEBEGIN(name) namespace name{
+#define NAMESPACEEND }
+
 #include <cstdint>
 
-CRYPTOEXT void PKCS7(uint8_t* buffer, size_t len, size_t blocksize);
+NAMESPACEBEGIN(CryptoMethods)
+
+CRYPTOEXT void Padding(uint8_t* buffer, size_t len, size_t blocksize);
+
+#define PKCS7(buffer,len,blocksize) Padding(buffer,len,blocksize)
+#define PKCS5(buffer,len) Padding(buffer,len,8)
 
 enum enum_crypt_mode
 {
@@ -16,19 +26,17 @@ enum enum_crypt_mode
 	enum_crypt_decrypt
 };
 
-class __declspec(novtable) CipherBase
+class NOVTABLE CipherBase
 {
 public:
-	virtual bool SetMode(enum_crypt_mode mode) = 0;
-	virtual bool UpdateKey(const uint8_t* key, const size_t keylen) = 0;
-	virtual bool UpdateIV(const uint8_t* iv, const size_t ivlen) = 0;
-	virtual bool UpdateData(const uint8_t* data, const size_t datalen) = 0;
-	virtual bool Finally(uint8_t* out, size_t* outlen) = 0;
+	virtual bool SetKey(const uint8_t* key, const size_t keylen) = 0;
+	virtual bool Encrypt(const uint8_t* plain, uint8_t* cipher) = 0;
+	virtual bool Decrypt(const uint8_t* cipher, uint8_t* plain) = 0;
 
 	virtual ~CipherBase() {}
 };
 
-class __declspec(novtable) CipherModeBase
+class NOVTABLE CipherModeBase
 {
 public:
 	virtual bool Encrypt() = 0;
@@ -37,57 +45,20 @@ public:
 	virtual ~CipherModeBase() {}
 };
 
-template<class CIPHER>
-class CBC_Mode : public CipherModeBase
+template<typename T>
+inline T r_rot(T a, T b)
 {
-public:
-	CBC_Mode() = default;
-	virtual ~CBC_Mode() = default;
+	return (a >> b) | (a << ((sizeof(T) >> 3) - b));
+}
 
-	virtual bool Encrypt() override { return false; };
-	virtual bool Decrypt() override { return false; };
-
-private:
-	CIPHER p_cipher;
-};
-
-template<class CIPHER>
-class CFB_Mode
+template<typename T>
+inline T l_rot(T a, T b)
 {
-public:
-	CFB_Mode() = default;
-	virtual ~CFB_Mode() = default;
+	return (a << b) | (a >> ((sizeof(T) >> 3) - b));
+}
 
-	void Encrypt() {};
-	void Decrypt() {};
+CRYPTOEXT void CreateAES(CipherBase*& base);
 
-private:
-	CIPHER p_cipher;
-};
+CRYPTOEXT void ReleaseAES(CipherBase*& base);
 
-template<class CIPHER>
-class CTR_Mode
-{
-public:
-	CTR_Mode() = default;
-	virtual ~CTR_Mode() = default;
-
-	void Encrypt() {};
-	void Decrypt() {};
-
-private:
-	CIPHER p_cipher;
-};
-
-class AES : public CipherBase
-{
-public:
-	AES() = default;
-	virtual ~AES() = default;
-
-	virtual bool SetMode(enum_crypt_mode mode) override { return false; };
-	virtual bool UpdateKey(const uint8_t* key, const size_t keylen) { return false; };
-	virtual bool UpdateIV(const uint8_t* iv, const size_t ivlen) { return false; };
-	virtual bool UpdateData(const uint8_t* data, const size_t datalen) { return false; };
-	virtual bool Finally(uint8_t* out, size_t* outlen) { return false; };
-};
+NAMESPACEEND
