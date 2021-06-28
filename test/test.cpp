@@ -6,20 +6,43 @@
 #include "../CryptoMethods/CryptoMethodDefines.h"
 #pragma comment(lib,"../CryptoMethods/Debug/CryptoMethods.lib")
 
-CBC_Mode<AES> aes_cbc;
-
 int main()
 {
-    std::cout << "Hello World!\n";
+    //uint8_t buffer[16] = { 0 };
+	//CryptoMethods::PKCS7(buffer, 8, 8);
+	//CryptoMethods::PKCS5(buffer, 8);
+	//for (size_t i = 0; i < 16; ++i)
+	//{
+	//	printf("%02x ", buffer[i]);
+	//}
+	//printf("\n");
 
-	uint8_t buffer[16] = { 0 };
+	CryptoMethods::CipherBase* base = nullptr;
+	CryptoMethods::CreateAES(base);
 
-	PKCS7(buffer, 8, 8);
+	uint8_t key[] = "aaaaaaaaaaaaaaaa";
+	base->SetKey(key, 16);
+
+	uint8_t plain[] = "bbbbbbbbbbbbbbbb";
+	uint8_t cipher[16] = { 0 };
+
+	base->Encrypt(plain, cipher);
+	for (size_t i = 0; i < 16; ++i)
+	{
+		printf("%02x", cipher[i]);
+	}
+	printf("\n");
+
+	uint8_t ci[16] = { 183, 25,16,11,34,30,173,155,60,97,115,214,249,24,66,230 };
+	base->Decrypt(ci, plain);
 
 	for (size_t i = 0; i < 16; ++i)
 	{
-		printf("%02x ", buffer[i]);
+		printf("%c", plain[i]);
 	}
+	printf("\n");
+
+	CryptoMethods::ReleaseAES(base);
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

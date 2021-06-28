@@ -24,6 +24,18 @@
     <ClInclude Include="CryptoMethodDefines.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CBC.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CFB.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CTR.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AES.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -33,6 +45,18 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CryptoMethodDefines.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CBC.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CFB.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CTR.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AES.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
