@@ -115,11 +115,18 @@ inline void addroundkey(uint8_t* state, const uint8_t* word)
 
 AES::AES()
 {
+	p_blocksize = 16;
+
 	p_haskey = false;
 }
 
 AES::~AES()
 {}
+
+const size_t AES::BlockSize()
+{
+	return p_blocksize;
+}
 
 bool AES::SetKey(const uint8_t* key, const size_t keylen)
 {
@@ -130,20 +137,8 @@ bool AES::SetKey(const uint8_t* key, const size_t keylen)
 
 	p_keylen = keylen;
 	memcpy_s(p_key, sizeof(uint8_t) * 32, key, sizeof(uint8_t) * keylen);
-
-	switch (p_keylen)
-	{
-	case 16:
-		p_rounds = 10;
-		break;
-	case 24:
-		p_rounds = 12;
-		break;
-	case 32:
-		p_rounds = 14;
-		break;
-	default: return false;
-	}
+	p_rounds = (p_keylen >> 2) + 6;
+	
 	bool bRet = KeyExpand();
 	if (bRet)
 	{
