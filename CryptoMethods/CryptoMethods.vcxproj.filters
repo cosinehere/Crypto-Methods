@@ -47,15 +47,6 @@
     <ClCompile Include="CryptoMethodDefines.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CBC.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CFB.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CTR.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="AES.cpp">
       <Filter>源文件</Filter>
     </ClCompile>

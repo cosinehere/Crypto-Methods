@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CryptoMethods", "CryptoMethods.vcxproj", "{F11C0CEF-6CD2-4D6E-8338-54EDC11EFCCC}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "..\test\test.vcxproj", "{C8B3395A-DDC6-40BA-A1A8-C82E63E20CCD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F11C0CEF-6CD2-4D6E-8338-54EDC11EFCCC} = {F11C0CEF-6CD2-4D6E-8338-54EDC11EFCCC}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

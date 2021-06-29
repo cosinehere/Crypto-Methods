@@ -20,29 +20,48 @@ int main()
 	CryptoMethods::CipherBase* base = nullptr;
 	CryptoMethods::CreateAES(base);
 
-	uint8_t key[] = "aaaaaaaaaaaaaaaa";
-	base->SetKey(key, 16);
+	uint8_t key[] = "aaaaaaaaaaaaaaaaaaaaaaaa";
+	size_t keylen = 24;
+	base->SetKey(key, keylen);
 
-	uint8_t plain[] = "bbbbbbbbbbbbbbbb";
-	uint8_t cipher[16] = { 0 };
+	uint8_t plain[32] = "bbbbbbbbbbbbbbbbbbb";
+	uint8_t cipher[32] = { 0 };
 
-	base->Encrypt(plain, cipher);
-	for (size_t i = 0; i < 16; ++i)
+// 	base->Encrypt(plain, cipher);
+// 	for (size_t i = 0; i < 16; ++i)
+// 	{
+// 		printf("%02x", cipher[i]);
+// 	}
+// 	printf("\n");
+// 
+	uint8_t ci[32] = { 18,104,220,29,129,235,155,132,165,207,132,134,190,224,226,62,140,64,130,241,239,94,231,8,228,252,18,209,22,171,69,153 };
+	uint8_t cfb[32] = { 183,198,10,248,133,1,177,77,96,137,129,222,137,216,206,86 };
+	uint8_t ctr[32] = { 183,198,10,248,133,1,177,77,96,137,129,222,137,216,206,86 };
+// 	base->Decrypt(cipher, plain);
+// 
+// 	for (size_t i = 0; i < 16; ++i)
+// 	{
+// 		printf("%c", plain[i]);
+// 	}
+// 	printf("\n");
+// 
+// 	CryptoMethods::ReleaseAES(base);
+
+	size_t cipherlen;
+	CryptoMethods::AESCTREncrypt(key, keylen, plain, 19, cipher, cipherlen);
+	for (size_t i = 0; i < cipherlen; ++i)
 	{
 		printf("%02x", cipher[i]);
 	}
 	printf("\n");
 
-	uint8_t ci[16] = { 183, 25,16,11,34,30,173,155,60,97,115,214,249,24,66,230 };
-	base->Decrypt(ci, plain);
-
-	for (size_t i = 0; i < 16; ++i)
+	size_t plainlen;
+	CryptoMethods::AESCTRDecrypt(key, keylen, cfb, 16, plain, plainlen);
+	for (size_t i = 0; i < plainlen; ++i)
 	{
 		printf("%c", plain[i]);
 	}
 	printf("\n");
-
-	CryptoMethods::ReleaseAES(base);
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

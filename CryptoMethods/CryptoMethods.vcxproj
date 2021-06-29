@@ -165,10 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AES.cpp" />
-    <ClCompile Include="CBC.cpp" />
-    <ClCompile Include="CFB.cpp" />
     <ClCompile Include="CryptoMethodDefines.cpp" />
-    <ClCompile Include="CTR.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
