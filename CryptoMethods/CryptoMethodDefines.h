@@ -8,16 +8,19 @@
 
 #define NOVTABLE __declspec(novtable)
 
-#define NAMESPACEBEGIN(name) namespace name{
-#define NAMESPACEEND }
+#define NAMESPACE_BEGIN(name) namespace name{
+#define NAMESPACE_END }
 
 #include <cstdint>
 
-NAMESPACEBEGIN(CryptoMethods)
+NAMESPACE_BEGIN(CryptoMethods)
 
 CRYPTOEXT size_t Padding(uint8_t* buffer, size_t len, size_t blocksize);
 
 CRYPTOEXT void GenerateIV(uint8_t* iv, size_t ivlen);
+
+CRYPTOEXT void MixBytes(uint8_t* key, uint8_t* iv, uint8_t* cipher, size_t cipherlen, uint8_t* mix);
+CRYPTOEXT void ScatterBytes(uint8_t* key, uint8_t* iv, uint8_t* cipher, size_t cipherlen, uint8_t* mix);
 
 #define PKCS7(buffer,len,blocksize) Padding(buffer,len,blocksize)
 #define PKCS5(buffer,len) Padding(buffer,len,8)
@@ -68,6 +71,9 @@ inline T l_rot(T a, T b)
 CRYPTOEXT void CreateAES(CipherBase*& base);
 CRYPTOEXT void ReleaseAES(CipherBase*& base);
 
+CRYPTOEXT void CreateRC5(CipherBase*& base);
+CRYPTOEXT void ReleaseRC5(CipherBase*& base);
+
 CRYPTOEXT void AESCBCEncrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen);
 CRYPTOEXT void AESCBCDecrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen);
 
@@ -77,4 +83,4 @@ CRYPTOEXT void AESCFBDecrypt(const uint8_t* key, const size_t keylen, const uint
 CRYPTOEXT void AESCTREncrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen);
 CRYPTOEXT void AESCTRDecrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen);
 
-NAMESPACEEND
+NAMESPACE_END

@@ -1,7 +1,7 @@
 #pragma once
 #include "CryptoMethodDefines.h"
 
-NAMESPACEBEGIN(CryptoMethods)
+NAMESPACE_BEGIN(CryptoMethods)
 
 template<class CIPHER>
 class CTR :	public CipherModeBase
@@ -76,7 +76,7 @@ bool CTR<CIPHER>::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out, s
 	outlen = 0;
 	for (size_t i = 0; i < inlen; i += p_blocksize)
 	{
-		outlen += p_blocksize;
+		outlen += (inlen - i > p_blocksize) ? p_blocksize : (inlen - i);
 		p_cipher.Encrypt(counter, temp);
 		
 		for (size_t j = 0; j < p_blocksize; ++j)
@@ -129,4 +129,4 @@ bool CTR<CIPHER>::Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out, s
 	return true;
 }
 
-NAMESPACEEND
+NAMESPACE_END

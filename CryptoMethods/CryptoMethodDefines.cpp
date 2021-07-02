@@ -2,13 +2,14 @@
 #include "CryptoMethodDefines.h"
 
 #include "AES.h"
+#include "RC5.h"
 #include "CBC.h"
 #include "CFB.h"
 #include "CTR.h"
 
 #include <wincrypt.h>
 
-NAMESPACEBEGIN(CryptoMethods)
+NAMESPACE_BEGIN(CryptoMethods)
 
 size_t Padding(uint8_t* buffer, size_t len, size_t blocksize)
 {
@@ -32,6 +33,77 @@ void GenerateIV(uint8_t* iv, size_t ivlen)
 	CryptReleaseContext(crypt, 0);
 }
 
+void MixBytes(uint8_t* key, uint8_t* iv, uint8_t* cipher, size_t cipherlen, uint8_t* mix)
+{
+	GenerateIV(mix, 8);
+	for (size_t i = 0; i < 4; ++i)
+	{
+		uint32_t pos = *reinterpret_cast<uint32_t*>(&mix[i]) % (4 + cipherlen / 8);
+		uint64_t* cur = nullptr;
+		uint64_t* post = nullptr;
+		if (i < 2)
+		{
+			cur = reinterpret_cast<uint64_t*>(&key[i * 8]);
+		}
+		else
+		{
+			cur = reinterpret_cast<uint64_t*>(&iv[(i - 2) * 8]);
+		}
+
+		if (pos < 2)
+		{
+			post = reinterpret_cast<uint64_t*>(&key[pos * 8]);
+		}
+		else if (pos < 4)
+		{
+			post = reinterpret_cast<uint64_t*>(&iv[(pos - 2) * 8]);
+		}
+		else
+		{
+			post = reinterpret_cast<uint64_t*>(&cipher[(pos - 4) * 8]);
+		}
+
+		uint64_t tmp = *cur;
+		*cur = *post;
+		*post = tmp;
+	}
+}
+
+void ScatterBytes(uint8_t* key, uint8_t* iv, uint8_t* cipher, size_t cipherlen, uint8_t* mix)
+{
+	for (int i = 3; i >= 0; --i)
+	{
+		uint32_t pos = *reinterpret_cast<uint32_t*>(&mix[i]) % (4 + cipherlen / 8);
+		uint64_t* cur = nullptr;
+		uint64_t* post = nullptr;
+		if (i < 2)
+		{
+			cur = reinterpret_cast<uint64_t*>(&key[i * 8]);
+		}
+		else
+		{
+			cur = reinterpret_cast<uint64_t*>(&iv[(i - 2) * 8]);
+		}
+
+		if (pos < 2)
+		{
+			post = reinterpret_cast<uint64_t*>(&key[pos * 8]);
+		}
+		else if (pos < 4)
+		{
+			post = reinterpret_cast<uint64_t*>(&iv[(pos - 2) * 8]);
+		}
+		else
+		{
+			post = reinterpret_cast<uint64_t*>(&cipher[(pos - 4) * 8]);
+		}
+
+		uint64_t tmp = *cur;
+		*cur = *post;
+		*post = tmp;
+	}
+}
+
 void CreateAES(CipherBase*& base)
 {
 	base = new AES;
@@ -39,7 +111,20 @@ void CreateAES(CipherBase*& base)
 
 void ReleaseAES(CipherBase*& base)
 {
-	delete base;
+	AES* aes = reinterpret_cast<AES*>(base);
+	delete aes;
+	base = nullptr;
+}
+
+void CreateRC5(CipherBase*& base)
+{
+	base = new RC5;
+}
+
+void ReleaseRC5(CipherBase*& base)
+{
+	RC5* rc5 = reinterpret_cast<RC5*>(base);
+	delete rc5;
 	base = nullptr;
 }
 
@@ -124,4 +209,4 @@ void AESCTRDecrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, c
 	cbc.Decrypt(in, inlen, out, outlen);
 }
 
-NAMESPACEEND
+NAMESPACE_END

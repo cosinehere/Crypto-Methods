@@ -1,7 +1,9 @@
 #pragma once
 #include "CryptoMethodDefines.h"
 
-NAMESPACEBEGIN(CryptoMethods)
+NAMESPACE_BEGIN(CryptoMethods)
+
+constexpr uint32_t c_aesblocksize = 16;
 
 //√‹‘ø¿©’π¬÷≥£¡ø
 constexpr uint8_t Rcon[][4] = {
@@ -153,4 +155,4 @@ private:
 	bool KeyExpand();
 };
 
-NAMESPACEEND
+NAMESPACE_END

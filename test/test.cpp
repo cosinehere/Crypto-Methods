@@ -1,7 +1,8 @@
 ﻿// test.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
 //
 
-#include <iostream>
+#include <cstdio>
+#include <memory.h>
 
 #include "../CryptoMethods/CryptoMethodDefines.h"
 #pragma comment(lib,"../CryptoMethods/Debug/CryptoMethods.lib")
@@ -18,13 +19,13 @@ int main()
 	//printf("\n");
 
 	CryptoMethods::CipherBase* base = nullptr;
-	CryptoMethods::CreateAES(base);
+// 	CryptoMethods::CreateAES(base);
 
-	uint8_t key[] = "aaaaaaaaaaaaaaaaaaaaaaaa";
-	size_t keylen = 24;
-	base->SetKey(key, keylen);
+	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
+	size_t keylen = 16;
+//	base->SetKey(key, keylen);
 
-	uint8_t plain[32] = "bbbbbbbbbbbbbbbbbbb";
+	uint8_t plain[32] = "bbbbbbbbbbbbbbbb";
 	uint8_t cipher[32] = { 0 };
 
 // 	base->Encrypt(plain, cipher);
@@ -47,21 +48,101 @@ int main()
 // 
 // 	CryptoMethods::ReleaseAES(base);
 
-	size_t cipherlen;
-	CryptoMethods::AESCTREncrypt(key, keylen, plain, 19, cipher, cipherlen);
-	for (size_t i = 0; i < cipherlen; ++i)
+	uint8_t iv[16] = { '0','0', '0', '0', '1', '1', '1', '1', '2', '2', '2', '2', '3', '3', '3','3' };
+
+// 	size_t cipherlen;
+// 	CryptoMethods::AESCTREncrypt(key, keylen, plain, 16, cipher, cipherlen);
+// 	for (size_t i = 0; i < 16; ++i)
+// 	{
+// 		printf("%02x%s", key[i], (i % 8 == 7) ? " " : "");
+// 	}
+// 	for (size_t i = 0; i < 16; ++i)
+// 	{
+// 		printf("%02x%s", iv[i], (i % 8 == 7) ? " " : "");
+// 	}
+// 	for (size_t i = 0; i < cipherlen; ++i)
+// 	{
+// 		printf("%02x%s", cipher[i], (i % 8 == 7) ? " " : "");
+// 	}
+// 	printf("\n");
+// 
+// 	size_t plainlen;
+// 	CryptoMethods::AESCTRDecrypt(key, keylen, cfb, 16, plain, plainlen);
+// 	for (size_t i = 0; i < plainlen; ++i)
+// 	{
+// 		printf("%c", plain[i]);
+// 	}
+// 	printf("\n");
+// 
+// 	uint8_t mix[16];
+// 	CryptoMethods::MixBytes(key, iv, cipher, cipherlen, mix);
+// 	for (size_t i = 0; i < 4; ++i)
+// 	{
+// 		printf("%u(%u) ", *reinterpret_cast<uint32_t*>(&mix[i]), *reinterpret_cast<uint32_t*>(&mix[i]) % (4+cipherlen/8));
+// 	}
+// 	printf("\n");
+// 
+// 	for (size_t i = 0; i < 16; ++i)
+// 	{
+// 		printf("%02x%s", key[i], (i % 8 == 7) ? " " : "");
+// 	}
+// 	for (size_t i = 0; i < 16; ++i)
+// 	{
+// 		printf("%02x%s", iv[i], (i % 8 == 7) ? " " : "");
+// 	}
+// 	for (size_t i = 0; i < cipherlen; ++i)
+// 	{
+// 		printf("%02x%s", cipher[i], (i % 8 == 7) ? " " : "");
+// 	}
+// 	printf("\n");
+// 
+// 
+// 	CryptoMethods::ScatterBytes(key, iv, cipher, cipherlen, mix);
+// 	for (size_t i = 0; i < 4; ++i)
+// 	{
+// 		printf("%u(%u) ", *reinterpret_cast<uint32_t*>(&mix[i]), *reinterpret_cast<uint32_t*>(&mix[i]) % (4 + cipherlen / 8));
+// 	}
+// 	printf("\n");
+// 
+// 	for (size_t i = 0; i < 16; ++i)
+// 	{
+// 		printf("%02x%s", key[i], (i % 8 == 7) ? " " : "");
+// 	}
+// 	for (size_t i = 0; i < 16; ++i)
+// 	{
+// 		printf("%02x%s", iv[i], (i % 8 == 7) ? " " : "");
+// 	}
+// 	for (size_t i = 0; i < cipherlen; ++i)
+// 	{
+// 		printf("%02x%s", cipher[i], (i % 8 == 7) ? " " : "");
+// 	}
+// 	printf("\n");
+
+	CryptoMethods::CreateRC5(base);
+
+	base->SetKey(key, keylen);
+	base->Encrypt(plain, cipher);
+	for (size_t i = 0; i < 8; ++i)
 	{
-		printf("%02x", cipher[i]);
+		printf("%02x%s", plain[i], (i % 8 == 7) ? " " : "");
+	}
+	printf("\n");
+	for (size_t i = 0; i < 8; ++i)
+	{
+		printf("%02x%s", cipher[i], (i % 8 == 7) ? " " : "");
 	}
 	printf("\n");
 
-	size_t plainlen;
-	CryptoMethods::AESCTRDecrypt(key, keylen, cfb, 16, plain, plainlen);
-	for (size_t i = 0; i < plainlen; ++i)
+	memset(plain, 0, sizeof(plain));
+	base->Decrypt(cipher, plain);
+	for (size_t i = 0; i < 8; ++i)
 	{
-		printf("%c", plain[i]);
+		printf("%02x%s", plain[i], (i % 8 == 7) ? " " : "");
 	}
 	printf("\n");
+
+	CryptoMethods::ReleaseRC5(base);
+
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

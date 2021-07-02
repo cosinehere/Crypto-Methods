@@ -1,9 +1,7 @@
 #include "pch.h"
 #include "AES.h"
 
-NAMESPACEBEGIN(CryptoMethods)
-
-constexpr uint32_t c_aesblocksize = 16;
+NAMESPACE_BEGIN(CryptoMethods)
 
 inline uint8_t gmult(uint8_t a, uint8_t b) {
 	uint8_t p = 0, hbs = 0;
@@ -248,4 +246,4 @@ bool AES::KeyExpand()
 	return true;
 }
 
-NAMESPACEEND
+NAMESPACE_END

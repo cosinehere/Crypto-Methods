@@ -1,7 +1,7 @@
 #pragma once
 #include "CryptoMethodDefines.h"
 
-NAMESPACEBEGIN(CryptoMethods)
+NAMESPACE_BEGIN(CryptoMethods)
 
 template<class CIPHER>
 class CBC : public CipherModeBase
@@ -126,4 +126,4 @@ bool CBC<CIPHER>::Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out, s
 	return true;
 }
 
-NAMESPACEEND
+NAMESPACE_END
