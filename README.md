@@ -3,7 +3,7 @@
 - [x] AES
 - [ ] DES
 - [ ] 3DES
-- [ ] RC5
+- [x] RC5
 - [ ] RC6
 - [ ] Camellia
 - [ ] BlowFish
