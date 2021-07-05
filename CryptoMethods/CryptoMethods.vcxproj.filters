@@ -39,6 +39,9 @@
     <ClInclude Include="RC5.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="RC6.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -54,6 +57,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="RC5.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RC6.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

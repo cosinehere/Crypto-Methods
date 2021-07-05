@@ -25,8 +25,8 @@ int main()
 	size_t keylen = 16;
 //	base->SetKey(key, keylen);
 
-	uint8_t plain[32] = "bbbbbbbbbbbbbbbb";
-	uint8_t cipher[32] = { 0 };
+	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+	uint8_t cipher[33] = { 0 };
 
 // 	base->Encrypt(plain, cipher);
 // 	for (size_t i = 0; i < 16; ++i)
@@ -118,16 +118,16 @@ int main()
 // 	}
 // 	printf("\n");
 
-	CryptoMethods::CreateRC5(base);
+	CryptoMethods::CreateRC6(base);
 
 	base->SetKey(key, keylen);
 	base->Encrypt(plain, cipher);
-	for (size_t i = 0; i < 8; ++i)
+	for (size_t i = 0; i < 16; ++i)
 	{
 		printf("%02x%s", plain[i], (i % 8 == 7) ? " " : "");
 	}
 	printf("\n");
-	for (size_t i = 0; i < 8; ++i)
+	for (size_t i = 0; i < 16; ++i)
 	{
 		printf("%02x%s", cipher[i], (i % 8 == 7) ? " " : "");
 	}
@@ -135,13 +135,13 @@ int main()
 
 	memset(plain, 0, sizeof(plain));
 	base->Decrypt(cipher, plain);
-	for (size_t i = 0; i < 8; ++i)
+	for (size_t i = 0; i < 16; ++i)
 	{
 		printf("%02x%s", plain[i], (i % 8 == 7) ? " " : "");
 	}
 	printf("\n");
 
-	CryptoMethods::ReleaseRC5(base);
+	CryptoMethods::ReleaseRC6(base);
 
 }
 

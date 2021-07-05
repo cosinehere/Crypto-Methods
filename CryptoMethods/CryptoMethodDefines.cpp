@@ -3,6 +3,7 @@
 
 #include "AES.h"
 #include "RC5.h"
+#include "RC6.h"
 #include "CBC.h"
 #include "CFB.h"
 #include "CTR.h"
@@ -125,6 +126,18 @@ void ReleaseRC5(CipherBase*& base)
 {
 	RC5* rc5 = reinterpret_cast<RC5*>(base);
 	delete rc5;
+	base = nullptr;
+}
+
+void CreateRC6(CipherBase*& base)
+{
+	base = new RC6;
+}
+
+void ReleaseRC6(CipherBase*& base)
+{
+	RC6* rc6 = reinterpret_cast<RC6*>(base);
+	delete rc6;
 	base = nullptr;
 }
 

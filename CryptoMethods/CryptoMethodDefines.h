@@ -74,6 +74,9 @@ CRYPTOEXT void ReleaseAES(CipherBase*& base);
 CRYPTOEXT void CreateRC5(CipherBase*& base);
 CRYPTOEXT void ReleaseRC5(CipherBase*& base);
 
+CRYPTOEXT void CreateRC6(CipherBase*& base);
+CRYPTOEXT void ReleaseRC6(CipherBase*& base);
+
 CRYPTOEXT void AESCBCEncrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen);
 CRYPTOEXT void AESCBCDecrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen);
 
