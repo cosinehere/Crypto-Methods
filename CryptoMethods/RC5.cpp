@@ -5,7 +5,7 @@ NAMESPACE_BEGIN(CryptoMethods)
 
 RC5::RC5()
 {
-	p_blocksize = 16;
+	p_blocksize = 8;
 
 	p_haskey = false;
 }
