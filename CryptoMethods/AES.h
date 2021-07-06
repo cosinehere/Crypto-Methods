@@ -3,7 +3,7 @@
 
 NAMESPACE_BEGIN(CryptoMethods)
 
-constexpr uint32_t c_aesblocksize = 16;
+constexpr size_t c_aesblocksize = 16;
 
 constexpr uint8_t Rcon[][4] = {
 	{0x01u,0x00u,0x00u,0x00u},
