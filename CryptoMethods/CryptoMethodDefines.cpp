@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CryptoMethodDefines.h"
 
+#include "DES.h"
 #include "AES.h"
 #include "RC5.h"
 #include "RC6.h"
@@ -138,6 +139,18 @@ void ReleaseRC6(CipherBase*& base)
 {
 	RC6* rc6 = reinterpret_cast<RC6*>(base);
 	delete rc6;
+	base = nullptr;
+}
+
+void CreateDES(CipherBase*& base)
+{
+	base = new DES;
+}
+
+void ReleaseDES(CipherBase*& base)
+{
+	DES* des= reinterpret_cast<DES*>(base);
+	delete des;
 	base = nullptr;
 }
 
