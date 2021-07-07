@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "DES.h"
 
+#include <cstdio>
+
 NAMESPACE_BEGIN(CryptoMethods)
 
 DES::DES()
@@ -74,7 +76,7 @@ bool DES::Encrypt(const uint8_t* plain, uint8_t* cipher)
 
 	for (size_t i = 0; i < 8; ++i)
 	{
-		cipher[i] = (fp >> (1 << (i << 3))) & 0xff;
+		cipher[i] = (fp >> (i * 8)) & 0xff;
 	}
 
 	return true;
@@ -86,6 +88,37 @@ bool DES::Decrypt(const uint8_t* cipher, uint8_t* plain)
 	{
 		return false;
 	}
+
+	for (size_t i = 64; i > 0; --i)
+	{
+		setbit(plain, i - 1, getbit(cipher, IP[i - 1] - 1));
+	}
+
+	uint32_t ln, rn, ln_1, rn_1;
+	rn = (plain[4] << 0) | (plain[5] << 8) | (plain[6] << 16) | (plain[7] << 24);
+	ln = (plain[0] << 0) | (plain[1] << 8) | (plain[2] << 16) | (plain[3] << 24);
+
+	for (size_t i = 16; i > 0; --i)
+	{
+		rn_1 = rn;
+		ln_1 = ln;
+
+		rn = ln_1 ^ Feistel(rn_1, p_subkey[i - 1]);
+		ln = rn_1;
+	}
+
+	uint64_t rnln = (static_cast<uint64_t>(ln) << 32) | rn;
+	uint64_t fp;
+	for (size_t i = 64; i > 0; --i)
+	{
+		setbit(reinterpret_cast<uint8_t*>(&fp), i - 1, getbit(reinterpret_cast<uint8_t*>(&rnln), FP[i - 1] - 1));
+	}
+
+	for (size_t i = 0; i < 8; ++i)
+	{
+		plain[i] = (fp >> (i * 8)) & 0xff;
+	}
+
 
 	return false;
 }

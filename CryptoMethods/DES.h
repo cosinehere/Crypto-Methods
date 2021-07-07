@@ -125,7 +125,7 @@ inline void setbit(uint8_t* p, size_t i, bool v)
 	}
 	else
 	{
-		p[i >> 3] &= 0x01 << (7 - (i & 0x07));
+		p[i >> 3] &= ~(0x01 << (7 - (i & 0x07)));
 	}
 }
 
