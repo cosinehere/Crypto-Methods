@@ -22,7 +22,7 @@ int main()
 // 	CryptoMethods::CreateAES(base);
 
 	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
-	size_t keylen = 8;
+	size_t keylen = 16;
 //	base->SetKey(key, keylen);
 
 	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
@@ -118,16 +118,16 @@ int main()
 // 	}
 // 	printf("\n");
 
-	CryptoMethods::CreateDES(base);
+	CryptoMethods::CreateCamellia(base);
 
 	base->SetKey(key, keylen);
 	base->Encrypt(plain, cipher);
-	for (size_t i = 0; i < 8; ++i)
+	for (size_t i = 0; i < keylen; ++i)
 	{
 		printf("%02x%s", plain[i], (i % 8 == 7) ? " " : "");
 	}
 	printf("\n");
-	for (size_t i = 0; i < 8; ++i)
+	for (size_t i = 0; i < keylen; ++i)
 	{
 		printf("%02x%s", cipher[i], (i % 8 == 7) ? " " : "");
 	}
@@ -135,20 +135,13 @@ int main()
 
 	memset(plain, 0, sizeof(plain));
 	base->Decrypt(cipher, plain);
-	for (size_t i = 0; i < 8; ++i)
+	for (size_t i = 0; i < keylen; ++i)
 	{
 		printf("%02x%s", plain[i], (i % 8 == 7) ? " " : "");
 	}
 	printf("\n");
 
-	base->Decrypt(ci, plain);
-	for (size_t i = 0; i < 8; ++i)
-	{
-		printf("%c", plain[i]);
-	}
-	printf("\n");
-
-	CryptoMethods::ReleaseDES(base);
+	CryptoMethods::ReleaseCamellia(base);
 
 }
 

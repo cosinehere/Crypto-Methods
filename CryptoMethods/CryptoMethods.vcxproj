@@ -156,6 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AES.h" />
+    <ClInclude Include="Camellia.h" />
     <ClInclude Include="CBC.h" />
     <ClInclude Include="CFB.h" />
     <ClInclude Include="CryptoMethodDefines.h" />
@@ -168,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AES.cpp" />
+    <ClCompile Include="Camellia.cpp" />
     <ClCompile Include="CryptoMethodDefines.cpp" />
     <ClCompile Include="DES.cpp" />
     <ClCompile Include="dllmain.cpp" />

@@ -5,6 +5,7 @@
 #include "AES.h"
 #include "RC5.h"
 #include "RC6.h"
+#include "Camellia.h"
 #include "CBC.h"
 #include "CFB.h"
 #include "CTR.h"
@@ -151,6 +152,18 @@ void ReleaseDES(CipherBase*& base)
 {
 	DES* des= reinterpret_cast<DES*>(base);
 	delete des;
+	base = nullptr;
+}
+
+void CreateCamellia(CipherBase*& base)
+{
+	base = new Camellia;
+}
+
+void ReleaseCamellia(CipherBase*& base)
+{
+	Camellia* camellia = reinterpret_cast<Camellia*>(base);
+	delete camellia;
 	base = nullptr;
 }
 
