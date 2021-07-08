@@ -1,10 +1,10 @@
 # Crypto-Methods
 
 - [x] AES
-- [ ] DES
+- [x] DES
 - [ ] 3DES
 - [x] RC5
 - [x] RC6
-- [ ] Camellia
+- [x] Camellia
 - [ ] BlowFish
 - [ ] TwoFish
