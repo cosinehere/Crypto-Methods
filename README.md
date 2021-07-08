@@ -6,5 +6,5 @@
 - [x] RC5
 - [x] RC6
 - [x] Camellia
-- [ ] BlowFish
+- [x] BlowFish
 - [ ] TwoFish
