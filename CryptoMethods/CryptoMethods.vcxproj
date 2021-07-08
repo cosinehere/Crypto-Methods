@@ -156,12 +156,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AES.h" />
+    <ClInclude Include="Blowfish.h" />
     <ClInclude Include="Camellia.h" />
     <ClInclude Include="CBC.h" />
     <ClInclude Include="CFB.h" />
     <ClInclude Include="CryptoMethodDefines.h" />
     <ClInclude Include="CTR.h" />
     <ClInclude Include="DES.h" />
+    <ClInclude Include="endianness.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="RC5.h" />
@@ -169,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AES.cpp" />
+    <ClCompile Include="Blowfish.cpp" />
     <ClCompile Include="Camellia.cpp" />
     <ClCompile Include="CryptoMethodDefines.cpp" />
     <ClCompile Include="DES.cpp" />

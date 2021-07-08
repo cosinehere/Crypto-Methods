@@ -6,6 +6,7 @@
 #include "RC5.h"
 #include "RC6.h"
 #include "Camellia.h"
+#include "Blowfish.h"
 #include "CBC.h"
 #include "CFB.h"
 #include "CTR.h"
@@ -164,6 +165,18 @@ void ReleaseCamellia(CipherBase*& base)
 {
 	Camellia* camellia = reinterpret_cast<Camellia*>(base);
 	delete camellia;
+	base = nullptr;
+}
+
+void CreateBlowfish(CipherBase*& base)
+{
+	base = new Blowfish;
+}
+
+void ReleaseBlowfish(CipherBase*& base)
+{
+	Blowfish* blowfish = reinterpret_cast<Blowfish*>(base);
+	delete blowfish;
 	base = nullptr;
 }
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #ifdef _CRYPTOMETHODS_EXPORT_
 #define CRYPTOEXT extern "C" __declspec(dllexport)
 #else
@@ -10,8 +12,6 @@
 
 #define NAMESPACE_BEGIN(name) namespace name{
 #define NAMESPACE_END }
-
-#include <cstdint>
 
 NAMESPACE_BEGIN(CryptoMethods)
 
@@ -82,6 +82,9 @@ CRYPTOEXT void ReleaseDES(CipherBase*& base);
 
 CRYPTOEXT void CreateCamellia(CipherBase*& base);
 CRYPTOEXT void ReleaseCamellia(CipherBase*& base);
+
+CRYPTOEXT void CreateBlowfish(CipherBase*& base);
+CRYPTOEXT void ReleaseBlowfish(CipherBase*& base);
 
 CRYPTOEXT void AESCBCEncrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen);
 CRYPTOEXT void AESCBCDecrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen);

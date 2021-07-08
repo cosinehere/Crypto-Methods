@@ -48,6 +48,12 @@
     <ClInclude Include="Camellia.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Blowfish.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="endianness.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -72,6 +78,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Camellia.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Blowfish.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

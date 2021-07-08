@@ -10,6 +10,8 @@
 // 添加要在此处预编译的标头
 #include "framework.h"
 
+#include "endianness.h"
+
 #define _CRYPTOMETHODS_EXPORT_
 
 #endif //PCH_H
