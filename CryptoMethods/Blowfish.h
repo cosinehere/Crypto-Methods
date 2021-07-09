@@ -176,7 +176,6 @@ private:
 	uint32_t p_P[18];
 	uint32_t p_S[4][256];
 
-
 	void Encrypt(uint32_t& L, uint32_t& R);
 	void Decrypt(uint32_t& L, uint32_t& R);
 	inline uint32_t f(uint32_t x)

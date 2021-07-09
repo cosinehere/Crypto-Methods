@@ -26,7 +26,6 @@ constexpr size_t c_rc5u = c_rc5w / 8;	//length of a word in bytes
 constexpr size_t c_rc5t = 2 * (c_rc5r + 1);	//number of round subkeys
 constexpr size_t c_rc5c = max(1, 8 * c_rc5b / c_rc5w);	//length of the key in words
 
-
 class RC5 : public CipherBase
 {
 public:

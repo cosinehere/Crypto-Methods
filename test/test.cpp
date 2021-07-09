@@ -9,7 +9,7 @@
 
 int main()
 {
-    //uint8_t buffer[16] = { 0 };
+	//uint8_t buffer[16] = { 0 };
 	//CryptoMethods::PKCS7(buffer, 8, 8);
 	//CryptoMethods::PKCS5(buffer, 8);
 	//for (size_t i = 0; i < 16; ++i)
@@ -19,104 +19,104 @@ int main()
 	//printf("\n");
 
 	CryptoMethods::CipherBase* base = nullptr;
-// 	CryptoMethods::CreateAES(base);
+	// 	CryptoMethods::CreateAES(base);
 
 	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
 	size_t keylen = 8;
-//	base->SetKey(key, keylen);
+	//	base->SetKey(key, keylen);
 
 	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
 	uint8_t cipher[33] = { 0 };
 
-// 	base->Encrypt(plain, cipher);
-// 	for (size_t i = 0; i < 16; ++i)
-// 	{
-// 		printf("%02x", cipher[i]);
-// 	}
-// 	printf("\n");
-// 
+	// 	base->Encrypt(plain, cipher);
+	// 	for (size_t i = 0; i < 16; ++i)
+	// 	{
+	// 		printf("%02x", cipher[i]);
+	// 	}
+	// 	printf("\n");
+	//
 	uint8_t ci[32] = { 103, 95, 142, 232, 106, 180, 176, 217 };
 	uint8_t cfb[32] = { 183,198,10,248,133,1,177,77,96,137,129,222,137,216,206,86 };
 	uint8_t ctr[32] = { 183,198,10,248,133,1,177,77,96,137,129,222,137,216,206,86 };
-// 	base->Decrypt(cipher, plain);
-// 
-// 	for (size_t i = 0; i < 16; ++i)
-// 	{
-// 		printf("%c", plain[i]);
-// 	}
-// 	printf("\n");
-// 
-// 	CryptoMethods::ReleaseAES(base);
+	// 	base->Decrypt(cipher, plain);
+	//
+	// 	for (size_t i = 0; i < 16; ++i)
+	// 	{
+	// 		printf("%c", plain[i]);
+	// 	}
+	// 	printf("\n");
+	//
+	// 	CryptoMethods::ReleaseAES(base);
 
 	uint8_t iv[16] = { '0','0', '0', '0', '1', '1', '1', '1', '2', '2', '2', '2', '3', '3', '3','3' };
 
-// 	size_t cipherlen;
-// 	CryptoMethods::AESCTREncrypt(key, keylen, plain, 16, cipher, cipherlen);
-// 	for (size_t i = 0; i < 16; ++i)
-// 	{
-// 		printf("%02x%s", key[i], (i % 8 == 7) ? " " : "");
-// 	}
-// 	for (size_t i = 0; i < 16; ++i)
-// 	{
-// 		printf("%02x%s", iv[i], (i % 8 == 7) ? " " : "");
-// 	}
-// 	for (size_t i = 0; i < cipherlen; ++i)
-// 	{
-// 		printf("%02x%s", cipher[i], (i % 8 == 7) ? " " : "");
-// 	}
-// 	printf("\n");
-// 
-// 	size_t plainlen;
-// 	CryptoMethods::AESCTRDecrypt(key, keylen, cfb, 16, plain, plainlen);
-// 	for (size_t i = 0; i < plainlen; ++i)
-// 	{
-// 		printf("%c", plain[i]);
-// 	}
-// 	printf("\n");
-// 
-// 	uint8_t mix[16];
-// 	CryptoMethods::MixBytes(key, iv, cipher, cipherlen, mix);
-// 	for (size_t i = 0; i < 4; ++i)
-// 	{
-// 		printf("%u(%u) ", *reinterpret_cast<uint32_t*>(&mix[i]), *reinterpret_cast<uint32_t*>(&mix[i]) % (4+cipherlen/8));
-// 	}
-// 	printf("\n");
-// 
-// 	for (size_t i = 0; i < 16; ++i)
-// 	{
-// 		printf("%02x%s", key[i], (i % 8 == 7) ? " " : "");
-// 	}
-// 	for (size_t i = 0; i < 16; ++i)
-// 	{
-// 		printf("%02x%s", iv[i], (i % 8 == 7) ? " " : "");
-// 	}
-// 	for (size_t i = 0; i < cipherlen; ++i)
-// 	{
-// 		printf("%02x%s", cipher[i], (i % 8 == 7) ? " " : "");
-// 	}
-// 	printf("\n");
-// 
-// 
-// 	CryptoMethods::ScatterBytes(key, iv, cipher, cipherlen, mix);
-// 	for (size_t i = 0; i < 4; ++i)
-// 	{
-// 		printf("%u(%u) ", *reinterpret_cast<uint32_t*>(&mix[i]), *reinterpret_cast<uint32_t*>(&mix[i]) % (4 + cipherlen / 8));
-// 	}
-// 	printf("\n");
-// 
-// 	for (size_t i = 0; i < 16; ++i)
-// 	{
-// 		printf("%02x%s", key[i], (i % 8 == 7) ? " " : "");
-// 	}
-// 	for (size_t i = 0; i < 16; ++i)
-// 	{
-// 		printf("%02x%s", iv[i], (i % 8 == 7) ? " " : "");
-// 	}
-// 	for (size_t i = 0; i < cipherlen; ++i)
-// 	{
-// 		printf("%02x%s", cipher[i], (i % 8 == 7) ? " " : "");
-// 	}
-// 	printf("\n");
+	// 	size_t cipherlen;
+	// 	CryptoMethods::AESCTREncrypt(key, keylen, plain, 16, cipher, cipherlen);
+	// 	for (size_t i = 0; i < 16; ++i)
+	// 	{
+	// 		printf("%02x%s", key[i], (i % 8 == 7) ? " " : "");
+	// 	}
+	// 	for (size_t i = 0; i < 16; ++i)
+	// 	{
+	// 		printf("%02x%s", iv[i], (i % 8 == 7) ? " " : "");
+	// 	}
+	// 	for (size_t i = 0; i < cipherlen; ++i)
+	// 	{
+	// 		printf("%02x%s", cipher[i], (i % 8 == 7) ? " " : "");
+	// 	}
+	// 	printf("\n");
+	//
+	// 	size_t plainlen;
+	// 	CryptoMethods::AESCTRDecrypt(key, keylen, cfb, 16, plain, plainlen);
+	// 	for (size_t i = 0; i < plainlen; ++i)
+	// 	{
+	// 		printf("%c", plain[i]);
+	// 	}
+	// 	printf("\n");
+	//
+	// 	uint8_t mix[16];
+	// 	CryptoMethods::MixBytes(key, iv, cipher, cipherlen, mix);
+	// 	for (size_t i = 0; i < 4; ++i)
+	// 	{
+	// 		printf("%u(%u) ", *reinterpret_cast<uint32_t*>(&mix[i]), *reinterpret_cast<uint32_t*>(&mix[i]) % (4+cipherlen/8));
+	// 	}
+	// 	printf("\n");
+	//
+	// 	for (size_t i = 0; i < 16; ++i)
+	// 	{
+	// 		printf("%02x%s", key[i], (i % 8 == 7) ? " " : "");
+	// 	}
+	// 	for (size_t i = 0; i < 16; ++i)
+	// 	{
+	// 		printf("%02x%s", iv[i], (i % 8 == 7) ? " " : "");
+	// 	}
+	// 	for (size_t i = 0; i < cipherlen; ++i)
+	// 	{
+	// 		printf("%02x%s", cipher[i], (i % 8 == 7) ? " " : "");
+	// 	}
+	// 	printf("\n");
+	//
+	//
+	// 	CryptoMethods::ScatterBytes(key, iv, cipher, cipherlen, mix);
+	// 	for (size_t i = 0; i < 4; ++i)
+	// 	{
+	// 		printf("%u(%u) ", *reinterpret_cast<uint32_t*>(&mix[i]), *reinterpret_cast<uint32_t*>(&mix[i]) % (4 + cipherlen / 8));
+	// 	}
+	// 	printf("\n");
+	//
+	// 	for (size_t i = 0; i < 16; ++i)
+	// 	{
+	// 		printf("%02x%s", key[i], (i % 8 == 7) ? " " : "");
+	// 	}
+	// 	for (size_t i = 0; i < 16; ++i)
+	// 	{
+	// 		printf("%02x%s", iv[i], (i % 8 == 7) ? " " : "");
+	// 	}
+	// 	for (size_t i = 0; i < cipherlen; ++i)
+	// 	{
+	// 		printf("%02x%s", cipher[i], (i % 8 == 7) ? " " : "");
+	// 	}
+	// 	printf("\n");
 
 	CryptoMethods::CreateBlowfish(base);
 
@@ -142,13 +142,12 @@ int main()
 	printf("\n");
 
 	CryptoMethods::ReleaseBlowfish(base);
-
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
 // 调试程序: F5 或调试 >“开始调试”菜单
 
-// 入门使用技巧: 
+// 入门使用技巧:
 //   1. 使用解决方案资源管理器窗口添加/管理文件
 //   2. 使用团队资源管理器窗口连接到源代码管理
 //   3. 使用输出窗口查看生成输出和其他消息

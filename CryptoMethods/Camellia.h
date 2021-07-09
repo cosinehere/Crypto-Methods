@@ -11,13 +11,13 @@ extern "C" {
 #define CAMELLIA_TABLE_BYTE_LEN 272
 #define CAMELLIA_TABLE_WORD_LEN (CAMELLIA_TABLE_BYTE_LEN / 4)
 
-typedef uint32_t KEY_TABLE_TYPE[CAMELLIA_TABLE_WORD_LEN];
+	typedef uint32_t KEY_TABLE_TYPE[CAMELLIA_TABLE_WORD_LEN];
 
-bool Camellia_Ekeygen(const size_t keyBitLength, const uint8_t *rawKey, KEY_TABLE_TYPE keyTable);
+	bool Camellia_Ekeygen(const size_t keyBitLength, const uint8_t *rawKey, KEY_TABLE_TYPE keyTable);
 
-bool Camellia_EncryptBlock(const size_t keyBitLength, const uint8_t *plaintext, const KEY_TABLE_TYPE keyTable, uint8_t *cipherText);
+	bool Camellia_EncryptBlock(const size_t keyBitLength, const uint8_t *plaintext, const KEY_TABLE_TYPE keyTable, uint8_t *cipherText);
 
-bool Camellia_DecryptBlock(const size_t keyBitLength, const uint8_t *cipherText, const KEY_TABLE_TYPE keyTable, uint8_t *plaintext);
+	bool Camellia_DecryptBlock(const size_t keyBitLength, const uint8_t *cipherText, const KEY_TABLE_TYPE keyTable, uint8_t *plaintext);
 
 #ifdef  __cplusplus
 }

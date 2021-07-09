@@ -12,7 +12,7 @@ inline uint8_t gmult(uint8_t a, uint8_t b) {
 
 		hbs = a & 0x80;
 		a <<= 1;
-		if (hbs) a ^= 0x1b;   
+		if (hbs) a ^= 0x1b;
 		b >>= 1;
 	}
 
@@ -136,7 +136,7 @@ bool AES::SetKey(const uint8_t* key, const size_t keylen)
 	p_keylen = keylen;
 	memcpy(p_key, key, sizeof(uint8_t) * keylen);
 	p_rounds = (p_keylen >> 2) + 6;
-	
+
 	bool bRet = KeyExpand();
 	if (bRet)
 	{

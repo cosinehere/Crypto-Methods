@@ -73,7 +73,6 @@ bool Blowfish::Encrypt(const uint8_t* plain, uint8_t* cipher)
 		return false;
 	}
 
-
 	uint32_t L = plain[0] << 24 | plain[1] << 16 | plain[2] << 8 | plain[3];
 	uint32_t R = plain[4] << 24 | plain[5] << 16 | plain[6] << 8 | plain[7];
 	//uint32_t L = *reinterpret_cast<const uint32_t*>(plain);

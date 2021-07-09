@@ -119,7 +119,6 @@ bool DES::Decrypt(const uint8_t* cipher, uint8_t* plain)
 		plain[i] = (fp >> (i * 8)) & 0xff;
 	}
 
-
 	return false;
 }
 
@@ -171,11 +170,11 @@ uint32_t DES::Feistel(const uint32_t rn_1, const uint8_t* k)
 	for (size_t i = 0; i < 8; ++i)
 	{
 		uint8_t Sbox_value = S[i][(getbit(e, 6 * i + 0) << 5) |
-									(getbit(e, 6 * i + 5) << 4) |
-									(getbit(e, 6 * i + 1) << 3) |
-									(getbit(e, 6 * i + 2) << 2) |
-									(getbit(e, 6 * i + 3) << 1) |
-									(getbit(e, 6 * i + 4) << 0)];
+			(getbit(e, 6 * i + 5) << 4) |
+			(getbit(e, 6 * i + 1) << 3) |
+			(getbit(e, 6 * i + 2) << 2) |
+			(getbit(e, 6 * i + 3) << 1) |
+			(getbit(e, 6 * i + 4) << 0)];
 		setbit(reinterpret_cast<uint8_t*>(&val), i * 4 + 0, getbit(&Sbox_value, 4));
 		setbit(reinterpret_cast<uint8_t*>(&val), i * 4 + 1, getbit(&Sbox_value, 5));
 		setbit(reinterpret_cast<uint8_t*>(&val), i * 4 + 2, getbit(&Sbox_value, 6));

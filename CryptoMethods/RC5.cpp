@@ -77,7 +77,6 @@ bool RC5::Decrypt(const uint8_t * cipher, uint8_t * plain)
 	{
 		B = r_rot<rc5_word>(B - p_roundkey[(i << 1) + 1], A & 0x1f) ^ A;
 		A = r_rot<rc5_word>(A - p_roundkey[i << 1], B & 0x1f) ^ B;
-		
 	}
 
 	rc5_word* p1 = reinterpret_cast<rc5_word*>(&plain[4]);

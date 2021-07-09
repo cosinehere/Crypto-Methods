@@ -4,7 +4,7 @@
 NAMESPACE_BEGIN(CryptoMethods)
 
 template<class CIPHER>
-class CTR :	public CipherModeBase
+class CTR : public CipherModeBase
 {
 public:
 	CTR();
@@ -78,14 +78,14 @@ bool CTR<CIPHER>::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out, s
 	{
 		outlen += (inlen - i > p_blocksize) ? p_blocksize : (inlen - i);
 		p_cipher.Encrypt(counter, temp);
-		
+
 		for (size_t j = 0; j < p_blocksize; ++j)
 		{
 			out[i + j] = temp[j] ^ in[i + j];
 		}
 
 		uint32_t cnt = (uint32_t)counter[p_blocksize - 1] | ((uint32_t)counter[p_blocksize - 2] << 8) |
-						((uint32_t)counter[p_blocksize - 3] << 16) | ((uint32_t)counter[p_blocksize - 4] << 24);
+			((uint32_t)counter[p_blocksize - 3] << 16) | ((uint32_t)counter[p_blocksize - 4] << 24);
 		cnt++;
 		counter[p_blocksize - 1] = cnt & 0xff;
 		counter[p_blocksize - 2] = (cnt >> 8) & 0xff;

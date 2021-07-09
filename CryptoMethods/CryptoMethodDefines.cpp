@@ -152,7 +152,7 @@ void CreateDES(CipherBase*& base)
 
 void ReleaseDES(CipherBase*& base)
 {
-	DES* des= reinterpret_cast<DES*>(base);
+	DES* des = reinterpret_cast<DES*>(base);
 	delete des;
 	base = nullptr;
 }

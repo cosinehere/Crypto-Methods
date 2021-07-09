@@ -81,7 +81,7 @@ bool RC6::Encrypt(const uint8_t * plain, uint8_t * cipher)
 	*c1 = B;
 	*c2 = C;
 	*c3 = D;
-	
+
 	return true;
 }
 

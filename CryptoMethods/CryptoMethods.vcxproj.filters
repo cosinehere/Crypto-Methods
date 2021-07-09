@@ -57,6 +57,9 @@
     <ClInclude Include="TripDES.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Twofish.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -87,6 +90,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="TripDES.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Twofish.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

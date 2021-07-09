@@ -123,7 +123,6 @@ static inline double bswapd(double d) {
 #endif
 }
 
-
 /* Define network - host byte swaps as needed depending upon platform endianness */
 // (note that network order is big endian)
 
