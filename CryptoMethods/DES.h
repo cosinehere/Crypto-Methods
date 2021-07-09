@@ -3,7 +3,7 @@
 
 NAMESPACE_BEGIN(CryptoMethods)
 
-constexpr size_t c_desblocksize = 64;
+constexpr size_t c_desblocksize = 8;
 constexpr size_t c_deskeylen = 8;
 
 constexpr uint32_t PC_1[] = {
@@ -134,8 +134,7 @@ inline bool getbit(const uint8_t* p, size_t i)
 	return p[i >> 3] & (0x01 << (7 - (i & 0x07)));
 }
 
-class DES :
-	public CipherBase
+class DES : public CipherBase
 {
 public:
 	DES();

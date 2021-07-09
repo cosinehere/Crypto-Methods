@@ -7,7 +7,7 @@ NAMESPACE_BEGIN(CryptoMethods)
 
 DES::DES()
 {
-	p_blocksize = 8;
+	p_blocksize = c_desblocksize;
 
 	p_haskey = false;
 }
