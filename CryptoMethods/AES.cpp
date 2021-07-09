@@ -134,7 +134,7 @@ bool AES::SetKey(const uint8_t* key, const size_t keylen)
 	}
 
 	p_keylen = keylen;
-	memcpy_s(p_key, sizeof(uint8_t) * 32, key, sizeof(uint8_t) * keylen);
+	memcpy(p_key, key, sizeof(uint8_t) * keylen);
 	p_rounds = (p_keylen >> 2) + 6;
 	
 	bool bRet = KeyExpand();
@@ -157,7 +157,7 @@ bool AES::Encrypt(const uint8_t* plain, uint8_t* cipher)
 		return false;
 	}
 
-	memcpy_s(cipher, sizeof(uint8_t) * 16, plain, sizeof(uint8_t) * 16);
+	memcpy(cipher, plain, sizeof(uint8_t) * 16);
 
 	addroundkey(cipher, p_roundkey);
 
@@ -182,7 +182,7 @@ bool AES::Decrypt(const uint8_t* cipher, uint8_t* plain)
 		return false;
 	}
 
-	memcpy_s(plain, sizeof(uint8_t) * 16, cipher, sizeof(uint8_t) * 16);
+	memcpy(plain, cipher, sizeof(uint8_t) * 16);
 
 	addroundkey(plain, p_roundkey + (p_rounds << 4));
 
@@ -204,7 +204,7 @@ bool AES::KeyExpand()
 {
 	p_roundkeylen = (p_rounds + 1) << 2;
 
-	memcpy_s(p_roundkey, sizeof(uint8_t)*p_keylen, p_key, sizeof(uint8_t)*p_keylen);
+	memcpy(p_roundkey, p_key, sizeof(uint8_t)*p_keylen);
 
 	uint32_t mod = p_keylen >> 2;
 	for (size_t i = mod; i < p_roundkeylen; ++i)

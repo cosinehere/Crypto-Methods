@@ -25,7 +25,7 @@ bool RC5::SetKey(const uint8_t * key, const size_t keylen)
 		return false;
 	}
 
-	memcpy_s(p_key, sizeof(uint8_t)*c_rc5b, key, sizeof(uint8_t)*c_rc5b);
+	memcpy(p_key, key, sizeof(uint8_t)*c_rc5b);
 
 	bool bRet = Setup();
 	if (bRet)

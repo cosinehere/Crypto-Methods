@@ -62,7 +62,7 @@ bool CTR<CIPHER>::SetIV(const uint8_t* iv, const size_t ivlen)
 	}
 
 	p_iv = new uint8_t[ivlen];
-	memcpy_s(p_iv, sizeof(uint8_t)*ivlen, iv, sizeof(uint8_t)*ivlen);
+	memcpy(p_iv, iv, sizeof(uint8_t)*ivlen);
 
 	return true;
 }
@@ -72,7 +72,7 @@ bool CTR<CIPHER>::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out, s
 {
 	uint8_t* temp = new uint8_t[p_blocksize];
 	uint8_t* counter = new uint8_t[p_blocksize];
-	memcpy_s(counter, sizeof(uint8_t)*p_blocksize, p_iv, sizeof(uint8_t)*p_blocksize);
+	memcpy(counter, p_iv, sizeof(uint8_t)*p_blocksize);
 	outlen = 0;
 	for (size_t i = 0; i < inlen; i += p_blocksize)
 	{
@@ -103,7 +103,7 @@ bool CTR<CIPHER>::Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out, s
 {
 	uint8_t* temp = new uint8_t[p_blocksize];
 	uint8_t* counter = new uint8_t[p_blocksize];
-	memcpy_s(counter, sizeof(uint8_t)*p_blocksize, p_iv, sizeof(uint8_t)*p_blocksize);
+	memcpy(counter, p_iv, sizeof(uint8_t)*p_blocksize);
 	outlen = 0;
 	for (size_t i = 0; i < inlen; i += p_blocksize)
 	{

@@ -202,7 +202,7 @@ void AESCBCEncrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, c
 	cbc.SetIV(iv, 16);
 
 	uint8_t* temp = new uint8_t[inlen + 16];
-	memcpy_s(temp, sizeof(uint8_t)*(inlen + 16), in, sizeof(uint8_t)*inlen);
+	memcpy(temp, in, sizeof(uint8_t)*inlen);
 	size_t templen = PKCS7(temp, inlen, 16);
 
 	cbc.Encrypt(temp, templen, out, outlen);
@@ -229,7 +229,7 @@ void AESCFBEncrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, c
 	cfb.SetIV(iv, 16);
 
 	uint8_t* temp = new uint8_t[inlen];
-	memcpy_s(temp, sizeof(uint8_t)*inlen, in, sizeof(uint8_t)*inlen);
+	memcpy(temp, in, sizeof(uint8_t)*inlen);
 	size_t templen = inlen;
 
 	cfb.Encrypt(temp, templen, out, outlen);
@@ -256,7 +256,7 @@ void AESCTREncrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, c
 	cbc.SetIV(iv, 16);
 
 	uint8_t* temp = new uint8_t[inlen];
-	memcpy_s(temp, sizeof(uint8_t)*inlen, in, sizeof(uint8_t)*inlen);
+	memcpy(temp, in, sizeof(uint8_t)*inlen);
 	size_t templen = inlen;
 
 	cbc.Encrypt(temp, templen, out, outlen);

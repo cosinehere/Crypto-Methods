@@ -25,7 +25,7 @@ bool RC6::SetKey(const uint8_t * key, const size_t keylen)
 		return false;
 	}
 
-	memcpy_s(p_key, sizeof(uint8_t)*c_rc6b, key, sizeof(uint8_t)*c_rc6b);
+	memcpy(p_key, key, sizeof(uint8_t)*c_rc6b);
 
 	bool bRet = Setup();
 	if (bRet)

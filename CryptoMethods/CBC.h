@@ -61,7 +61,7 @@ bool CBC<CIPHER>::SetIV(const uint8_t* iv, const size_t ivlen)
 	}
 
 	p_iv = new uint8_t[ivlen];
-	memcpy_s(p_iv, sizeof(uint8_t)*ivlen, iv, sizeof(uint8_t)*ivlen);
+	memcpy(p_iv, iv, sizeof(uint8_t)*ivlen);
 
 	return true;
 }
