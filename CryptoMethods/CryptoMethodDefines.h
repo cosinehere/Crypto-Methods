@@ -80,6 +80,9 @@ CRYPTOEXT void ReleaseRC6(CipherBase*& base);
 CRYPTOEXT void CreateDES(CipherBase*& base);
 CRYPTOEXT void ReleaseDES(CipherBase*& base);
 
+CRYPTOEXT void CreateTripDES(CipherBase*& base);
+CRYPTOEXT void ReleaseTripDES(CipherBase*& base);
+
 CRYPTOEXT void CreateCamellia(CipherBase*& base);
 CRYPTOEXT void ReleaseCamellia(CipherBase*& base);
 

@@ -168,6 +168,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="RC5.h" />
     <ClInclude Include="RC6.h" />
+    <ClInclude Include="TripDES.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AES.cpp" />
@@ -184,6 +185,7 @@
     </ClCompile>
     <ClCompile Include="RC5.cpp" />
     <ClCompile Include="RC6.cpp" />
+    <ClCompile Include="TripDES.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

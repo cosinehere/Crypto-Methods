@@ -2,6 +2,7 @@
 #include "CryptoMethodDefines.h"
 
 #include "DES.h"
+#include "TripDES.h"
 #include "AES.h"
 #include "RC5.h"
 #include "RC6.h"
@@ -153,6 +154,18 @@ void ReleaseDES(CipherBase*& base)
 {
 	DES* des= reinterpret_cast<DES*>(base);
 	delete des;
+	base = nullptr;
+}
+
+void CreateTripDES(CipherBase*& base)
+{
+	base = new TripDES;
+}
+
+void ReleaseTripDES(CipherBase*& base)
+{
+	TripDES* tripdes = reinterpret_cast<TripDES*>(base);
+	delete tripdes;
 	base = nullptr;
 }
 

@@ -122,12 +122,12 @@ int main()
 
 	base->SetKey(key, keylen);
 	base->Encrypt(plain, cipher);
-	for (size_t i = 0; i < keylen; ++i)
+	for (size_t i = 0; i < base->BlockSize(); ++i)
 	{
 		printf("%02x%s", plain[i], (i % 8 == 7) ? " " : "");
 	}
 	printf("\n");
-	for (size_t i = 0; i < keylen; ++i)
+	for (size_t i = 0; i < base->BlockSize(); ++i)
 	{
 		printf("%02x%s", cipher[i], (i % 8 == 7) ? " " : "");
 	}
@@ -135,7 +135,7 @@ int main()
 
 	memset(plain, 0, sizeof(plain));
 	base->Decrypt(cipher, plain);
-	for (size_t i = 0; i < keylen; ++i)
+	for (size_t i = 0; i < base->BlockSize(); ++i)
 	{
 		printf("%02x%s", plain[i], (i % 8 == 7) ? " " : "");
 	}
