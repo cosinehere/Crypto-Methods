@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "Blowfish.h"
 
-#include <cstdio>
-
 NAMESPACE_BEGIN(CryptoMethods)
 
 Blowfish::Blowfish()
@@ -51,11 +49,6 @@ bool Blowfish::SetKey(const uint8_t* key, const size_t keylen)
 		Encrypt(l, r);
 		p_P[i] = l;
 		p_P[i + 1] = r;
-	}
-
-	for (size_t i = 0; i < 18; ++i)
-	{
-		printf("%08x\n", p_P[i]);
 	}
 
 	for (int16_t i = 0; i < 4; ++i)
