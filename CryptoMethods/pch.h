@@ -37,6 +37,12 @@ typedef unsigned __int64 uint64_t;
 //#include "endianness.h"
 
 #elif defined(__GNUC__)
+
+#include <cstdint>
+#include <cstddef>
+#include <cstring>
+#include <cstdlib>
+
 #endif
 
 #define _CRYPTOMETHODS_EXPORT_

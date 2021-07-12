@@ -13,7 +13,7 @@
 #include "CFB.h"
 #include "CTR.h"
 
-#include <wincrypt.h>
+//#include <wincrypt.h>
 
 NAMESPACE_BEGIN(CryptoMethods)
 
@@ -33,10 +33,14 @@ size_t Padding(uint8_t* buffer, size_t len, size_t blocksize)
 
 void GenerateIV(uint8_t* iv, size_t ivlen)
 {
+#if defined(_MSC_VER)
 	HCRYPTPROV crypt;
 	CryptAcquireContext(&crypt, nullptr, nullptr, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT);
 	CryptGenRandom(crypt, ivlen, iv);
 	CryptReleaseContext(crypt, 0);
+#else
+
+#endif
 }
 
 void MixBytes(uint8_t* key, uint8_t* iv, uint8_t* cipher, size_t cipherlen, uint8_t* mix)

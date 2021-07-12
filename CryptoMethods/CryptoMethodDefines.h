@@ -10,7 +10,7 @@
 #define CRYPTOEXT
 #endif
 
-#define NOVTABLE __declspec(novtable)
+#define NOVTABLE //__declspec(novtable)
 
 #define NAMESPACE_BEGIN(name) namespace name{
 #define NAMESPACE_END }
