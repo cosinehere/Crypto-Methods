@@ -13,8 +13,6 @@
 #include "CFB.h"
 #include "CTR.h"
 
-//#include <wincrypt.h>
-
 NAMESPACE_BEGIN(CryptoMethods)
 
 size_t Padding(uint8_t* buffer, size_t len, size_t blocksize)

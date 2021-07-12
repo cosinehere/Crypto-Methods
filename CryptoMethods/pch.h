@@ -33,6 +33,7 @@ typedef unsigned __int64 uint64_t;
 #define WIN32_LEAN_AND_MEAN
 
 #include <windows.h>
+#include <wincrypt.h>
 
 //#include "endianness.h"
 

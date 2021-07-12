@@ -30,7 +30,7 @@ constexpr size_t c_rc6b = 16;			//length of the key in bytes
 
 constexpr size_t c_rc6u = c_rc6w / 8;	//length of a word in bytes
 constexpr size_t c_rc6t = 2 * (c_rc6r + 2);	//number of round subkeys
-constexpr size_t c_rc6c = (1 < 8 * c_rc6b / c_rc6w)?(8*c_rc6b/c_rc6w):1;	//length of the key in words
+constexpr size_t c_rc6c = (1 < 8 * c_rc6b / c_rc6w) ? (8 * c_rc6b / c_rc6w) : 1;	//length of the key in words
 
 class RC6 : public CipherBase
 {
