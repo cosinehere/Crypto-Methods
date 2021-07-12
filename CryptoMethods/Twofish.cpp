@@ -9,9 +9,7 @@ NAMESPACE_BEGIN(CryptoMethods)
 
 #define ONE_STEP
 
-uint32_t  k_len;
-uint32_t  l_key[40];
-uint32_t  s_key[4];
+
 
 /* finite field arithmetic for GF(2**8) with the modular    */
 /* polynomial x^8 + x^6 + x^5 + x^3 + 1 (0x169)             */
@@ -142,7 +140,7 @@ void gen_mtab(void)
 
 #endif
 
-inline uint32_t h_fun(const uint32_t x, const uint32_t key[])
+inline uint32_t Twofish::h_fun(const uint32_t x, const uint32_t key[])
 {
 	uint32_t  b0, b1, b2, b3;
 
@@ -152,7 +150,7 @@ inline uint32_t h_fun(const uint32_t x, const uint32_t key[])
 #endif
 
 	b0 = byte(x, 0); b1 = byte(x, 1); b2 = byte(x, 2); b3 = byte(x, 3);
-	switch (k_len)
+	switch (p_k_len)
 	{
 	case 4: b0 = q(1, b0) ^ byte(key[3], 0);
 		b1 = q(0, b1) ^ byte(key[3], 1);
@@ -200,11 +198,11 @@ uint8_t  sb[4][256];
 #define q42(x)  q(1,q(0,q(0, q(0, x) ^ byte(key[3],2)) ^ byte(key[2],2)) ^ byte(key[1],2)) ^ byte(key[0],2)
 #define q43(x)  q(1,q(1,q(0, q(1, x) ^ byte(key[3],3)) ^ byte(key[2],3)) ^ byte(key[1],3)) ^ byte(key[0],3)
 
-void gen_mk_tab(uint32_t key[])
+void Twofish::gen_mk_tab(uint32_t key[])
 {
 	uint32_t  i;
 	uint8_t  by;
-	switch (k_len)
+	switch (p_k_len)
 	{
 	case 2: for (i = 0; i < 256; ++i)
 	{
@@ -333,7 +331,7 @@ uint32_t mds_rem(uint32_t p0, uint32_t p1)
 
 /* initialise the key schedule from the user supplied key   */
 
-uint32_t *set_key(const uint32_t in_key[], const uint32_t key_len)
+uint32_t* Twofish::set_key(const uint32_t in_key[], const uint32_t key_len)
 {
 	uint32_t  i, a, b, me_key[4], mo_key[4];
 #ifdef Q_TABLES
@@ -353,12 +351,12 @@ uint32_t *set_key(const uint32_t in_key[], const uint32_t key_len)
 
 #endif
 
-	k_len = key_len / 64;   /* 2, 3 or 4 */
-	for (i = 0; i < k_len; ++i)
+	p_k_len = key_len / 64;   /* 2, 3 or 4 */
+	for (i = 0; i < p_k_len; ++i)
 	{
 		a = in_key[i + i];     me_key[i] = a;
 		b = in_key[i + i + 1]; mo_key[i] = b;
-		s_key[k_len - i - 1] = mds_rem(a, b);
+		p_s_key[p_k_len - i - 1] = mds_rem(a, b);
 	}
 
 	for (i = 0; i < 40; i += 2)
@@ -366,36 +364,36 @@ uint32_t *set_key(const uint32_t in_key[], const uint32_t key_len)
 		a = 0x01010101 * i; b = a + 0x01010101;
 		a = h_fun(a, me_key);
 		b = rotl(h_fun(b, mo_key), 8);
-		l_key[i] = a + b;
-		l_key[i + 1] = rotl(a + 2 * b, 9);
+		p_l_key[i] = a + b;
+		p_l_key[i + 1] = rotl(a + 2 * b, 9);
 	}
 
 #ifdef MK_TABLE
-	gen_mk_tab(s_key);
+	gen_mk_tab(p_s_key);
 #endif
 
-	return l_key;
+	return p_l_key;
 };
 
 /* encrypt a block of text  */
 
-inline void f_rnd(uint32_t i, uint32_t& t0, uint32_t& t1, uint32_t* blk)
+inline void Twofish::f_rnd(uint32_t i, uint32_t& t0, uint32_t& t1, uint32_t* blk)
 {
 	t1 = g1_fun(blk[1]); t0 = g0_fun(blk[0]);
-	blk[2] = rotr(blk[2] ^ (t0 + t1 + l_key[4 * (i)+8]), 1);
-	blk[3] = rotl(blk[3], 1) ^ (t0 + 2 * t1 + l_key[4 * (i)+9]);
+	blk[2] = rotr(blk[2] ^ (t0 + t1 + p_l_key[4 * (i)+8]), 1);
+	blk[3] = rotl(blk[3], 1) ^ (t0 + 2 * t1 + p_l_key[4 * (i)+9]);
 	t1 = g1_fun(blk[3]); t0 = g0_fun(blk[2]);
-	blk[0] = rotr(blk[0] ^ (t0 + t1 + l_key[4 * (i)+10]), 1);
-	blk[1] = rotl(blk[1], 1) ^ (t0 + 2 * t1 + l_key[4 * (i)+11]);
+	blk[0] = rotr(blk[0] ^ (t0 + t1 + p_l_key[4 * (i)+10]), 1);
+	blk[1] = rotl(blk[1], 1) ^ (t0 + 2 * t1 + p_l_key[4 * (i)+11]);
 }
 
-void encrypt(const uint32_t in_blk[4], uint32_t out_blk[4])
+void Twofish::encrypt(const uint32_t in_blk[4], uint32_t out_blk[4])
 {
 	uint32_t  t0, t1, blk[4];
-	blk[0] = in_blk[0] ^ l_key[0];
-	blk[1] = in_blk[1] ^ l_key[1];
-	blk[2] = in_blk[2] ^ l_key[2];
-	blk[3] = in_blk[3] ^ l_key[3];
+	blk[0] = in_blk[0] ^ p_l_key[0];
+	blk[1] = in_blk[1] ^ p_l_key[1];
+	blk[2] = in_blk[2] ^ p_l_key[2];
+	blk[3] = in_blk[3] ^ p_l_key[3];
 
 	f_rnd(0, t0, t1, blk);
 	f_rnd(1, t0, t1, blk);
@@ -406,31 +404,31 @@ void encrypt(const uint32_t in_blk[4], uint32_t out_blk[4])
 	f_rnd(6, t0, t1, blk);
 	f_rnd(7, t0, t1, blk);
 
-	out_blk[0] = blk[2] ^ l_key[4];
-	out_blk[1] = blk[3] ^ l_key[5];
-	out_blk[2] = blk[0] ^ l_key[6];
-	out_blk[3] = blk[1] ^ l_key[7];
+	out_blk[0] = blk[2] ^ p_l_key[4];
+	out_blk[1] = blk[3] ^ p_l_key[5];
+	out_blk[2] = blk[0] ^ p_l_key[6];
+	out_blk[3] = blk[1] ^ p_l_key[7];
 };
 
 /* decrypt a block of text  */
 
-inline void i_rnd(uint32_t i, uint32_t& t0, uint32_t& t1, uint32_t* blk)
+inline void Twofish::i_rnd(uint32_t i, uint32_t& t0, uint32_t& t1, uint32_t* blk)
 {
 	t1 = g1_fun(blk[1]); t0 = g0_fun(blk[0]);
-	blk[2] = rotl(blk[2], 1) ^ (t0 + t1 + l_key[4 * (i)+10]);
-	blk[3] = rotr(blk[3] ^ (t0 + 2 * t1 + l_key[4 * (i)+11]), 1);
+	blk[2] = rotl(blk[2], 1) ^ (t0 + t1 + p_l_key[4 * (i)+10]);
+	blk[3] = rotr(blk[3] ^ (t0 + 2 * t1 + p_l_key[4 * (i)+11]), 1);
 	t1 = g1_fun(blk[3]); t0 = g0_fun(blk[2]);
-	blk[0] = rotl(blk[0], 1) ^ (t0 + t1 + l_key[4 * (i)+8]);
-	blk[1] = rotr(blk[1] ^ (t0 + 2 * t1 + l_key[4 * (i)+9]), 1);
+	blk[0] = rotl(blk[0], 1) ^ (t0 + t1 + p_l_key[4 * (i)+8]);
+	blk[1] = rotr(blk[1] ^ (t0 + 2 * t1 + p_l_key[4 * (i)+9]), 1);
 }
 
-void decrypt(const uint32_t in_blk[4], uint32_t out_blk[4])
+void Twofish::decrypt(const uint32_t in_blk[4], uint32_t out_blk[4])
 {
 	uint32_t  t0, t1, blk[4];
-	blk[0] = in_blk[0] ^ l_key[4];
-	blk[1] = in_blk[1] ^ l_key[5];
-	blk[2] = in_blk[2] ^ l_key[6];
-	blk[3] = in_blk[3] ^ l_key[7];
+	blk[0] = in_blk[0] ^ p_l_key[4];
+	blk[1] = in_blk[1] ^ p_l_key[5];
+	blk[2] = in_blk[2] ^ p_l_key[6];
+	blk[3] = in_blk[3] ^ p_l_key[7];
 
 	i_rnd(7, t0, t1, blk);
 	i_rnd(6, t0, t1, blk);
@@ -441,10 +439,10 @@ void decrypt(const uint32_t in_blk[4], uint32_t out_blk[4])
 	i_rnd(1, t0, t1, blk);
 	i_rnd(0, t0, t1, blk);
 
-	out_blk[0] = blk[2] ^ l_key[0];
-	out_blk[1] = blk[3] ^ l_key[1];
-	out_blk[2] = blk[0] ^ l_key[2];
-	out_blk[3] = blk[1] ^ l_key[3];
+	out_blk[0] = blk[2] ^ p_l_key[0];
+	out_blk[1] = blk[3] ^ p_l_key[1];
+	out_blk[2] = blk[0] ^ p_l_key[2];
+	out_blk[3] = blk[1] ^ p_l_key[3];
 };
 
 Twofish::Twofish()
@@ -463,17 +461,41 @@ const size_t Twofish::BlockSize()
 
 bool Twofish::SetKey(const uint8_t* key, const size_t keylen)
 {
-	return false;
+	if (key == nullptr || (keylen != 16 && keylen != 24 && keylen != 32))
+	{
+		return false;
+	}
+
+	memcpy(p_key, key, sizeof(uint8_t)*keylen);
+
+	set_key(reinterpret_cast<const uint32_t*>(key), keylen * 8);
+	p_haskey = true;
+
+	return true;
 }
 
 bool Twofish::Encrypt(const uint8_t* plain, uint8_t* cipher)
 {
-	return false;
+	if (!p_haskey)
+	{
+		return false;
+	}
+
+	encrypt(reinterpret_cast<const uint32_t*>(plain), reinterpret_cast<uint32_t*>(cipher));
+
+	return true;
 }
 
 bool Twofish::Decrypt(const uint8_t* cipher, uint8_t* plain)
 {
-	return false;
+	if (!p_haskey)
+	{
+		return false;
+	}
+
+	decrypt(reinterpret_cast<const uint32_t*>(cipher), reinterpret_cast<uint32_t*>(plain));
+
+	return true;
 }
 
 NAMESPACE_END

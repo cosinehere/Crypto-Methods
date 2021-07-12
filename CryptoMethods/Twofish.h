@@ -51,22 +51,23 @@ constexpr uint8_t c_Qtab[2][256]=
 
 /* require endian conversions for big-endian architectures          */
 
-uint32_t *set_key(const uint32_t in_key[], const uint32_t key_len);
-void encrypt(const uint32_t in_blk[4], uint32_t out_blk[4]);
-void decrypt(const uint32_t in_blk[4], uint32_t out_blk[4]);
+
 
 /* 3. Basic macros for speeding up generic operations               */
 
 /* Circular rotate of 32 bit values                                 */
-#ifdef _MSC_VER
-#  include <stdlib.h>
-#  pragma intrinsic(_lrotr,_lrotl)
-#  define rotr(x,n) _lrotr(x,n)
-#  define rotl(x,n) _lrotl(x,n)
-#else
-#define rotr(x,n)   (((x) >> ((int)(n))) | ((x) << (32 - (int)(n))))
-#define rotl(x,n)   (((x) << ((int)(n))) | ((x) >> (32 - (int)(n))))
-#endif
+#define rotr(x,n) r_rot<uint32_t>(x,n)
+#define rotl(x,n) l_rot<uint32_t>(x,n)
+
+// #ifdef _MSC_VER
+// #  include <stdlib.h>
+// #  pragma intrinsic(_lrotr,_lrotl)
+// #  define rotr(x,n) _lrotr(x,n)
+// #  define rotl(x,n) _lrotl(x,n)
+// #else
+// #define rotr(x,n)   (((x) >> ((int)(n))) | ((x) << (32 - (int)(n))))
+// #define rotl(x,n)   (((x) << ((int)(n))) | ((x) >> (32 - (int)(n))))
+// #endif
 
 /* Invert byte order in a 32 bit variable                           */
 #define bswap(x)    (rotl(x, 8) & 0x00ff00ff | rotr(x, 8) & 0xff00ff00)
@@ -184,6 +185,18 @@ private:
 
 	size_t p_keylen;
 	uint8_t p_key[64];
+
+	uint32_t  p_k_len;
+	uint32_t  p_l_key[40];
+	uint32_t  p_s_key[4];
+
+	uint32_t h_fun(const uint32_t x, const uint32_t key[]);
+	void gen_mk_tab(uint32_t key[]);
+	uint32_t *set_key(const uint32_t in_key[], const uint32_t key_len);
+	void f_rnd(uint32_t i, uint32_t& t0, uint32_t& t1, uint32_t* blk);
+	void encrypt(const uint32_t in_blk[4], uint32_t out_blk[4]);
+	void i_rnd(uint32_t i, uint32_t& t0, uint32_t& t1, uint32_t* blk);
+	void decrypt(const uint32_t in_blk[4], uint32_t out_blk[4]);
 };
 
 NAMESPACE_END
