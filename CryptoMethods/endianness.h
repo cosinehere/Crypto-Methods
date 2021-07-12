@@ -4,7 +4,6 @@
 #define ENDIANNESS_H_
 
 #include <cstdlib>
-#include <cstdint>
 
 /* Detect platform endianness at compile time */
 

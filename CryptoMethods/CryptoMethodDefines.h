@@ -1,11 +1,13 @@
 #pragma once
 
-#include <cstdint>
-
+#if defined(_MSC_VER)
 #ifdef _CRYPTOMETHODS_EXPORT_
 #define CRYPTOEXT extern "C" __declspec(dllexport)
 #else
-#define CRYPTOEXT extern "C" _declspec(dllimport)
+#define CRYPTOEXT extern "C" __declspec(dllimport)
+#endif
+#else
+#define CRYPTOEXT
 #endif
 
 #define NOVTABLE __declspec(novtable)
