@@ -22,7 +22,7 @@ int main()
 	// 	CryptoMethods::CreateAES(base);
 
 	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
-	size_t keylen = 8;
+	size_t keylen = 16;
 	//	base->SetKey(key, keylen);
 
 	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
@@ -118,7 +118,7 @@ int main()
 	// 	}
 	// 	printf("\n");
 
-	CryptoMethods::CreateBlowfish(base);
+	CryptoMethods::CreateTwofish(base);
 
 	base->SetKey(key, keylen);
 	base->Encrypt(plain, cipher);
@@ -141,7 +141,7 @@ int main()
 	}
 	printf("\n");
 
-	CryptoMethods::ReleaseBlowfish(base);
+	CryptoMethods::ReleaseTwofish(base);
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
