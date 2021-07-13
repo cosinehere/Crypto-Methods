@@ -212,9 +212,7 @@ void AESCBCEncrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, c
 {
 	CBC<AES> cbc;
 	cbc.SetKey(key, keylen);
-	uint8_t iv[16]; //= { '0','0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0','0' };
-	GenerateIV(iv, 16);
-	cbc.SetIV(iv, 16);
+	cbc.SetIV(c_iv, 16);
 
 	uint8_t* temp = new uint8_t[inlen + 16];
 	memcpy(temp, in, sizeof(uint8_t)*inlen);
@@ -287,6 +285,134 @@ void AESCTRDecrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, c
 	//GenerateIV(iv, 16);
 	cbc.SetIV(iv, 16);
 	cbc.Decrypt(in, inlen, out, outlen);
+}
+
+void RC5CBCEncrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+{
+	CBC<RC5> cbc;
+	cbc.SetKey(key, keylen);
+	cbc.SetIV(c_iv, 8);
+	cbc.Encrypt(in, inlen, out, outlen);
+}
+
+void RC5CBCDecrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+{
+	CBC<RC5> cbc;
+	cbc.SetKey(key, keylen);
+	cbc.SetIV(c_iv, 8);
+	cbc.Decrypt(in, inlen, out, outlen);
+}
+
+void RC5CFBEncrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+{
+	CFB<RC5> cfb;
+	cfb.SetKey(key, keylen);
+	cfb.SetIV(c_iv, 8);
+	cfb.Encrypt(in, inlen, out, outlen);
+}
+
+void RC5CFBDecrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+{
+	CFB<RC5> cfb;
+	cfb.SetKey(key, keylen);
+	cfb.SetIV(c_iv, 8);
+	cfb.Decrypt(in, inlen, out, outlen);
+}
+
+void RC6CBCEncrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+{
+	CBC<RC6> cbc;
+	cbc.SetKey(key, keylen);
+	cbc.SetIV(c_iv, 16);
+	cbc.Encrypt(in, inlen, out, outlen);
+}
+
+void RC6CBCDecrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+{
+	CBC<RC6> cbc;
+	cbc.SetKey(key, keylen);
+	cbc.SetIV(c_iv, 16);
+	cbc.Decrypt(in, inlen, out, outlen);
+}
+
+void RC6CFBEncrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+{
+	CFB<RC6> cfb;
+	cfb.SetKey(key, keylen);
+	cfb.SetIV(c_iv, 16);
+	cfb.Encrypt(in, inlen, out, outlen);
+}
+
+void RC6CFBDecrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+{
+	CFB<RC6> cfb;
+	cfb.SetKey(key, keylen);
+	cfb.SetIV(c_iv, 16);
+	cfb.Decrypt(in, inlen, out, outlen);
+}
+
+void CamelliaCBCEncrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+{
+	CBC<Camellia> cbc;
+	cbc.SetKey(key, keylen);
+	cbc.SetIV(c_iv, 16);
+	cbc.Encrypt(in, inlen, out, outlen);
+}
+
+void CamelliaCBCDecrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+{
+	CBC<Camellia> cbc;
+	cbc.SetKey(key, keylen);
+	cbc.SetIV(c_iv, 16);
+	cbc.Decrypt(in, inlen, out, outlen);
+}
+
+void CamelliaCFBEncrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+{
+	CFB<Camellia> cfb;
+	cfb.SetKey(key, keylen);
+	cfb.SetIV(c_iv, 16);
+	cfb.Encrypt(in, inlen, out, outlen);
+}
+
+void CamelliaCFBDecrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+{
+	CFB<Camellia> cfb;
+	cfb.SetKey(key, keylen);
+	cfb.SetIV(c_iv, 16);
+	cfb.Decrypt(in, inlen, out, outlen);
+}
+
+void TwofishCBCEncrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+{
+	CBC<Twofish> cbc;
+	cbc.SetKey(key, keylen);
+	cbc.SetIV(c_iv, 16);
+	cbc.Encrypt(in, inlen, out, outlen);
+}
+
+void TwofishCBCDecrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+{
+	CBC<Twofish> cbc;
+	cbc.SetKey(key, keylen);
+	cbc.SetIV(c_iv, 16);
+	cbc.Decrypt(in, inlen, out, outlen);
+}
+
+void TwofishCFBEncrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+{
+	CFB<Twofish> cfb;
+	cfb.SetKey(key, keylen);
+	cfb.SetIV(c_iv, 16);
+	cfb.Encrypt(in, inlen, out, outlen);
+}
+
+void TwofishCFBDecrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+{
+	CFB<Twofish> cfb;
+	cfb.SetKey(key, keylen);
+	cfb.SetIV(c_iv, 16);
+	cfb.Decrypt(in, inlen, out, outlen);
 }
 
 NAMESPACE_END

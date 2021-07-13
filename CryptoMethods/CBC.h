@@ -121,7 +121,6 @@ bool CBC<CIPHER>::Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out, s
 		}
 	}
 	delete[] temp;
-	outlen -= out[inlen - 1];
 
 	return true;
 }

@@ -19,7 +19,7 @@ constexpr rc5_word c_rc5Qw = 0x9e3779b97f4a7c15ull;
 #endif
 
 constexpr size_t c_rc5w = RC5_WORD_W;	//length of a word in bits
-constexpr size_t c_rc5r = 16;			//rounds to encrypt data
+constexpr size_t c_rc5r = 12;			//rounds to encrypt data
 constexpr size_t c_rc5b = 16;			//length of the key in bytes
 
 constexpr size_t c_rc5u = c_rc5w / 8;	//length of a word in bytes
