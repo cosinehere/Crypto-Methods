@@ -8,8 +8,11 @@ project(CryptoMethods VERSION 1.0)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# add_subdirectory(CryptoMethods)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# CryptoMethods.so
+set(CMAKE_CXX_FLAGS "-O2 -Wall -fvisibility=hidden -Wl,-s")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
 add_library(CryptoMethods SHARED
 	#	${CMAKE_SOURCE_DIR}/CryptoMethods/pch.cpp
 	${CMAKE_SOURCE_DIR}/CryptoMethods/AES.cpp
@@ -22,7 +25,14 @@ add_library(CryptoMethods SHARED
 	${CMAKE_SOURCE_DIR}/CryptoMethods/RC6.cpp
 	${CMAKE_SOURCE_DIR}/CryptoMethods/CryptoMethodDefines.cpp
 	)
-
 target_precompile_headers(CryptoMethods PUBLIC
 	${CMAKE_SOURCE_DIR}/CryptoMethods/pch.h)
+
+# CryptoTest
+set(CMAKE_CXX_FLAGS "-O2 -Wall")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+add_executable(CryptoTest WIN32
+	${CMAKE_SOURCE_DIR}/test/test.cpp
+	)
+target_link_libraries(CryptoTest CryptoMethods)
 
