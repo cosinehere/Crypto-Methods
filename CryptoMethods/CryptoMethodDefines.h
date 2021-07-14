@@ -10,7 +10,12 @@
 #define NOVTABLE __declspec(novtable)
 
 #else
+#ifdef _CRYPTOMETHODS_EXPORT_
+#define CRYPTOEXT //extern "C" __attribute__((visibility("default")))
+#else
 #define CRYPTOEXT
+#endif
+
 #define NOVTABLE
 #endif
 
