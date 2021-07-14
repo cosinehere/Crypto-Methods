@@ -11,7 +11,7 @@
 
 #else
 #ifdef _CRYPTOMETHODS_EXPORT_
-#define CRYPTOEXT //extern "C" __attribute__((visibility("default")))
+#define CRYPTOEXT extern "C" __attribute__((visibility("default")))
 #else
 #define CRYPTOEXT
 #endif
