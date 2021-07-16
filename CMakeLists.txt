@@ -34,7 +34,7 @@ set_target_properties(CryptoMethods PROPERTIES COMPILE_FLAGS "-fvisibility=hidde
 
 # CryptoTest
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
-add_executable(CryptoTest WIN32
+add_executable(CryptoTest
 	${CMAKE_SOURCE_DIR}/test/test.cpp
 	)
 target_link_libraries(CryptoTest CryptoMethods)
