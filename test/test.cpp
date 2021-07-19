@@ -20,255 +20,255 @@ void PaddingTest()
 	printf("\n");
 }
 
-void AESCBCtest()
-{
-	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
-	size_t keylen = 16;
-	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
-	size_t plainlen = 16;
-	uint8_t cipher[33] = { 0 };
-	size_t cipherlen;
-
-	CryptoMethods::AESCBCEncrypt(key, keylen, plain, plainlen, cipher, cipherlen);
-
-	for (size_t i = 0; i < cipherlen; ++i)
-	{
-		printf("%02x ", cipher[i]);
-	}
-	printf("\n");
-
-	CryptoMethods::AESCBCDecrypt(key, keylen, cipher, cipherlen, plain, plainlen);
-	for (size_t i = 0; i < plainlen; ++i)
-	{
-		printf("%02x ", plain[i]);
-	}
-	printf("\n");
-}
-
-void AESCFBtest()
-{
-	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
-	size_t keylen = 16;
-	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
-	size_t plainlen = 16;
-	uint8_t cipher[33] = { 0 };
-	size_t cipherlen;
-
-	CryptoMethods::AESCFBEncrypt(key, keylen, plain, plainlen, cipher, cipherlen);
-
-	for (size_t i = 0; i < cipherlen; ++i)
-	{
-		printf("%02x ", cipher[i]);
-	}
-	printf("\n");
-
-	CryptoMethods::AESCFBDecrypt(key, keylen, cipher, cipherlen, plain, plainlen);
-	for (size_t i = 0; i < plainlen; ++i)
-	{
-		printf("%02x ", plain[i]);
-	}
-	printf("\n");
-}
-
-void RC5CBCtest()
-{
-	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
-	size_t keylen = 16;
-	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
-	size_t plainlen = 16;
-	uint8_t cipher[33] = { 0 };
-	size_t cipherlen;
-
-	CryptoMethods::RC5CBCEncrypt(key, 16, plain, 8, cipher, cipherlen);
-
-	for (size_t i = 0; i < cipherlen; ++i)
-	{
-		printf("%02x ", cipher[i]);
-	}
-	printf("\n");
-
-	CryptoMethods::RC5CBCDecrypt(key, 16, cipher, cipherlen, plain, plainlen);
-	for (size_t i = 0; i < plainlen; ++i)
-	{
-		printf("%02x ", plain[i]);
-	}
-	printf("\n");
-}
-
-void RC5CFBtest()
-{
-	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
-	size_t keylen = 16;
-	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
-	size_t plainlen = 16;
-	uint8_t cipher[33] = { 0 };
-	size_t cipherlen;
-
-	CryptoMethods::RC5CFBEncrypt(key, 16, plain, 8, cipher, cipherlen);
-
-	for (size_t i = 0; i < cipherlen; ++i)
-	{
-		printf("%02x ", cipher[i]);
-	}
-	printf("\n");
-
-	CryptoMethods::RC5CFBDecrypt(key, 16, cipher, cipherlen, plain, plainlen);
-	for (size_t i = 0; i < plainlen; ++i)
-	{
-		printf("%02x ", plain[i]);
-	}
-	printf("\n");
-}
-
-void RC6CBCtest()
-{
-	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
-	size_t keylen = 16;
-	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
-	size_t plainlen = 16;
-	uint8_t cipher[33] = { 0 };
-	size_t cipherlen;
-
-	CryptoMethods::RC6CBCEncrypt(key, 16, plain, 16, cipher, cipherlen);
-
-	for (size_t i = 0; i < cipherlen; ++i)
-	{
-		printf("%02x ", cipher[i]);
-	}
-	printf("\n");
-
-	CryptoMethods::RC6CBCDecrypt(key, 16, cipher, cipherlen, plain, plainlen);
-	for (size_t i = 0; i < plainlen; ++i)
-	{
-		printf("%02x ", plain[i]);
-	}
-	printf("\n");
-}
-
-void RC6CFBtest()
-{
-	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
-	size_t keylen = 16;
-	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
-	size_t plainlen = 16;
-	uint8_t cipher[33] = { 0 };
-	size_t cipherlen;
-
-	CryptoMethods::RC6CFBEncrypt(key, 16, plain, 16, cipher, cipherlen);
-
-	for (size_t i = 0; i < cipherlen; ++i)
-	{
-		printf("%02x ", cipher[i]);
-	}
-	printf("\n");
-
-	CryptoMethods::RC6CFBDecrypt(key, 16, cipher, cipherlen, plain, plainlen);
-	for (size_t i = 0; i < plainlen; ++i)
-	{
-		printf("%02x ", plain[i]);
-	}
-	printf("\n");
-}
-
-void CamelliaCBCtest()
-{
-	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
-	size_t keylen = 16;
-	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
-	size_t plainlen = 16;
-	uint8_t cipher[33] = { 0 };
-	size_t cipherlen;
-
-	CryptoMethods::CamelliaCBCEncrypt(key, keylen, plain, plainlen, cipher, cipherlen);
-
-	for (size_t i = 0; i < cipherlen; ++i)
-	{
-		printf("%02x ", cipher[i]);
-	}
-	printf("\n");
-
-	CryptoMethods::CamelliaCBCDecrypt(key, keylen, cipher, cipherlen, plain, plainlen);
-	for (size_t i = 0; i < plainlen; ++i)
-	{
-		printf("%02x ", plain[i]);
-	}
-	printf("\n");
-}
-
-void CamelliaCFBtest()
-{
-	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
-	size_t keylen = 16;
-	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
-	size_t plainlen = 16;
-	uint8_t cipher[33] = { 0 };
-	size_t cipherlen;
-
-	CryptoMethods::CamelliaCFBEncrypt(key, keylen, plain, plainlen, cipher, cipherlen);
-
-	for (size_t i = 0; i < cipherlen; ++i)
-	{
-		printf("%02x ", cipher[i]);
-	}
-	printf("\n");
-
-	CryptoMethods::CamelliaCFBDecrypt(key, keylen, cipher, cipherlen, plain, plainlen);
-	for (size_t i = 0; i < plainlen; ++i)
-	{
-		printf("%02x ", plain[i]);
-	}
-	printf("\n");
-}
-
-void TwofishCBCtest()
-{
-	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
-	size_t keylen = 16;
-	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
-	size_t plainlen = 16;
-	uint8_t cipher[33] = { 0 };
-	size_t cipherlen;
-
-	CryptoMethods::TwofishCBCEncrypt(key, keylen, plain, plainlen, cipher, cipherlen);
-
-	for (size_t i = 0; i < cipherlen; ++i)
-	{
-		printf("%02x ", cipher[i]);
-	}
-	printf("\n");
-
-	CryptoMethods::TwofishCBCDecrypt(key, keylen, cipher, cipherlen, plain, plainlen);
-	for (size_t i = 0; i < plainlen; ++i)
-	{
-		printf("%02x ", plain[i]);
-	}
-	printf("\n");
-}
-
-void TwofishCFBtest()
-{
-	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
-	size_t keylen = 16;
-	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
-	size_t plainlen = 16;
-	uint8_t cipher[33] = { 0 };
-	size_t cipherlen;
-
-	CryptoMethods::TwofishCFBEncrypt(key, keylen, plain, plainlen, cipher, cipherlen);
-
-	for (size_t i = 0; i < cipherlen; ++i)
-	{
-		printf("%02x ", cipher[i]);
-	}
-	printf("\n");
-
-	CryptoMethods::TwofishCFBDecrypt(key, keylen, cipher, cipherlen, plain, plainlen);
-	for (size_t i = 0; i < plainlen; ++i)
-	{
-		printf("%02x ", plain[i]);
-	}
-	printf("\n");
-}
+// void AESCBCtest()
+// {
+// 	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
+// 	size_t keylen = 16;
+// 	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+// 	size_t plainlen = 16;
+// 	uint8_t cipher[33] = { 0 };
+// 	size_t cipherlen;
+// 
+// 	CryptoMethods::AESCBCEncrypt(key, keylen, plain, plainlen, cipher, cipherlen);
+// 
+// 	for (size_t i = 0; i < cipherlen; ++i)
+// 	{
+// 		printf("%02x ", cipher[i]);
+// 	}
+// 	printf("\n");
+// 
+// 	CryptoMethods::AESCBCDecrypt(key, keylen, cipher, cipherlen, plain, plainlen);
+// 	for (size_t i = 0; i < plainlen; ++i)
+// 	{
+// 		printf("%02x ", plain[i]);
+// 	}
+// 	printf("\n");
+// }
+// 
+// void AESCFBtest()
+// {
+// 	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
+// 	size_t keylen = 16;
+// 	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+// 	size_t plainlen = 16;
+// 	uint8_t cipher[33] = { 0 };
+// 	size_t cipherlen;
+// 
+// 	CryptoMethods::AESCFBEncrypt(key, keylen, plain, plainlen, cipher, cipherlen);
+// 
+// 	for (size_t i = 0; i < cipherlen; ++i)
+// 	{
+// 		printf("%02x ", cipher[i]);
+// 	}
+// 	printf("\n");
+// 
+// 	CryptoMethods::AESCFBDecrypt(key, keylen, cipher, cipherlen, plain, plainlen);
+// 	for (size_t i = 0; i < plainlen; ++i)
+// 	{
+// 		printf("%02x ", plain[i]);
+// 	}
+// 	printf("\n");
+// }
+// 
+// void RC5CBCtest()
+// {
+// 	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
+// 	size_t keylen = 16;
+// 	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+// 	size_t plainlen = 16;
+// 	uint8_t cipher[33] = { 0 };
+// 	size_t cipherlen;
+// 
+// 	CryptoMethods::RC5CBCEncrypt(key, 16, plain, 8, cipher, cipherlen);
+// 
+// 	for (size_t i = 0; i < cipherlen; ++i)
+// 	{
+// 		printf("%02x ", cipher[i]);
+// 	}
+// 	printf("\n");
+// 
+// 	CryptoMethods::RC5CBCDecrypt(key, 16, cipher, cipherlen, plain, plainlen);
+// 	for (size_t i = 0; i < plainlen; ++i)
+// 	{
+// 		printf("%02x ", plain[i]);
+// 	}
+// 	printf("\n");
+// }
+// 
+// void RC5CFBtest()
+// {
+// 	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
+// 	size_t keylen = 16;
+// 	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+// 	size_t plainlen = 16;
+// 	uint8_t cipher[33] = { 0 };
+// 	size_t cipherlen;
+// 
+// 	CryptoMethods::RC5CFBEncrypt(key, 16, plain, 8, cipher, cipherlen);
+// 
+// 	for (size_t i = 0; i < cipherlen; ++i)
+// 	{
+// 		printf("%02x ", cipher[i]);
+// 	}
+// 	printf("\n");
+// 
+// 	CryptoMethods::RC5CFBDecrypt(key, 16, cipher, cipherlen, plain, plainlen);
+// 	for (size_t i = 0; i < plainlen; ++i)
+// 	{
+// 		printf("%02x ", plain[i]);
+// 	}
+// 	printf("\n");
+// }
+// 
+// void RC6CBCtest()
+// {
+// 	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
+// 	size_t keylen = 16;
+// 	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+// 	size_t plainlen = 16;
+// 	uint8_t cipher[33] = { 0 };
+// 	size_t cipherlen;
+// 
+// 	CryptoMethods::RC6CBCEncrypt(key, 16, plain, 16, cipher, cipherlen);
+// 
+// 	for (size_t i = 0; i < cipherlen; ++i)
+// 	{
+// 		printf("%02x ", cipher[i]);
+// 	}
+// 	printf("\n");
+// 
+// 	CryptoMethods::RC6CBCDecrypt(key, 16, cipher, cipherlen, plain, plainlen);
+// 	for (size_t i = 0; i < plainlen; ++i)
+// 	{
+// 		printf("%02x ", plain[i]);
+// 	}
+// 	printf("\n");
+// }
+// 
+// void RC6CFBtest()
+// {
+// 	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
+// 	size_t keylen = 16;
+// 	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+// 	size_t plainlen = 16;
+// 	uint8_t cipher[33] = { 0 };
+// 	size_t cipherlen;
+// 
+// 	CryptoMethods::RC6CFBEncrypt(key, 16, plain, 16, cipher, cipherlen);
+// 
+// 	for (size_t i = 0; i < cipherlen; ++i)
+// 	{
+// 		printf("%02x ", cipher[i]);
+// 	}
+// 	printf("\n");
+// 
+// 	CryptoMethods::RC6CFBDecrypt(key, 16, cipher, cipherlen, plain, plainlen);
+// 	for (size_t i = 0; i < plainlen; ++i)
+// 	{
+// 		printf("%02x ", plain[i]);
+// 	}
+// 	printf("\n");
+// }
+// 
+// void CamelliaCBCtest()
+// {
+// 	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
+// 	size_t keylen = 16;
+// 	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+// 	size_t plainlen = 16;
+// 	uint8_t cipher[33] = { 0 };
+// 	size_t cipherlen;
+// 
+// 	CryptoMethods::CamelliaCBCEncrypt(key, keylen, plain, plainlen, cipher, cipherlen);
+// 
+// 	for (size_t i = 0; i < cipherlen; ++i)
+// 	{
+// 		printf("%02x ", cipher[i]);
+// 	}
+// 	printf("\n");
+// 
+// 	CryptoMethods::CamelliaCBCDecrypt(key, keylen, cipher, cipherlen, plain, plainlen);
+// 	for (size_t i = 0; i < plainlen; ++i)
+// 	{
+// 		printf("%02x ", plain[i]);
+// 	}
+// 	printf("\n");
+// }
+// 
+// void CamelliaCFBtest()
+// {
+// 	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
+// 	size_t keylen = 16;
+// 	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+// 	size_t plainlen = 16;
+// 	uint8_t cipher[33] = { 0 };
+// 	size_t cipherlen;
+// 
+// 	CryptoMethods::CamelliaCFBEncrypt(key, keylen, plain, plainlen, cipher, cipherlen);
+// 
+// 	for (size_t i = 0; i < cipherlen; ++i)
+// 	{
+// 		printf("%02x ", cipher[i]);
+// 	}
+// 	printf("\n");
+// 
+// 	CryptoMethods::CamelliaCFBDecrypt(key, keylen, cipher, cipherlen, plain, plainlen);
+// 	for (size_t i = 0; i < plainlen; ++i)
+// 	{
+// 		printf("%02x ", plain[i]);
+// 	}
+// 	printf("\n");
+// }
+// 
+// void TwofishCBCtest()
+// {
+// 	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
+// 	size_t keylen = 16;
+// 	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+// 	size_t plainlen = 16;
+// 	uint8_t cipher[33] = { 0 };
+// 	size_t cipherlen;
+// 
+// 	CryptoMethods::TwofishCBCEncrypt(key, keylen, plain, plainlen, cipher, cipherlen);
+// 
+// 	for (size_t i = 0; i < cipherlen; ++i)
+// 	{
+// 		printf("%02x ", cipher[i]);
+// 	}
+// 	printf("\n");
+// 
+// 	CryptoMethods::TwofishCBCDecrypt(key, keylen, cipher, cipherlen, plain, plainlen);
+// 	for (size_t i = 0; i < plainlen; ++i)
+// 	{
+// 		printf("%02x ", plain[i]);
+// 	}
+// 	printf("\n");
+// }
+// 
+// void TwofishCFBtest()
+// {
+// 	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
+// 	size_t keylen = 16;
+// 	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+// 	size_t plainlen = 16;
+// 	uint8_t cipher[33] = { 0 };
+// 	size_t cipherlen;
+// 
+// 	CryptoMethods::TwofishCFBEncrypt(key, keylen, plain, plainlen, cipher, cipherlen);
+// 
+// 	for (size_t i = 0; i < cipherlen; ++i)
+// 	{
+// 		printf("%02x ", cipher[i]);
+// 	}
+// 	printf("\n");
+// 
+// 	CryptoMethods::TwofishCFBDecrypt(key, keylen, cipher, cipherlen, plain, plainlen);
+// 	for (size_t i = 0; i < plainlen; ++i)
+// 	{
+// 		printf("%02x ", plain[i]);
+// 	}
+// 	printf("\n");
+// }
 
 int main()
 {
@@ -333,8 +333,13 @@ int main()
 // 
 // 	CryptoMethods::ReleaseTwofish(base);
 
-	TwofishCBCtest();
-	TwofishCFBtest();
+// 	TwofishCBCtest();
+// 	TwofishCFBtest();
+
+	//CryptoMethods::CipherBase* base = nullptr;
+	//CreateCipherBase(CryptoMethods::enum_crypt_methods_aes, base);
+
+
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

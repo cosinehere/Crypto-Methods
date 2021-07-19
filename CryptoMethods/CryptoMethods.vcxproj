@@ -161,6 +161,7 @@
     <ClInclude Include="CBC.h" />
     <ClInclude Include="CFB.h" />
     <ClInclude Include="CryptoMethodDefines.h" />
+    <ClInclude Include="CryptoTemplates.h" />
     <ClInclude Include="CTR.h" />
     <ClInclude Include="DES.h" />
     <ClInclude Include="endianness.h" />

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "RC6.h"
 
+#include "CryptoTemplates.h"
+
 NAMESPACE_BEGIN(CryptoMethods)
 
 RC6::RC6()

@@ -46,6 +46,7 @@ typedef unsigned __int64 uint64_t;
 
 #endif
 
-#define _CRYPTOMETHODS_EXPORT_
+#define _CRYPTOMETHODSDLL_EXPORT_
+//#define _CRYPTOMETHODSLIB_EXPORT_
 
 #endif //PCH_H

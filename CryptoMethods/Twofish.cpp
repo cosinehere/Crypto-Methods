@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Twofish.h"
 
+#include "CryptoTemplates.h"
+
 NAMESPACE_BEGIN(CryptoMethods)
 
 #define M_TABLE

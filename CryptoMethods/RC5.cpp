@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "RC5.h"
 
+#include "CryptoTemplates.h"
+
 NAMESPACE_BEGIN(CryptoMethods)
 
 RC5::RC5()
