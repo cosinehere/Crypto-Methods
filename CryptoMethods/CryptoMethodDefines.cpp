@@ -152,28 +152,28 @@ void ReleaseCipherBase(CipherBase*& base)
 	switch (base->CryptMethod())
 	{
 	case CryptoMethods::enum_crypt_methods_des:
-		delete dynamic_cast<DES*>(base);
+		delete static_cast<DES*>(base);
 		break;
 	case CryptoMethods::enum_crypt_methods_tripdes:
-		delete dynamic_cast<TripDES*>(base);
+		delete static_cast<TripDES*>(base);
 		break;
 	case CryptoMethods::enum_crypt_methods_aes:
-		delete dynamic_cast<AES*>(base);
+		delete static_cast<AES*>(base);
 		break;
 	case CryptoMethods::enum_crypt_methods_rc5:
-		delete dynamic_cast<RC5*>(base);
+		delete static_cast<RC5*>(base);
 		break;
 	case CryptoMethods::enum_crypt_methods_rc6:
-		delete dynamic_cast<RC6*>(base);
+		delete static_cast<RC6*>(base);
 		break;
 	case CryptoMethods::enum_crypt_methods_camellia:
-		delete dynamic_cast<Camellia*>(base);
+		delete static_cast<Camellia*>(base);
 		break;
 	case CryptoMethods::enum_crypt_methods_blowfish:
-		delete dynamic_cast<Blowfish*>(base);
+		delete static_cast<Blowfish*>(base);
 		break;
 	case CryptoMethods::enum_crypt_methods_twofish:
-		delete dynamic_cast<Twofish*>(base);
+		delete static_cast<Twofish*>(base);
 		break;
 	default:
 		break;
@@ -203,13 +203,13 @@ void ReleaseCipherMode(CipherModeBase*& base)
 	switch (base->CryptMode())
 	{
 	case CryptoMethods::enum_crypt_mode_cbc:
-		delete dynamic_cast<CBC*>(base);
+		delete static_cast<CBC*>(base);
 		break;
 	case CryptoMethods::enum_crypt_mode_cfb:
-		delete dynamic_cast<CFB*>(base);
+		delete static_cast<CFB*>(base);
 		break;
 	case CryptoMethods::enum_crypt_mode_ctr:
-		delete dynamic_cast<CTR*>(base);
+		delete static_cast<CTR*>(base);
 		break;
 	default:
 		break;
