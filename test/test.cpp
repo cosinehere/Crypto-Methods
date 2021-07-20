@@ -3,7 +3,7 @@
 #include <memory.h>
 
 #include "../CryptoMethods/CryptoMethodDefines.h"
-#pragma comment(lib,"../CryptoMethods/Debug/CryptoMethods.lib")
+#pragma comment(lib,"../CryptoMethods/Debug/CryptoMethods")
 
 void PaddingTest()
 {
@@ -334,10 +334,11 @@ int main()
 // 	TwofishCFBtest();
 
 	CryptoMethods::CipherBase* base = nullptr;
-	CreateCipherBase(CryptoMethods::enum_crypt_methods_aes, base);
+	CryptoMethods::CreateCipherBase(CryptoMethods::enum_crypt_methods_aes, base);
 	CryptoMethods::CipherModeBase* modebase = nullptr;
-	CreateCipherMode(CryptoMethods::enum_crypt_mode_ctr, base, modebase);
+	CryptoMethods::CreateCipherMode(CryptoMethods::enum_crypt_mode_ctr, base, modebase);
 	modebase->SetKey(key, keylen);
+	modebase->SetIV(iv, base->BlockSize());
 	modebase->Encrypt(plain, plainlen, cipher, cipherlen);
 	for (size_t i = 0; i < base->BlockSize(); ++i)
 	{
