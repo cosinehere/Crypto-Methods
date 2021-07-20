@@ -3,37 +3,50 @@
 
 NAMESPACE_BEGIN(CryptoMethods)
 
-template<class CIPHER>
 class CBC : public CipherModeBase
 {
 public:
-	CBC();
+	CBC(CipherBase* base);
 	virtual ~CBC();
+
+	virtual const enum_crypt_modes CryptMode() { return p_mode; }
 
 	virtual bool SetKey(const uint8_t* key, const size_t keylen) override;
 	virtual bool SetIV(const uint8_t* iv, const size_t ivlen) override;
+
 	virtual bool Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen) override;
 	virtual bool Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen) override;
 
+#ifndef CXX11_NOT_SUPPORT
 private:
-	CIPHER p_cipher;
+	CBC(const CBC&) = delete;
+	CBC(const CBC&&) = delete;
+	CBC& operator=(const CBC&) = delete;
+	CBC& operator=(const CBC&&) = delete;
+#endif	// CXX11_NOT_SUPPORT
+
+private:
+	enum_crypt_modes p_mode;
+
+	CipherBase* p_cipher;
 	size_t p_blocksize;
 
 	uint8_t* p_iv;
 	size_t p_ivlen;
 };
 
-template<class CIPHER>
-CBC<CIPHER>::CBC()
+CBC::CBC(CipherBase* base)
 {
-	p_blocksize = p_cipher.BlockSize();
+	p_mode = enum_crypt_mode_cbc;
 
-	p_iv = nullptr;
-	p_ivlen = 0;
+	p_cipher = base;
+	p_blocksize = p_cipher->BlockSize();
+
+	p_iv = new uint8_t[p_blocksize];
+	p_ivlen = p_blocksize;
 }
 
-template<class CIPHER>
-CBC<CIPHER>::~CBC()
+CBC::~CBC()
 {
 	if (p_iv != nullptr)
 	{
@@ -41,14 +54,12 @@ CBC<CIPHER>::~CBC()
 	}
 }
 
-template<class CIPHER>
-bool CBC<CIPHER>::SetKey(const uint8_t* key, const size_t keylen)
+bool CBC::SetKey(const uint8_t* key, const size_t keylen)
 {
-	return p_cipher.SetKey(key, keylen);
+	return p_cipher->SetKey(key, keylen);
 }
 
-template<class CIPHER>
-bool CBC<CIPHER>::SetIV(const uint8_t* iv, const size_t ivlen)
+bool CBC::SetIV(const uint8_t* iv, const size_t ivlen)
 {
 	if (iv == nullptr || ivlen == 0)
 	{
@@ -66,8 +77,7 @@ bool CBC<CIPHER>::SetIV(const uint8_t* iv, const size_t ivlen)
 	return true;
 }
 
-template<class CIPHER>
-bool CBC<CIPHER>::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+bool CBC::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
 {
 	uint8_t* temp = new uint8_t[p_blocksize];
 	outlen = 0;
@@ -89,22 +99,21 @@ bool CBC<CIPHER>::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out, s
 			}
 		}
 
-		p_cipher.Encrypt(temp, &out[i]);
+		p_cipher->Encrypt(temp, &out[i]);
 	}
 	delete[] temp;
 
 	return true;
 }
 
-template<class CIPHER>
-bool CBC<CIPHER>::Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+bool CBC::Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
 {
 	uint8_t* temp = new uint8_t[p_blocksize];
 	outlen = 0;
 	for (size_t i = 0; i < inlen; i += p_blocksize)
 	{
 		outlen += p_blocksize;
-		p_cipher.Decrypt(&in[i], temp);
+		p_cipher->Decrypt(&in[i], temp);
 		if (i == 0)
 		{
 			for (size_t j = 0; j < p_blocksize; ++j)

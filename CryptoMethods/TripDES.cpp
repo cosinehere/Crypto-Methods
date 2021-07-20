@@ -5,6 +5,7 @@ NAMESPACE_BEGIN(CryptoMethods)
 
 TripDES::TripDES()
 {
+	p_method = enum_crypt_methods_tripdes;
 	p_blocksize = c_desblocksize;
 
 	p_haskey = false;

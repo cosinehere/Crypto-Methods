@@ -3,12 +3,13 @@
 
 NAMESPACE_BEGIN(CryptoMethods)
 
-template<class CIPHER>
 class CTR : public CipherModeBase
 {
 public:
-	CTR();
+	CTR(CipherBase* base);
 	virtual ~CTR();
+
+	virtual const enum_crypt_modes CryptMode() { return p_mode; }
 
 	virtual bool SetKey(const uint8_t* key, const size_t keylen) override;
 	virtual bool SetIV(const uint8_t* iv, const size_t ivlen) override;
@@ -16,25 +17,36 @@ public:
 	virtual bool Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen) override;
 	virtual bool Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen) override;
 
+#ifndef CXX11_NOT_SUPPORT
 private:
-	CIPHER p_cipher;
+	CTR(const CTR&) = delete;
+	CTR(const CTR&&) = delete;
+	CTR& operator=(const CTR&) = delete;
+	CTR& operator=(const CTR&&) = delete;
+#endif	// CXX11_NOT_SUPPORT
+
+private:
+	enum_crypt_modes p_mode;
+
+	CipherBase* p_cipher;
 	size_t p_blocksize;
 
 	uint8_t* p_iv;
 	size_t p_ivlen;
 };
 
-template<class CIPHER>
-CTR<CIPHER>::CTR()
+CTR::CTR(CipherBase* base)
 {
-	p_blocksize = p_cipher.BlockSize();
+	p_mode = enum_crypt_mode_ctr;
 
-	p_iv = nullptr;
-	p_ivlen = 0;
+	p_cipher = base;
+	p_blocksize = p_cipher->BlockSize();
+
+	p_iv = new uint8_t[p_blocksize];
+	p_ivlen = p_blocksize;
 }
 
-template<class CIPHER>
-CTR<CIPHER>::~CTR()
+CTR::~CTR()
 {
 	if (p_iv != nullptr)
 	{
@@ -42,14 +54,12 @@ CTR<CIPHER>::~CTR()
 	}
 }
 
-template<class CIPHER>
-bool CTR<CIPHER>::SetKey(const uint8_t* key, const size_t keylen)
+bool CTR::SetKey(const uint8_t* key, const size_t keylen)
 {
-	return p_cipher.SetKey(key, keylen);
+	return p_cipher->SetKey(key, keylen);
 }
 
-template<class CIPHER>
-bool CTR<CIPHER>::SetIV(const uint8_t* iv, const size_t ivlen)
+bool CTR::SetIV(const uint8_t* iv, const size_t ivlen)
 {
 	if (iv == nullptr || ivlen == 0)
 	{
@@ -67,8 +77,7 @@ bool CTR<CIPHER>::SetIV(const uint8_t* iv, const size_t ivlen)
 	return true;
 }
 
-template<class CIPHER>
-bool CTR<CIPHER>::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+bool CTR::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
 {
 	uint8_t* temp = new uint8_t[p_blocksize];
 	uint8_t* counter = new uint8_t[p_blocksize];
@@ -77,7 +86,7 @@ bool CTR<CIPHER>::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out, s
 	for (size_t i = 0; i < inlen; i += p_blocksize)
 	{
 		outlen += (inlen - i > p_blocksize) ? p_blocksize : (inlen - i);
-		p_cipher.Encrypt(counter, temp);
+		p_cipher->Encrypt(counter, temp);
 
 		for (size_t j = 0; j < p_blocksize; ++j)
 		{
@@ -98,8 +107,7 @@ bool CTR<CIPHER>::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out, s
 	return true;
 }
 
-template<class CIPHER>
-bool CTR<CIPHER>::Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+bool CTR::Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
 {
 	uint8_t* temp = new uint8_t[p_blocksize];
 	uint8_t* counter = new uint8_t[p_blocksize];
@@ -108,7 +116,7 @@ bool CTR<CIPHER>::Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out, s
 	for (size_t i = 0; i < inlen; i += p_blocksize)
 	{
 		outlen += p_blocksize;
-		p_cipher.Encrypt(counter, temp);
+		p_cipher->Encrypt(counter, temp);
 
 		for (size_t j = 0; j < p_blocksize; ++j)
 		{

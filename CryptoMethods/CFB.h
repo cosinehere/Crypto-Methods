@@ -3,12 +3,13 @@
 
 NAMESPACE_BEGIN(CryptoMethods)
 
-template<class CIPHER>
 class CFB : public CipherModeBase
 {
 public:
-	CFB();
+	CFB(CipherBase* base);
 	virtual ~CFB();
+
+	virtual const enum_crypt_modes CryptMode() { return p_mode; }
 
 	virtual bool SetKey(const uint8_t* key, const size_t keylen) override;
 	virtual bool SetIV(const uint8_t* iv, const size_t ivlen) override;
@@ -16,25 +17,36 @@ public:
 	virtual bool Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen) override;
 	virtual bool Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen) override;
 
+#ifndef CXX11_NOT_SUPPORT
 private:
-	CIPHER p_cipher;
+	CFB(const CFB&) = delete;
+	CFB(const CFB&&) = delete;
+	CFB& operator=(const CFB&) = delete;
+	CFB& operator=(const CFB&&) = delete;
+#endif	// CXX11_NOT_SUPPORT
+
+private:
+	enum_crypt_modes p_mode;
+
+	CipherBase* p_cipher;
 	size_t p_blocksize;
 
 	uint8_t* p_iv;
 	size_t p_ivlen;
 };
 
-template<class CIPHER>
-CFB<CIPHER>::CFB()
+CFB::CFB(CipherBase* base)
 {
-	p_blocksize = p_cipher.BlockSize();
+	p_mode = enum_crypt_mode_cfb;
 
-	p_iv = nullptr;
-	p_ivlen = 0;
+	p_cipher = base;
+	p_blocksize = p_cipher->BlockSize();
+
+	p_iv = new uint8_t[p_blocksize];
+	p_ivlen = p_blocksize;
 }
 
-template<class CIPHER>
-CFB<CIPHER>::~CFB()
+CFB::~CFB()
 {
 	if (p_iv != nullptr)
 	{
@@ -42,14 +54,12 @@ CFB<CIPHER>::~CFB()
 	}
 }
 
-template<class CIPHER>
-bool CFB<CIPHER>::SetKey(const uint8_t* key, const size_t keylen)
+bool CFB::SetKey(const uint8_t* key, const size_t keylen)
 {
-	return p_cipher.SetKey(key, keylen);
+	return p_cipher->SetKey(key, keylen);
 }
 
-template<class CIPHER>
-bool CFB<CIPHER>::SetIV(const uint8_t* iv, const size_t ivlen)
+bool CFB::SetIV(const uint8_t* iv, const size_t ivlen)
 {
 	if (iv == nullptr || ivlen == 0)
 	{
@@ -67,8 +77,7 @@ bool CFB<CIPHER>::SetIV(const uint8_t* iv, const size_t ivlen)
 	return true;
 }
 
-template<class CIPHER>
-bool CFB<CIPHER>::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+bool CFB::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
 {
 	uint8_t* temp = new uint8_t[p_blocksize];
 	outlen = 0;
@@ -77,11 +86,11 @@ bool CFB<CIPHER>::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out, s
 		outlen += p_blocksize;
 		if (i == 0)
 		{
-			p_cipher.Encrypt(p_iv, temp);
+			p_cipher->Encrypt(p_iv, temp);
 		}
 		else
 		{
-			p_cipher.Encrypt(&out[i - p_blocksize], temp);
+			p_cipher->Encrypt(&out[i - p_blocksize], temp);
 		}
 
 		for (size_t j = 0; j < p_blocksize; ++j)
@@ -94,8 +103,7 @@ bool CFB<CIPHER>::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out, s
 	return true;
 }
 
-template<class CIPHER>
-bool CFB<CIPHER>::Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+bool CFB::Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
 {
 	uint8_t* temp = new uint8_t[p_blocksize];
 	outlen = 0;
@@ -104,11 +112,11 @@ bool CFB<CIPHER>::Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out, s
 		outlen += p_blocksize;
 		if (i == 0)
 		{
-			p_cipher.Encrypt(p_iv, temp);
+			p_cipher->Encrypt(p_iv, temp);
 		}
 		else
 		{
-			p_cipher.Encrypt(&out[i - p_blocksize], temp);
+			p_cipher->Encrypt(&out[i - p_blocksize], temp);
 		}
 
 		for (size_t j = 0; j < p_blocksize; ++j)

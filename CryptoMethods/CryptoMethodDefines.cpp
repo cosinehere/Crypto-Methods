@@ -9,6 +9,7 @@
 #include "Camellia.h"
 #include "Blowfish.h"
 #include "Twofish.h"
+
 #include "CBC.h"
 #include "CFB.h"
 #include "CTR.h"
@@ -114,130 +115,104 @@ void ScatterBytes(uint8_t* key, uint8_t* iv, uint8_t* cipher, size_t cipherlen, 
 	}
 }
 
-inline void CreateAES(CipherBase*& base)
-{
-	base = new AES;
-}
-
-inline void ReleaseAES(CipherBase*& base)
-{
-	AES* aes = reinterpret_cast<AES*>(base);
-	delete aes;
-	base = nullptr;
-}
-
-inline void CreateRC5(CipherBase*& base)
-{
-	base = new RC5;
-}
-
-inline void ReleaseRC5(CipherBase*& base)
-{
-	RC5* rc5 = reinterpret_cast<RC5*>(base);
-	delete rc5;
-	base = nullptr;
-}
-
-inline void CreateRC6(CipherBase*& base)
-{
-	base = new RC6;
-}
-
-inline void ReleaseRC6(CipherBase*& base)
-{
-	RC6* rc6 = reinterpret_cast<RC6*>(base);
-	delete rc6;
-	base = nullptr;
-}
-
-inline void CreateDES(CipherBase*& base)
-{
-	base = new DES;
-}
-
-inline void ReleaseDES(CipherBase*& base)
-{
-	DES* des = reinterpret_cast<DES*>(base);
-	delete des;
-	base = nullptr;
-}
-
-inline void CreateTripDES(CipherBase*& base)
-{
-	base = new TripDES;
-}
-
-inline void ReleaseTripDES(CipherBase*& base)
-{
-	TripDES* tripdes = reinterpret_cast<TripDES*>(base);
-	delete tripdes;
-	base = nullptr;
-}
-
-inline void CreateCamellia(CipherBase*& base)
-{
-	base = new Camellia;
-}
-
-inline void ReleaseCamellia(CipherBase*& base)
-{
-	Camellia* camellia = reinterpret_cast<Camellia*>(base);
-	delete camellia;
-	base = nullptr;
-}
-
-inline void CreateBlowfish(CipherBase*& base)
-{
-	base = new Blowfish;
-}
-
-inline void ReleaseBlowfish(CipherBase*& base)
-{
-	Blowfish* blowfish = reinterpret_cast<Blowfish*>(base);
-	delete blowfish;
-	base = nullptr;
-}
-
-inline void CreateTwofish(CipherBase*& base)
-{
-	base = new Twofish;
-}
-
-inline void ReleaseTwofish(CipherBase*& base)
-{
-	Twofish* twofish = reinterpret_cast<Twofish*>(base);
-	delete twofish;
-	base = nullptr;
-}
-
 void CreateCipherBase(enum_crypt_methods method, CipherBase*& base)
 {
 	switch (method)
 	{
-	case enum_crypt_methods_des: CreateDES(base); break;
-	case enum_crypt_methods_tripdes: CreateTripDES(base); break;
-	case enum_crypt_methods_aes: CreateAES(base); break;
-	case enum_crypt_methods_rc5: CreateRC5(base); break;
-	case enum_crypt_methods_rc6: CreateRC6(base); break;
-	case enum_crypt_methods_camellia: CreateCamellia(base); break;
-	case enum_crypt_methods_blowfish: CreateBlowfish(base); break;
-	case enum_crypt_methods_twofish: CreateTwofish(base); break;
-	default: break;
+	case CryptoMethods::enum_crypt_methods_des:
+		base = new DES();
+		break;
+	case CryptoMethods::enum_crypt_methods_tripdes:
+		base = new TripDES();
+		break;
+	case CryptoMethods::enum_crypt_methods_aes:
+		base = new AES();
+		break;
+	case CryptoMethods::enum_crypt_methods_rc5:
+		base = new RC5();
+		break;
+	case CryptoMethods::enum_crypt_methods_rc6:
+		base = new RC6();
+		break;
+	case CryptoMethods::enum_crypt_methods_camellia:
+		base = new Camellia();
+		break;
+	case CryptoMethods::enum_crypt_methods_blowfish:
+		base = new Blowfish();
+		break;
+	case CryptoMethods::enum_crypt_methods_twofish:
+		base = new Twofish();
+		break;
+	default:
+		break;
 	}
 }
-void ReleaseCipherBase(enum_crypt_methods method, CipherBase*& base)
+void ReleaseCipherBase(CipherBase*& base)
 {
-	switch (method)
+	switch (base->CryptMethod())
 	{
-	case enum_crypt_methods_des: ReleaseDES(base); break;
-	case enum_crypt_methods_tripdes: ReleaseTripDES(base); break;
-	case enum_crypt_methods_aes: ReleaseAES(base); break;
-	case enum_crypt_methods_rc5: ReleaseRC5(base); break;
-	case enum_crypt_methods_rc6: ReleaseRC6(base); break;
-	case enum_crypt_methods_camellia: ReleaseCamellia(base); break;
-	case enum_crypt_methods_blowfish: ReleaseBlowfish(base); break;
-	case enum_crypt_methods_twofish: ReleaseTwofish(base); break;
-	default: break;
+	case CryptoMethods::enum_crypt_methods_des:
+		delete dynamic_cast<DES*>(base);
+		break;
+	case CryptoMethods::enum_crypt_methods_tripdes:
+		delete dynamic_cast<TripDES*>(base);
+		break;
+	case CryptoMethods::enum_crypt_methods_aes:
+		delete dynamic_cast<AES*>(base);
+		break;
+	case CryptoMethods::enum_crypt_methods_rc5:
+		delete dynamic_cast<RC5*>(base);
+		break;
+	case CryptoMethods::enum_crypt_methods_rc6:
+		delete dynamic_cast<RC6*>(base);
+		break;
+	case CryptoMethods::enum_crypt_methods_camellia:
+		delete dynamic_cast<Camellia*>(base);
+		break;
+	case CryptoMethods::enum_crypt_methods_blowfish:
+		delete dynamic_cast<Blowfish*>(base);
+		break;
+	case CryptoMethods::enum_crypt_methods_twofish:
+		delete dynamic_cast<Twofish*>(base);
+		break;
+	default:
+		break;
+	}
+}
+
+void CreateCipherMode(enum_crypt_modes mode, CipherBase* cipher, CipherModeBase*& base)
+{
+	switch (mode)
+	{
+	case CryptoMethods::enum_crypt_mode_cbc:
+		base = new CBC(cipher);
+		break;
+	case CryptoMethods::enum_crypt_mode_cfb:
+		base = new CFB(cipher);
+		break;
+	case CryptoMethods::enum_crypt_mode_ctr:
+		base = new CTR(cipher);
+		break;
+	default:
+		break;
+	}
+}
+
+void ReleaseCipherMode(CipherModeBase*& base)
+{
+	switch (base->CryptMode())
+	{
+	case CryptoMethods::enum_crypt_mode_cbc:
+		delete dynamic_cast<CBC*>(base);
+		break;
+	case CryptoMethods::enum_crypt_mode_cfb:
+		delete dynamic_cast<CFB*>(base);
+		break;
+	case CryptoMethods::enum_crypt_mode_ctr:
+		delete dynamic_cast<CTR*>(base);
+		break;
+	default:
+		break;
 	}
 }
 

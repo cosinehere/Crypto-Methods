@@ -53,10 +53,22 @@ enum enum_crypt_methods
 	enum_crypt_methods_num = enum_crypt_methods_end - enum_crypt_methods_des
 };
 
+enum enum_crypt_modes
+{
+	enum_crypt_mode_cbc = 0,
+	enum_crypt_mode_cfb,
+	enum_crypt_mode_ctr,
+
+	enum_crypt_mode_end,
+	enum_crypt_mode_num = enum_crypt_mode_end - enum_crypt_mode_cbc,
+};
+
 class NOVTABLE CipherBase
 {
 public:
+	virtual const enum_crypt_methods CryptMethod() = 0;
 	virtual const size_t BlockSize() = 0;
+
 	virtual bool SetKey(const uint8_t* key, const size_t keylen) = 0;
 	virtual bool Encrypt(const uint8_t* plain, uint8_t* cipher) = 0;
 	virtual bool Decrypt(const uint8_t* cipher, uint8_t* plain) = 0;
@@ -67,6 +79,8 @@ public:
 class NOVTABLE CipherModeBase
 {
 public:
+	virtual const enum_crypt_modes CryptMode() = 0;
+
 	virtual bool SetKey(const uint8_t* key, const size_t keylen) = 0;
 	virtual bool SetIV(const uint8_t* iv, const size_t ivlen) = 0;
 
@@ -77,7 +91,10 @@ public:
 };
 
 CRYPTOEXT void CreateCipherBase(enum_crypt_methods method, CipherBase*& base);
-CRYPTOEXT void ReleaseCipherBase(enum_crypt_methods method, CipherBase*& base);
+CRYPTOEXT void ReleaseCipherBase(CipherBase*& base);
+
+CRYPTOEXT void CreateCipherMode(enum_crypt_modes mode, CipherBase* cipher, CipherModeBase*& base);
+CRYPTOEXT void ReleaseCipherMode(CipherModeBase*& base);
 
 // CRYPTOEXT void AESCBCEncrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen);
 // CRYPTOEXT void AESCBCDecrypt(const uint8_t* key, const size_t keylen, const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen);

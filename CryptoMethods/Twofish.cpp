@@ -449,6 +449,7 @@ void Twofish::decrypt(const uint32_t in_blk[4], uint32_t out_blk[4])
 
 Twofish::Twofish()
 {
+	p_method = enum_crypt_methods_twofish;
 	p_blocksize = c_twofishblocksize;
 
 	p_haskey = false;

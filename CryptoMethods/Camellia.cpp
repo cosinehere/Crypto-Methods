@@ -33,10 +33,10 @@ NAMESPACE_BEGIN(CryptoMethods)
 #else /* not MS-VC */
 
 # define GETU32(pt)				\
-    (((uint32_t)(pt)[0] << 24)			\
-     ^ ((uint32_t)(pt)[1] << 16)			\
-     ^ ((uint32_t)(pt)[2] <<  8)			\
-     ^ ((uint32_t)(pt)[3]))
+	(((uint32_t)(pt)[0] << 24)			\
+	 ^ ((uint32_t)(pt)[1] << 16)			\
+	 ^ ((uint32_t)(pt)[2] <<  8)			\
+	 ^ ((uint32_t)(pt)[3]))
 
 # define PUTU32(ct, st)  {			\
 	(ct)[0] = (uint8_t)((st) >> 24);		\
@@ -57,23 +57,23 @@ NAMESPACE_BEGIN(CryptoMethods)
 #define CAMELLIA_RL8(x) (((x) << 8) + ((x) >> 24))
 
 #define CAMELLIA_ROLDQ(ll, lr, rl, rr, w0, w1, bits)	\
-    do {						\
+	do {						\
 	w0 = ll;					\
 	ll = (ll << bits) + (lr >> (32 - bits));	\
 	lr = (lr << bits) + (rl >> (32 - bits));	\
 	rl = (rl << bits) + (rr >> (32 - bits));	\
 	rr = (rr << bits) + (w0 >> (32 - bits));	\
-    } while(0)
+	} while(0)
 
 #define CAMELLIA_ROLDQo32(ll, lr, rl, rr, w0, w1, bits)	\
-    do {						\
+	do {						\
 	w0 = ll;					\
 	w1 = lr;					\
 	ll = (lr << (bits - 32)) + (rl >> (64 - bits));	\
 	lr = (rl << (bits - 32)) + (rr >> (64 - bits));	\
 	rl = (rr << (bits - 32)) + (w0 >> (64 - bits));	\
 	rr = (w0 << (bits - 32)) + (w1 >> (64 - bits));	\
-    } while(0)
+	} while(0)
 
 #define CAMELLIA_SP1110(INDEX) (camellia_sp1110[(INDEX)])
 #define CAMELLIA_SP0222(INDEX) (camellia_sp0222[(INDEX)])
@@ -81,30 +81,30 @@ NAMESPACE_BEGIN(CryptoMethods)
 #define CAMELLIA_SP4404(INDEX) (camellia_sp4404[(INDEX)])
 
 #define CAMELLIA_F(xl, xr, kl, kr, yl, yr, il, ir, t0, t1)	\
-    do {							\
+	do {							\
 	il = xl ^ kl;						\
 	ir = xr ^ kr;						\
 	t0 = il >> 16;						\
 	t1 = ir >> 16;						\
 	yl = CAMELLIA_SP1110(ir & 0xff)				\
-	    ^ CAMELLIA_SP0222((t1 >> 8) & 0xff)			\
-	    ^ CAMELLIA_SP3033(t1 & 0xff)			\
-	    ^ CAMELLIA_SP4404((ir >> 8) & 0xff);		\
+		^ CAMELLIA_SP0222((t1 >> 8) & 0xff)			\
+		^ CAMELLIA_SP3033(t1 & 0xff)			\
+		^ CAMELLIA_SP4404((ir >> 8) & 0xff);		\
 	yr = CAMELLIA_SP1110((t0 >> 8) & 0xff)			\
-	    ^ CAMELLIA_SP0222(t0 & 0xff)			\
-	    ^ CAMELLIA_SP3033((il >> 8) & 0xff)			\
-	    ^ CAMELLIA_SP4404(il & 0xff);			\
+		^ CAMELLIA_SP0222(t0 & 0xff)			\
+		^ CAMELLIA_SP3033((il >> 8) & 0xff)			\
+		^ CAMELLIA_SP4404(il & 0xff);			\
 	yl ^= yr;						\
 	yr = CAMELLIA_RR8(yr);					\
 	yr ^= yl;						\
-    } while(0)
+	} while(0)
 
 /*
  * for speed up
  *
  */
 #define CAMELLIA_FLS(ll, lr, rl, rr, kll, klr, krl, krr, t0, t1, t2, t3) \
-    do {								\
+	do {								\
 	t0 = kll;							\
 	t0 &= ll;							\
 	lr ^= CAMELLIA_RL1(t0);						\
@@ -118,18 +118,18 @@ NAMESPACE_BEGIN(CryptoMethods)
 	t3 = krl;							\
 	t3 &= rl;							\
 	rr ^= CAMELLIA_RL1(t3);						\
-    } while(0)
+	} while(0)
 
 #define CAMELLIA_ROUNDSM(xl, xr, kl, kr, yl, yr, il, ir, t0, t1)	\
-    do {								\
+	do {								\
 	ir = CAMELLIA_SP1110(xr & 0xff)					\
-	    ^ CAMELLIA_SP0222((xr >> 24) & 0xff)			\
-	    ^ CAMELLIA_SP3033((xr >> 16) & 0xff)			\
-	    ^ CAMELLIA_SP4404((xr >> 8) & 0xff);			\
+		^ CAMELLIA_SP0222((xr >> 24) & 0xff)			\
+		^ CAMELLIA_SP3033((xr >> 16) & 0xff)			\
+		^ CAMELLIA_SP4404((xr >> 8) & 0xff);			\
 	il = CAMELLIA_SP1110((xl >> 24) & 0xff)				\
-	    ^ CAMELLIA_SP0222((xl >> 16) & 0xff)			\
-	    ^ CAMELLIA_SP3033((xl >> 8) & 0xff)				\
-	    ^ CAMELLIA_SP4404(xl & 0xff);				\
+		^ CAMELLIA_SP0222((xl >> 16) & 0xff)			\
+		^ CAMELLIA_SP3033((xl >> 8) & 0xff)				\
+		^ CAMELLIA_SP4404(xl & 0xff);				\
 	il ^= kl;							\
 	ir ^= kr;							\
 	ir ^= il;							\
@@ -137,7 +137,7 @@ NAMESPACE_BEGIN(CryptoMethods)
 	il ^= ir;							\
 	yl ^= ir;							\
 	yr ^= il;							\
-    } while(0)
+	} while(0)
 
 	static const uint32_t camellia_sp1110[256] = {
 		0x70707000,0x82828200,0x2c2c2c00,0xececec00,
@@ -1425,6 +1425,7 @@ bool Camellia_DecryptBlock(const size_t keyBitLength, const uint8_t *cipherText,
 
 Camellia::Camellia()
 {
+	p_method = enum_crypt_methods_camellia;
 	p_blocksize = CAMELLIA_BLOCK_SIZE;
 
 	p_haskey = false;

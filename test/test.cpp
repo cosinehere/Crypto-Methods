@@ -1,7 +1,4 @@
-﻿// test.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
-//
-
-#include <cstdint>
+﻿#include <cstdint>
 #include <cstdio>
 #include <memory.h>
 
@@ -274,7 +271,7 @@ int main()
 {
 	
 
-	CryptoMethods::CipherBase* base = nullptr;
+	//	CryptoMethods::CipherBase* base = nullptr;
 	// 	CryptoMethods::CreateAES(base);
 
 	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
@@ -336,19 +333,23 @@ int main()
 // 	TwofishCBCtest();
 // 	TwofishCFBtest();
 
-	//CryptoMethods::CipherBase* base = nullptr;
-	//CreateCipherBase(CryptoMethods::enum_crypt_methods_aes, base);
+	CryptoMethods::CipherBase* base = nullptr;
+	CreateCipherBase(CryptoMethods::enum_crypt_methods_aes, base);
+	CryptoMethods::CipherModeBase* modebase = nullptr;
+	CreateCipherMode(CryptoMethods::enum_crypt_mode_ctr, base, modebase);
+	modebase->SetKey(key, keylen);
+	modebase->Encrypt(plain, plainlen, cipher, cipherlen);
+	for (size_t i = 0; i < base->BlockSize(); ++i)
+	{
+		printf("%02x%s", plain[i], (i % 8 == 7) ? " " : "");
+	}
+	printf("\n");
+	for (size_t i = 0; i < base->BlockSize(); ++i)
+	{
+		printf("%02x%s", cipher[i], (i % 8 == 7) ? " " : "");
+	}
+	printf("\n");
 
-
+	CryptoMethods::ReleaseCipherMode(modebase);
+	CryptoMethods::ReleaseCipherBase(base);
 }
-
-// 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
-// 调试程序: F5 或调试 >“开始调试”菜单
-
-// 入门使用技巧:
-//   1. 使用解决方案资源管理器窗口添加/管理文件
-//   2. 使用团队资源管理器窗口连接到源代码管理
-//   3. 使用输出窗口查看生成输出和其他消息
-//   4. 使用错误列表窗口查看错误
-//   5. 转到“项目”>“添加新项”以创建新的代码文件，或转到“项目”>“添加现有项”以将现有代码文件添加到项目
-//   6. 将来，若要再次打开此项目，请转到“文件”>“打开”>“项目”并选择 .sln 文件

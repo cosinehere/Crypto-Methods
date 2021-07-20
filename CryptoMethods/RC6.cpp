@@ -7,6 +7,7 @@ NAMESPACE_BEGIN(CryptoMethods)
 
 RC6::RC6()
 {
+	p_method = enum_crypt_methods_rc6;
 	p_blocksize = 16;
 
 	p_haskey = false;

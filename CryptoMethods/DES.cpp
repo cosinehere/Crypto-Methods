@@ -7,6 +7,7 @@ NAMESPACE_BEGIN(CryptoMethods)
 
 DES::DES()
 {
+	p_method = enum_crypt_methods_des;
 	p_blocksize = c_desblocksize;
 
 	p_haskey = false;

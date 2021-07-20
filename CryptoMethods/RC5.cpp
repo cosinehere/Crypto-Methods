@@ -7,6 +7,7 @@ NAMESPACE_BEGIN(CryptoMethods)
 
 RC5::RC5()
 {
+	p_method = enum_crypt_methods_rc5;
 	p_blocksize = 8;
 
 	p_haskey = false;

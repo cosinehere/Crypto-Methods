@@ -5,6 +5,7 @@ NAMESPACE_BEGIN(CryptoMethods)
 
 Blowfish::Blowfish()
 {
+	p_method = enum_crypt_methods_blowfish;
 	p_blocksize = c_blowfishblocksize;
 
 	p_haskey = false;
