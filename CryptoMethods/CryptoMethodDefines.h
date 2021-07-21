@@ -87,6 +87,8 @@ public:
 	virtual bool Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen) = 0;
 	virtual bool Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen) = 0;
 
+	virtual bool GetTemp(uint8_t* temp, const uint32_t templen) = 0;
+
 	virtual ~CipherModeBase() {}
 };
 
