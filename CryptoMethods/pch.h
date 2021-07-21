@@ -36,6 +36,8 @@ typedef unsigned __int64 uint64_t;
 #include <cstddef>
 #include <cstring>
 #include <cstdlib>
+#include <fcntl.h>
+#include <unistd.h>
 #endif	// _WIN32
 
 //////////////////////////////////////////////////////////////////////////

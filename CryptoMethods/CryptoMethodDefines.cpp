@@ -40,7 +40,10 @@ void GenerateIV(uint8_t* iv, size_t ivlen)
 	CryptGenRandom(crypt, ivlen, iv);
 	CryptReleaseContext(crypt, 0);
 #else
-
+	int fd = open("/dev/urandom", O_RDONLY);
+	uint8_t buf;
+	read(fd, iv, sizeof(uint8_t)*ivlen);
+	close(fd);
 #endif
 }
 
