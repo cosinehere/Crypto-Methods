@@ -47,6 +47,7 @@ CTR::CTR(CipherBase* base)
 
 	p_iv = new uint8_t[p_blocksize];
 	p_ivlen = p_blocksize;
+	p_temp = new uint8_t[p_blocksize];
 }
 
 CTR::~CTR()
@@ -54,6 +55,11 @@ CTR::~CTR()
 	if (p_iv != nullptr)
 	{
 		delete[] p_iv;
+	}
+
+	if (p_temp != nullptr)
+	{
+		delete[] p_temp;
 	}
 }
 
@@ -81,10 +87,11 @@ bool CTR::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& o
 	outlen = 0;
 	for (size_t i = 0; i < inlen; i += p_blocksize)
 	{
-		outlen += (inlen - i > p_blocksize) ? p_blocksize : (inlen - i);
+		size_t len = (inlen - i > p_blocksize) ? p_blocksize : (inlen - i);
+		outlen += len;
 		p_cipher->Encrypt(counter, p_temp);
 
-		for (size_t j = 0; j < p_blocksize; ++j)
+		for (size_t j = 0; j < len; ++j)
 		{
 			out[i + j] = p_temp[j] ^ in[i + j];
 		}
@@ -109,10 +116,11 @@ bool CTR::Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& o
 	outlen = 0;
 	for (size_t i = 0; i < inlen; i += p_blocksize)
 	{
-		outlen += p_blocksize;
+		size_t len = (inlen - i > p_blocksize) ? p_blocksize : (inlen - i);
+		outlen += len;
 		p_cipher->Encrypt(counter, p_temp);
 
-		for (size_t j = 0; j < p_blocksize; ++j)
+		for (size_t j = 0; j < len; ++j)
 		{
 			out[i + j] = p_temp[j] ^ in[i + j];
 		}

@@ -279,7 +279,7 @@ int main()
 	//	base->SetKey(key, keylen);
 
 	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
-	size_t plainlen = 16;
+	size_t plainlen = 17;
 	uint8_t cipher[33] = { 0 };
 	size_t cipherlen = 0;
 
@@ -340,12 +340,12 @@ int main()
 	modebase->SetKey(key, keylen);
 	modebase->SetIV(iv, base->BlockSize());
 	modebase->Encrypt(plain, plainlen, cipher, cipherlen);
-	for (size_t i = 0; i < base->BlockSize(); ++i)
+	for (size_t i = 0; i < plainlen; ++i)
 	{
 		printf("%02x%s", plain[i], (i % 8 == 7) ? " " : "");
 	}
 	printf("\n");
-	for (size_t i = 0; i < base->BlockSize(); ++i)
+	for (size_t i = 0; i < cipherlen; ++i)
 	{
 		printf("%02x%s", cipher[i], (i % 8 == 7) ? " " : "");
 	}

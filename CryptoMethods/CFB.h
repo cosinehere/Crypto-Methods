@@ -85,7 +85,8 @@ bool CFB::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& o
 	outlen = 0;
 	for (size_t i = 0; i < inlen; i += p_blocksize)
 	{
-		outlen += p_blocksize;
+		size_t len = (i + p_blocksize <= inlen) ? p_blocksize : (inlen - i);
+		outlen += len;
 		if (i == 0)
 		{
 			p_cipher->Encrypt(p_iv, p_temp);
@@ -95,7 +96,7 @@ bool CFB::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& o
 			p_cipher->Encrypt(&out[i - p_blocksize], p_temp);
 		}
 
-		for (size_t j = 0; j < p_blocksize; ++j)
+		for (size_t j = 0; j < len; ++j)
 		{
 			out[i + j] = p_temp[j] ^ in[i + j];
 		}
@@ -109,7 +110,8 @@ bool CFB::Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& o
 	outlen = 0;
 	for (size_t i = 0; i < inlen; i += p_blocksize)
 	{
-		outlen += p_blocksize;
+		size_t len = (i + p_blocksize <= inlen) ? p_blocksize : (inlen - i);
+		outlen += len;
 		if (i == 0)
 		{
 			p_cipher->Encrypt(p_iv, p_temp);
@@ -119,7 +121,7 @@ bool CFB::Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out, size_t& o
 			p_cipher->Encrypt(&out[i - p_blocksize], p_temp);
 		}
 
-		for (size_t j = 0; j < p_blocksize; ++j)
+		for (size_t j = 0; j < len; ++j)
 		{
 			out[i + j] = p_temp[j] ^ in[i + j];
 		}
