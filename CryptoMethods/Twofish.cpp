@@ -30,9 +30,9 @@ inline uint8_t ffm_ef(uint8_t x) {
 }
 
 constexpr uint8_t ror4[16] = {0, 8,  1, 9,  2, 10, 3, 11,
-                  4, 12, 5, 13, 6, 14, 7, 15};
-constexpr uint8_t ashx[16] = {0, 9, 2,	11, 4,	13, 6,	15,
-                  8, 1, 10, 3,  12, 5,  14, 7};
+                              4, 12, 5, 13, 6, 14, 7, 15};
+constexpr uint8_t ashx[16] = {0, 9, 2,  11, 4,  13, 6,  15,
+                              8, 1, 10, 3,  12, 5,  14, 7};
 
 constexpr uint8_t qt0[2][16] = {
     {8, 1, 7, 13, 6, 15, 3, 2, 0, 11, 5, 9, 14, 12, 10, 4},
@@ -75,8 +75,8 @@ uint8_t q_tab[2][256];
 void gen_qtab(void) {
     uint32_t i;
     for (i = 0; i < 256; ++i) {
-    // q(0, i) = qp(0, (uint8_t)i);
-    // q(1, i) = qp(1, (uint8_t)i);
+        // q(0, i) = qp(0, (uint8_t)i);
+        // q(1, i) = qp(1, (uint8_t)i);
     }
 };
 
@@ -96,16 +96,16 @@ uint32_t m_tab[4][256];
 void gen_mtab(void) {
     uint32_t i, f01, f5b, fef;
     for (i = 0; i < 256; ++i) {
-    f01 = q(1, i);
-    f5b = ffm_5b(f01);
-    fef = ffm_ef(f01);
-    m_tab[0][i] = f01 + (f5b << 8) + (fef << 16) + (fef << 24);
-    m_tab[2][i] = f5b + (fef << 8) + (f01 << 16) + (fef << 24);
-    f01 = q(0, i);
-    f5b = ffm_5b(f01);
-    fef = ffm_ef(f01);
-    m_tab[1][i] = fef + (fef << 8) + (f5b << 16) + (f01 << 24);
-    m_tab[3][i] = f5b + (f01 << 8) + (fef << 16) + (f5b << 24);
+        f01 = q(1, i);
+        f5b = ffm_5b(f01);
+        fef = ffm_ef(f01);
+        m_tab[0][i] = f01 + (f5b << 8) + (fef << 16) + (fef << 24);
+        m_tab[2][i] = f5b + (fef << 8) + (f01 << 16) + (fef << 24);
+        f01 = q(0, i);
+        f5b = ffm_5b(f01);
+        fef = ffm_ef(f01);
+        m_tab[1][i] = fef + (fef << 8) + (f5b << 16) + (f01 << 24);
+        m_tab[3][i] = f5b + (f01 << 8) + (fef << 16) + (f5b << 24);
     }
 };
 
@@ -155,21 +155,21 @@ inline uint32_t Twofish::h_fun(const uint32_t x, const uint32_t key[]) {
     b2 = byte(x, 2);
     b3 = byte(x, 3);
     switch (p_k_len) {
-    case 4:
-        b0 = q(1, b0) ^ byte(key[3], 0);
-        b1 = q(0, b1) ^ byte(key[3], 1);
-        b2 = q(0, b2) ^ byte(key[3], 2);
-        b3 = q(1, b3) ^ byte(key[3], 3);
-    case 3:
-        b0 = q(1, b0) ^ byte(key[2], 0);
-        b1 = q(1, b1) ^ byte(key[2], 1);
-        b2 = q(0, b2) ^ byte(key[2], 2);
-        b3 = q(0, b3) ^ byte(key[2], 3);
-    case 2:
-        b0 = q(0, q(0, b0) ^ byte(key[1], 0)) ^ byte(key[0], 0);
-        b1 = q(0, q(1, b1) ^ byte(key[1], 1)) ^ byte(key[0], 1);
-        b2 = q(1, q(0, b2) ^ byte(key[1], 2)) ^ byte(key[0], 2);
-        b3 = q(1, q(1, b3) ^ byte(key[1], 3)) ^ byte(key[0], 3);
+        case 4:
+            b0 = q(1, b0) ^ byte(key[3], 0);
+            b1 = q(0, b1) ^ byte(key[3], 1);
+            b2 = q(0, b2) ^ byte(key[3], 2);
+            b3 = q(1, b3) ^ byte(key[3], 3);
+        case 3:
+            b0 = q(1, b0) ^ byte(key[2], 0);
+            b1 = q(1, b1) ^ byte(key[2], 1);
+            b2 = q(0, b2) ^ byte(key[2], 2);
+            b3 = q(0, b3) ^ byte(key[2], 3);
+        case 2:
+            b0 = q(0, q(0, b0) ^ byte(key[1], 0)) ^ byte(key[0], 0);
+            b1 = q(0, q(1, b1) ^ byte(key[1], 1)) ^ byte(key[0], 1);
+            b2 = q(1, q(0, b2) ^ byte(key[1], 2)) ^ byte(key[0], 2);
+            b3 = q(1, q(1, b3) ^ byte(key[1], 3)) ^ byte(key[0], 3);
     }
 
 #ifdef M_TABLE
@@ -216,72 +216,72 @@ uint8_t sb[4][256];
     q(1, q(1, q(0, x) ^ byte(key[2], 3)) ^ byte(key[1], 3)) ^ byte(key[0], 3)
 #define q40(x)                                                     \
     q(0, q(0, q(1, q(1, x) ^ byte(key[3], 0)) ^ byte(key[2], 0)) ^ \
-         byte(key[1], 0)) ^                                    \
-    byte(key[0], 0)
+             byte(key[1], 0)) ^                                    \
+        byte(key[0], 0)
 #define q41(x)                                                     \
     q(0, q(1, q(1, q(0, x) ^ byte(key[3], 1)) ^ byte(key[2], 1)) ^ \
-         byte(key[1], 1)) ^                                    \
-    byte(key[0], 1)
+             byte(key[1], 1)) ^                                    \
+        byte(key[0], 1)
 #define q42(x)                                                     \
     q(1, q(0, q(0, q(0, x) ^ byte(key[3], 2)) ^ byte(key[2], 2)) ^ \
-         byte(key[1], 2)) ^                                    \
-    byte(key[0], 2)
+             byte(key[1], 2)) ^                                    \
+        byte(key[0], 2)
 #define q43(x)                                                     \
     q(1, q(1, q(0, q(1, x) ^ byte(key[3], 3)) ^ byte(key[2], 3)) ^ \
-         byte(key[1], 3)) ^                                    \
-    byte(key[0], 3)
+             byte(key[1], 3)) ^                                    \
+        byte(key[0], 3)
 
 void Twofish::gen_mk_tab(uint32_t key[]) {
     uint32_t i;
     uint8_t by;
     switch (p_k_len) {
-    case 2:
-        for (i = 0; i < 256; ++i) {
-        by = (uint8_t)i;
+        case 2:
+            for (i = 0; i < 256; ++i) {
+                by = (uint8_t)i;
 #ifdef ONE_STEP
-        mk_tab[0][i] = mds(0, q20(by));
-        mk_tab[1][i] = mds(1, q21(by));
-        mk_tab[2][i] = mds(2, q22(by));
-        mk_tab[3][i] = mds(3, q23(by));
+                mk_tab[0][i] = mds(0, q20(by));
+                mk_tab[1][i] = mds(1, q21(by));
+                mk_tab[2][i] = mds(2, q22(by));
+                mk_tab[3][i] = mds(3, q23(by));
 #else
-        sb[0][i] = q20(by);
-        sb[1][i] = q21(by);
-        sb[2][i] = q22(by);
-        sb[3][i] = q23(by);
+                sb[0][i] = q20(by);
+                sb[1][i] = q21(by);
+                sb[2][i] = q22(by);
+                sb[3][i] = q23(by);
 #endif
-        }
-        break;
-    case 3:
-        for (i = 0; i < 256; ++i) {
-        by = (uint8_t)i;
+            }
+            break;
+        case 3:
+            for (i = 0; i < 256; ++i) {
+                by = (uint8_t)i;
 #ifdef ONE_STEP
-        mk_tab[0][i] = mds(0, q30(by));
-        mk_tab[1][i] = mds(1, q31(by));
-        mk_tab[2][i] = mds(2, q32(by));
-        mk_tab[3][i] = mds(3, q33(by));
+                mk_tab[0][i] = mds(0, q30(by));
+                mk_tab[1][i] = mds(1, q31(by));
+                mk_tab[2][i] = mds(2, q32(by));
+                mk_tab[3][i] = mds(3, q33(by));
 #else
-        sb[0][i] = q30(by);
-        sb[1][i] = q31(by);
-        sb[2][i] = q32(by);
-        sb[3][i] = q33(by);
+                sb[0][i] = q30(by);
+                sb[1][i] = q31(by);
+                sb[2][i] = q32(by);
+                sb[3][i] = q33(by);
 #endif
-        }
-        break;
-    case 4:
-        for (i = 0; i < 256; ++i) {
-        by = (uint8_t)i;
+            }
+            break;
+        case 4:
+            for (i = 0; i < 256; ++i) {
+                by = (uint8_t)i;
 #ifdef ONE_STEP
-        mk_tab[0][i] = mds(0, q40(by));
-        mk_tab[1][i] = mds(1, q41(by));
-        mk_tab[2][i] = mds(2, q42(by));
-        mk_tab[3][i] = mds(3, q43(by));
+                mk_tab[0][i] = mds(0, q40(by));
+                mk_tab[1][i] = mds(1, q41(by));
+                mk_tab[2][i] = mds(2, q42(by));
+                mk_tab[3][i] = mds(3, q43(by));
 #else
-        sb[0][i] = q40(by);
-        sb[1][i] = q41(by);
-        sb[2][i] = q42(by);
-        sb[3][i] = q43(by);
+                sb[0][i] = q40(by);
+                sb[1][i] = q41(by);
+                sb[2][i] = q42(by);
+                sb[3][i] = q43(by);
 #endif
-        }
+            }
     }
 };
 
@@ -289,12 +289,12 @@ void Twofish::gen_mk_tab(uint32_t key[]) {
 inline uint32_t g0_fun(uint32_t x) {
     /*#    define g0_fun(x)*/
     return (mk_tab[0][byte(x, 0)] ^ mk_tab[1][byte(x, 1)] ^
-        mk_tab[2][byte(x, 2)] ^ mk_tab[3][byte(x, 3)]);
+            mk_tab[2][byte(x, 2)] ^ mk_tab[3][byte(x, 3)]);
 }
 inline uint32_t g1_fun(uint32_t x) {
     /*#    define g1_fun(x)*/
     return (mk_tab[0][byte(x, 3)] ^ mk_tab[1][byte(x, 0)] ^
-        mk_tab[2][byte(x, 1)] ^ mk_tab[3][byte(x, 2)]);
+            mk_tab[2][byte(x, 1)] ^ mk_tab[3][byte(x, 2)]);
 }
 #else
 #define g0_fun(x)                                            \
@@ -352,22 +352,22 @@ constexpr uint32_t G_MOD = 0x0000014d;
 uint32_t mds_rem(uint32_t p0, uint32_t p1) {
     uint32_t i, t, u;
     for (i = 0; i < 8; ++i) {
-    t = p1 >> 24;  // get most significant coefficient
-    p1 = (p1 << 8) | (p0 >> 24);
-    p0 <<= 8;  // shift others up
+        t = p1 >> 24;  // get most significant coefficient
+        p1 = (p1 << 8) | (p0 >> 24);
+        p0 <<= 8;  // shift others up
 
-    // multiply t by a (the primitive element - i.e. left shift)
-    u = (t << 1);
-    if (t & 0x80)  // subtract modular polynomial on overflow
-        u ^= G_MOD;
+        // multiply t by a (the primitive element - i.e. left shift)
+        u = (t << 1);
+        if (t & 0x80)  // subtract modular polynomial on overflow
+            u ^= G_MOD;
 
-    p1 ^= t ^ (u << 16);  // remove t * (a * x^2 + 1)
-    u ^= (t >> 1);	      // form u = a * t + t / a = t * (a + 1 / a);
+        p1 ^= t ^ (u << 16);  // remove t * (a * x^2 + 1)
+        u ^= (t >> 1);        // form u = a * t + t / a = t * (a + 1 / a);
 
-    if (t & 0x01)  // add the modular polynomial on underflow
-        u ^= G_MOD >> 1;
+        if (t & 0x01)  // add the modular polynomial on underflow
+            u ^= G_MOD >> 1;
 
-    p1 ^= (u << 24) | (u << 8);  // remove t * (a + 1/a) * (x^3 + x)
+        p1 ^= (u << 24) | (u << 8);  // remove t * (a + 1/a) * (x^3 + x)
     }
 
     return p1;
@@ -379,35 +379,35 @@ uint32_t* Twofish::set_key(const uint32_t in_key[], const uint32_t key_len) {
     uint32_t i, a, b, me_key[4], mo_key[4];
 #ifdef Q_TABLES
     if (!qt_gen) {
-    gen_qtab();
-    qt_gen = 1;
+        gen_qtab();
+        qt_gen = 1;
     }
 #endif
 
 #ifdef M_TABLE
     if (!mt_gen) {
-    gen_mtab();
-    mt_gen = 1;
+        gen_mtab();
+        mt_gen = 1;
     }
 
 #endif
 
     p_k_len = key_len / 64; /* 2, 3 or 4 */
     for (i = 0; i < p_k_len; ++i) {
-    a = in_key[i + i];
-    me_key[i] = a;
-    b = in_key[i + i + 1];
-    mo_key[i] = b;
-    p_s_key[p_k_len - i - 1] = mds_rem(a, b);
+        a = in_key[i + i];
+        me_key[i] = a;
+        b = in_key[i + i + 1];
+        mo_key[i] = b;
+        p_s_key[p_k_len - i - 1] = mds_rem(a, b);
     }
 
     for (i = 0; i < 40; i += 2) {
-    a = 0x01010101 * i;
-    b = a + 0x01010101;
-    a = h_fun(a, me_key);
-    b = rotl(h_fun(b, mo_key), 8);
-    p_l_key[i] = a + b;
-    p_l_key[i + 1] = rotl(a + 2 * b, 9);
+        a = 0x01010101 * i;
+        b = a + 0x01010101;
+        a = h_fun(a, me_key);
+        b = rotl(h_fun(b, mo_key), 8);
+        p_l_key[i] = a + b;
+        p_l_key[i + 1] = rotl(a + 2 * b, 9);
     }
 
 #ifdef MK_TABLE
@@ -420,7 +420,7 @@ uint32_t* Twofish::set_key(const uint32_t in_key[], const uint32_t key_len) {
 /* encrypt a block of text  */
 
 inline void Twofish::f_rnd(uint32_t i, uint32_t& t0, uint32_t& t1,
-               uint32_t* blk) {
+                           uint32_t* blk) {
     t1 = g1_fun(blk[1]);
     t0 = g0_fun(blk[0]);
     blk[2] = rotr(blk[2] ^ (t0 + t1 + p_l_key[4 * (i) + 8]), 1);
@@ -456,7 +456,7 @@ void Twofish::encrypt(const uint32_t in_blk[4], uint32_t out_blk[4]) {
 /* decrypt a block of text  */
 
 inline void Twofish::i_rnd(uint32_t i, uint32_t& t0, uint32_t& t1,
-               uint32_t* blk) {
+                           uint32_t* blk) {
     t1 = g1_fun(blk[1]);
     t0 = g0_fun(blk[0]);
     blk[2] = rotl(blk[2], 1) ^ (t0 + t1 + p_l_key[4 * (i) + 10]);
@@ -501,7 +501,7 @@ const size_t Twofish::BlockSize() { return p_blocksize; }
 
 bool Twofish::SetKey(const uint8_t* key, const size_t keylen) {
     if (key == nullptr || (keylen != 16 && keylen != 24 && keylen != 32)) {
-    return false;
+        return false;
     }
 
     memcpy(p_key, key, sizeof(uint8_t) * keylen);
@@ -514,22 +514,22 @@ bool Twofish::SetKey(const uint8_t* key, const size_t keylen) {
 
 bool Twofish::Encrypt(const uint8_t* plain, uint8_t* cipher) {
     if (!p_haskey) {
-    return false;
+        return false;
     }
 
     encrypt(reinterpret_cast<const uint32_t*>(plain),
-        reinterpret_cast<uint32_t*>(cipher));
+            reinterpret_cast<uint32_t*>(cipher));
 
     return true;
 }
 
 bool Twofish::Decrypt(const uint8_t* cipher, uint8_t* plain) {
     if (!p_haskey) {
-    return false;
+        return false;
     }
 
     decrypt(reinterpret_cast<const uint32_t*>(cipher),
-        reinterpret_cast<uint32_t*>(plain));
+            reinterpret_cast<uint32_t*>(plain));
 
     return true;
 }

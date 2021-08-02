@@ -17,7 +17,7 @@ const size_t Blowfish::BlockSize() { return p_blocksize; }
 
 bool Blowfish::SetKey(const uint8_t* key, const size_t keylen) {
     if (key == nullptr || keylen < 8 || keylen > 56) {
-    return false;
+        return false;
     }
 
     p_keylen = keylen;
@@ -27,28 +27,28 @@ bool Blowfish::SetKey(const uint8_t* key, const size_t keylen) {
 
     uint32_t k;
     for (int16_t i = 0, p = 0; i < 18; ++i) {
-    k = 0;
-    for (int16_t j = 0; j < 4; ++j) {
-        k = (k << 8) | key[p];
-        p = (p + 1) % p_keylen;
-    }
+        k = 0;
+        for (int16_t j = 0; j < 4; ++j) {
+            k = (k << 8) | key[p];
+            p = (p + 1) % p_keylen;
+        }
 
-    p_P[i] = c_InitP[i] ^ k;
+        p_P[i] = c_InitP[i] ^ k;
     }
 
     uint32_t l = 0, r = 0;
     for (int16_t i = 0; i < 18; i += 2) {
-    Encrypt(l, r);
-    p_P[i] = l;
-    p_P[i + 1] = r;
+        Encrypt(l, r);
+        p_P[i] = l;
+        p_P[i + 1] = r;
     }
 
     for (int16_t i = 0; i < 4; ++i) {
-    for (int16_t j = 0; j < 256; j += 2) {
-        Encrypt(l, r);
-        p_S[i][j] = l;
-        p_S[i][j + 1] = r;
-    }
+        for (int16_t j = 0; j < 256; j += 2) {
+            Encrypt(l, r);
+            p_S[i][j] = l;
+            p_S[i][j + 1] = r;
+        }
     }
 
     p_haskey = true;
@@ -58,7 +58,7 @@ bool Blowfish::SetKey(const uint8_t* key, const size_t keylen) {
 
 bool Blowfish::Encrypt(const uint8_t* plain, uint8_t* cipher) {
     if (!p_haskey) {
-    return false;
+        return false;
     }
 
     uint32_t L = plain[0] << 24 | plain[1] << 16 | plain[2] << 8 | plain[3];
@@ -85,7 +85,7 @@ bool Blowfish::Encrypt(const uint8_t* plain, uint8_t* cipher) {
 
 bool Blowfish::Decrypt(const uint8_t* cipher, uint8_t* plain) {
     if (!p_haskey) {
-    return false;
+        return false;
     }
 
     uint32_t L = cipher[0] << 24 | cipher[1] << 16 | cipher[2] << 8 | cipher[3];
@@ -112,12 +112,12 @@ bool Blowfish::Decrypt(const uint8_t* cipher, uint8_t* plain) {
 
 void Blowfish::Encrypt(uint32_t& L, uint32_t& R) {
     for (int16_t r = 0; r < 16; ++r) {
-    L = L ^ p_P[r];
-    R = f(L) ^ R;
+        L = L ^ p_P[r];
+        R = f(L) ^ R;
 
-    uint32_t tmp = L;
-    L = R;
-    R = tmp;
+        uint32_t tmp = L;
+        L = R;
+        R = tmp;
     }
 
     uint32_t tmp = L;
@@ -129,12 +129,12 @@ void Blowfish::Encrypt(uint32_t& L, uint32_t& R) {
 
 void Blowfish::Decrypt(uint32_t& L, uint32_t& R) {
     for (int16_t r = 17; r > 1; --r) {
-    L = L ^ p_P[r];
-    R = f(L) ^ R;
+        L = L ^ p_P[r];
+        R = f(L) ^ R;
 
-    uint32_t tmp = L;
-    L = R;
-    R = tmp;
+        uint32_t tmp = L;
+        L = R;
+        R = tmp;
     }
 
     uint32_t tmp = L;

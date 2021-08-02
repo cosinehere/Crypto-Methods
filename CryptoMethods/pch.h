@@ -15,10 +15,10 @@ typedef __int64 int64_t;
 typedef unsigned __int64 uint64_t;
 #else
 #include <cstdint>
-#endif	// _MSC_VER < 1400
+#endif  // _MSC_VER < 1400
 #else
 #include <cstdint>
-#endif	// _MSC_VER
+#endif  // _MSC_VER
 
 //////////////////////////////////////////////////////////////////////////
 // system header
@@ -27,11 +27,11 @@ typedef unsigned __int64 uint64_t;
 #ifndef _AFX   // without MFC
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
-#endif	// WIN32_LEAN_AND_MEAN
+#endif  // WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <wincrypt.h>
-#endif	// _AFX
-#else	// Unix
+#endif  // _AFX
+#else   // Unix
 #include <fcntl.h>
 #include <unistd.h>
 
@@ -39,7 +39,7 @@ typedef unsigned __int64 uint64_t;
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
-#endif	// _WIN32
+#endif  // _WIN32
 
 //////////////////////////////////////////////////////////////////////////
 // C++11 support
@@ -49,17 +49,17 @@ typedef unsigned __int64 uint64_t;
      (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__ < 40603))
 #ifndef CXX11_NOT_SUPPORT
 #define CXX11_NOT_SUPPORT
-#endif	// CXX11_NOT_SUPPORT
-#endif	// __cplusplus<=199711L
+#endif  // CXX11_NOT_SUPPORT
+#endif  // __cplusplus<=199711L
 
 #ifdef CXX11_NOT_SUPPORT
 #define nullptr NULL
 #define constexpr const
 #define noexcept throw()
 #define override
-#endif	// CXX11_NOT_SUPPORT
+#endif  // CXX11_NOT_SUPPORT
 
 #define _CRYPTOMETHODSDLL_EXPORT_
 //#define _CRYPTOMETHODSLIB_EXPORT_
 
-#endif	// PCH_H
+#endif  // PCH_H
