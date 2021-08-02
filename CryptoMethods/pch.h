@@ -28,8 +28,8 @@ typedef unsigned __int64 uint64_t;
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif	// WIN32_LEAN_AND_MEAN
-#include <wincrypt.h>
 #include <windows.h>
+#include <wincrypt.h>
 #endif	// _AFX
 #else	// Unix
 #include <fcntl.h>

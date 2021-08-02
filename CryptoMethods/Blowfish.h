@@ -214,9 +214,9 @@ class Blowfish : public CipherBase {
     void Encrypt(uint32_t& L, uint32_t& R);
     void Decrypt(uint32_t& L, uint32_t& R);
     inline uint32_t f(uint32_t x) {
-	return ((p_S[0][(x >> 24) & 0xff] + p_S[1][(x >> 16) & 0xff]) ^
-		p_S[2][(x >> 8) & 0xff]) +
-	       p_S[3][x & 0xff];
+    return ((p_S[0][(x >> 24) & 0xff] + p_S[1][(x >> 16) & 0xff]) ^
+        p_S[2][(x >> 8) & 0xff]) +
+           p_S[3][x & 0xff];
     }
 };
 

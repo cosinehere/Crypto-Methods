@@ -14,9 +14,9 @@ class CTR : public CipherModeBase {
     virtual bool SetIV(const uint8_t* iv, const size_t ivlen) override;
 
     virtual bool Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
-			 size_t& outlen) override;
+             size_t& outlen) override;
     virtual bool Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
-			 size_t& outlen) override;
+             size_t& outlen) override;
 
     virtual bool GetTemp(uint8_t* temp, const uint32_t templen) override;
 
@@ -52,11 +52,11 @@ CTR::CTR(CipherBase* base) {
 
 CTR::~CTR() {
     if (p_iv != nullptr) {
-	delete[] p_iv;
+    delete[] p_iv;
     }
 
     if (p_temp != nullptr) {
-	delete[] p_temp;
+    delete[] p_temp;
     }
 }
 
@@ -66,7 +66,7 @@ bool CTR::SetKey(const uint8_t* key, const size_t keylen) {
 
 bool CTR::SetIV(const uint8_t* iv, const size_t ivlen) {
     if (iv == nullptr || ivlen != p_ivlen) {
-	return false;
+    return false;
     }
 
     memcpy(p_iv, iv, sizeof(uint8_t) * p_ivlen);
@@ -75,28 +75,28 @@ bool CTR::SetIV(const uint8_t* iv, const size_t ivlen) {
 }
 
 bool CTR::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
-		  size_t& outlen) {
+          size_t& outlen) {
     uint8_t* counter = new uint8_t[p_blocksize];
     memcpy(counter, p_iv, sizeof(uint8_t) * p_blocksize);
     outlen = 0;
     for (size_t i = 0; i < inlen; i += p_blocksize) {
-	size_t len = (inlen - i > p_blocksize) ? p_blocksize : (inlen - i);
-	outlen += len;
-	p_cipher->Encrypt(counter, p_temp);
+    size_t len = (inlen - i > p_blocksize) ? p_blocksize : (inlen - i);
+    outlen += len;
+    p_cipher->Encrypt(counter, p_temp);
 
-	for (size_t j = 0; j < len; ++j) {
-	    out[i + j] = p_temp[j] ^ in[i + j];
-	}
+    for (size_t j = 0; j < len; ++j) {
+        out[i + j] = p_temp[j] ^ in[i + j];
+    }
 
-	uint32_t cnt = (uint32_t)counter[p_blocksize - 1] |
-		       ((uint32_t)counter[p_blocksize - 2] << 8) |
-		       ((uint32_t)counter[p_blocksize - 3] << 16) |
-		       ((uint32_t)counter[p_blocksize - 4] << 24);
-	cnt++;
-	counter[p_blocksize - 1] = cnt & 0xff;
-	counter[p_blocksize - 2] = (cnt >> 8) & 0xff;
-	counter[p_blocksize - 3] = (cnt >> 16) & 0xff;
-	counter[p_blocksize - 4] = (cnt >> 24) & 0xff;
+    uint32_t cnt = (uint32_t)counter[p_blocksize - 1] |
+               ((uint32_t)counter[p_blocksize - 2] << 8) |
+               ((uint32_t)counter[p_blocksize - 3] << 16) |
+               ((uint32_t)counter[p_blocksize - 4] << 24);
+    cnt++;
+    counter[p_blocksize - 1] = cnt & 0xff;
+    counter[p_blocksize - 2] = (cnt >> 8) & 0xff;
+    counter[p_blocksize - 3] = (cnt >> 16) & 0xff;
+    counter[p_blocksize - 4] = (cnt >> 24) & 0xff;
     }
     delete[] counter;
 
@@ -104,28 +104,28 @@ bool CTR::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
 }
 
 bool CTR::Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
-		  size_t& outlen) {
+          size_t& outlen) {
     uint8_t* counter = new uint8_t[p_blocksize];
     memcpy(counter, p_iv, sizeof(uint8_t) * p_blocksize);
     outlen = 0;
     for (size_t i = 0; i < inlen; i += p_blocksize) {
-	size_t len = (inlen - i > p_blocksize) ? p_blocksize : (inlen - i);
-	outlen += len;
-	p_cipher->Encrypt(counter, p_temp);
+    size_t len = (inlen - i > p_blocksize) ? p_blocksize : (inlen - i);
+    outlen += len;
+    p_cipher->Encrypt(counter, p_temp);
 
-	for (size_t j = 0; j < len; ++j) {
-	    out[i + j] = p_temp[j] ^ in[i + j];
-	}
+    for (size_t j = 0; j < len; ++j) {
+        out[i + j] = p_temp[j] ^ in[i + j];
+    }
 
-	uint32_t cnt = (uint32_t)counter[p_blocksize - 1] |
-		       ((uint32_t)counter[p_blocksize - 2] << 8) |
-		       ((uint32_t)counter[p_blocksize - 3] << 16) |
-		       ((uint32_t)counter[p_blocksize - 4] << 24);
-	cnt++;
-	counter[p_blocksize - 1] = cnt & 0xff;
-	counter[p_blocksize - 2] = (cnt >> 8) & 0xff;
-	counter[p_blocksize - 3] = (cnt >> 16) & 0xff;
-	counter[p_blocksize - 4] = (cnt >> 24) & 0xff;
+    uint32_t cnt = (uint32_t)counter[p_blocksize - 1] |
+               ((uint32_t)counter[p_blocksize - 2] << 8) |
+               ((uint32_t)counter[p_blocksize - 3] << 16) |
+               ((uint32_t)counter[p_blocksize - 4] << 24);
+    cnt++;
+    counter[p_blocksize - 1] = cnt & 0xff;
+    counter[p_blocksize - 2] = (cnt >> 8) & 0xff;
+    counter[p_blocksize - 3] = (cnt >> 16) & 0xff;
+    counter[p_blocksize - 4] = (cnt >> 24) & 0xff;
     }
     delete[] counter;
 
@@ -134,7 +134,7 @@ bool CTR::Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
 
 bool CTR::GetTemp(uint8_t* temp, const uint32_t templen) {
     if (templen != p_blocksize) {
-	return false;
+    return false;
     }
 
     memcpy(temp, p_temp, sizeof(uint8_t) * templen);

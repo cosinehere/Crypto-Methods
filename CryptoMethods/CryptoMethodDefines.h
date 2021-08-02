@@ -33,9 +33,9 @@ CRYPTOEXT size_t Padding(uint8_t* buffer, size_t len, size_t blocksize);
 CRYPTOEXT void GenerateIV(uint8_t* iv, size_t ivlen);
 
 CRYPTOEXT void MixBytes(uint8_t* key, uint8_t* iv, uint8_t* cipher,
-			size_t cipherlen, uint8_t* mix);
+            size_t cipherlen, uint8_t* mix);
 CRYPTOEXT void ScatterBytes(uint8_t* key, uint8_t* iv, uint8_t* cipher,
-			    size_t cipherlen, uint8_t* mix);
+                size_t cipherlen, uint8_t* mix);
 
 #define PKCS7(buffer, len, blocksize) Padding(buffer, len, blocksize)
 #define PKCS5(buffer, len) Padding(buffer, len, 8)
@@ -83,9 +83,9 @@ class NOVTABLE CipherModeBase {
     virtual bool SetIV(const uint8_t* iv, const size_t ivlen) = 0;
 
     virtual bool Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
-			 size_t& outlen) = 0;
+             size_t& outlen) = 0;
     virtual bool Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
-			 size_t& outlen) = 0;
+             size_t& outlen) = 0;
 
     virtual bool GetTemp(uint8_t* temp, const uint32_t templen) = 0;
 
@@ -96,7 +96,7 @@ CRYPTOEXT void CreateCipherBase(enum_crypt_methods method, CipherBase*& base);
 CRYPTOEXT void ReleaseCipherBase(CipherBase*& base);
 
 CRYPTOEXT void CreateCipherMode(enum_crypt_modes mode, CipherBase* cipher,
-				CipherModeBase*& base);
+                CipherModeBase*& base);
 CRYPTOEXT void ReleaseCipherMode(CipherModeBase*& base);
 
 // CRYPTOEXT void AESCBCEncrypt(const uint8_t* key, const size_t keylen, const

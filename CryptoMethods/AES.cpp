@@ -1,6 +1,6 @@
-#include "AES.h"
-
 #include "pch.h"
+
+#include "AES.h"
 
 NAMESPACE_BEGIN(CryptoMethods)
 
@@ -8,12 +8,12 @@ inline uint8_t gmult(uint8_t a, uint8_t b) {
     uint8_t p = 0, hbs = 0;
     uint8_t tempa = a, tempb = b;
     for (size_t i = 0; i < 8; i++) {
-	if (b & 1) p ^= a;
+    if (b & 1) p ^= a;
 
-	hbs = a & 0x80;
-	a <<= 1;
-	if (hbs) a ^= 0x1b;
-	b >>= 1;
+    hbs = a & 0x80;
+    a <<= 1;
+    if (hbs) a ^= 0x1b;
+    b >>= 1;
     }
 
     return (uint8_t)p;
@@ -21,7 +21,7 @@ inline uint8_t gmult(uint8_t a, uint8_t b) {
 
 inline void subbytes(uint8_t* state, const uint8_t* box) {
     for (size_t i = 0; i < 16; ++i) {
-	state[i] = box[state[i]];
+    state[i] = box[state[i]];
     }
 }
 
@@ -70,42 +70,42 @@ inline void rshiftrows(uint8_t* state) {
 inline void mixcolumns(uint8_t* state) {
     uint8_t tmp[4];
     for (size_t i = 0; i < 4; ++i) {
-	tmp[0] = gmult(2, state[4 * i]) ^ gmult(3, state[4 * i + 1]) ^
-		 gmult(1, state[4 * i + 2]) ^ gmult(1, state[4 * i + 3]);
-	tmp[1] = gmult(1, state[4 * i]) ^ gmult(2, state[4 * i + 1]) ^
-		 gmult(3, state[4 * i + 2]) ^ gmult(1, state[4 * i + 3]);
-	tmp[2] = gmult(1, state[4 * i]) ^ gmult(1, state[4 * i + 1]) ^
-		 gmult(2, state[4 * i + 2]) ^ gmult(3, state[4 * i + 3]);
-	tmp[3] = gmult(3, state[4 * i]) ^ gmult(1, state[4 * i + 1]) ^
-		 gmult(1, state[4 * i + 2]) ^ gmult(2, state[4 * i + 3]);
-	state[4 * i] = tmp[0];
-	state[4 * i + 1] = tmp[1];
-	state[4 * i + 2] = tmp[2];
-	state[4 * i + 3] = tmp[3];
+    tmp[0] = gmult(2, state[4 * i]) ^ gmult(3, state[4 * i + 1]) ^
+         gmult(1, state[4 * i + 2]) ^ gmult(1, state[4 * i + 3]);
+    tmp[1] = gmult(1, state[4 * i]) ^ gmult(2, state[4 * i + 1]) ^
+         gmult(3, state[4 * i + 2]) ^ gmult(1, state[4 * i + 3]);
+    tmp[2] = gmult(1, state[4 * i]) ^ gmult(1, state[4 * i + 1]) ^
+         gmult(2, state[4 * i + 2]) ^ gmult(3, state[4 * i + 3]);
+    tmp[3] = gmult(3, state[4 * i]) ^ gmult(1, state[4 * i + 1]) ^
+         gmult(1, state[4 * i + 2]) ^ gmult(2, state[4 * i + 3]);
+    state[4 * i] = tmp[0];
+    state[4 * i + 1] = tmp[1];
+    state[4 * i + 2] = tmp[2];
+    state[4 * i + 3] = tmp[3];
     }
 }
 
 inline void rmixcolumns(uint8_t* state) {
     uint8_t tmp[4];
     for (size_t i = 0; i < 4; ++i) {
-	tmp[0] = gmult(14, state[4 * i]) ^ gmult(11, state[4 * i + 1]) ^
-		 gmult(13, state[4 * i + 2]) ^ gmult(9, state[4 * i + 3]);
-	tmp[1] = gmult(9, state[4 * i]) ^ gmult(14, state[4 * i + 1]) ^
-		 gmult(11, state[4 * i + 2]) ^ gmult(13, state[4 * i + 3]);
-	tmp[2] = gmult(13, state[4 * i]) ^ gmult(9, state[4 * i + 1]) ^
-		 gmult(14, state[4 * i + 2]) ^ gmult(11, state[4 * i + 3]);
-	tmp[3] = gmult(11, state[4 * i]) ^ gmult(13, state[4 * i + 1]) ^
-		 gmult(9, state[4 * i + 2]) ^ gmult(14, state[4 * i + 3]);
-	state[4 * i] = tmp[0];
-	state[4 * i + 1] = tmp[1];
-	state[4 * i + 2] = tmp[2];
-	state[4 * i + 3] = tmp[3];
+    tmp[0] = gmult(14, state[4 * i]) ^ gmult(11, state[4 * i + 1]) ^
+         gmult(13, state[4 * i + 2]) ^ gmult(9, state[4 * i + 3]);
+    tmp[1] = gmult(9, state[4 * i]) ^ gmult(14, state[4 * i + 1]) ^
+         gmult(11, state[4 * i + 2]) ^ gmult(13, state[4 * i + 3]);
+    tmp[2] = gmult(13, state[4 * i]) ^ gmult(9, state[4 * i + 1]) ^
+         gmult(14, state[4 * i + 2]) ^ gmult(11, state[4 * i + 3]);
+    tmp[3] = gmult(11, state[4 * i]) ^ gmult(13, state[4 * i + 1]) ^
+         gmult(9, state[4 * i + 2]) ^ gmult(14, state[4 * i + 3]);
+    state[4 * i] = tmp[0];
+    state[4 * i + 1] = tmp[1];
+    state[4 * i + 2] = tmp[2];
+    state[4 * i + 3] = tmp[3];
     }
 }
 
 inline void addroundkey(uint8_t* state, const uint8_t* word) {
     for (size_t i = 0; i < 16; ++i) {
-	state[i] ^= word[i];
+    state[i] ^= word[i];
     }
 }
 
@@ -122,7 +122,7 @@ const size_t AES::BlockSize() { return p_blocksize; }
 
 bool AES::SetKey(const uint8_t* key, const size_t keylen) {
     if (key == nullptr || (keylen != 16 && keylen != 24 && keylen != 32)) {
-	return false;
+    return false;
     }
 
     p_keylen = keylen;
@@ -131,9 +131,9 @@ bool AES::SetKey(const uint8_t* key, const size_t keylen) {
 
     bool bRet = KeyExpand();
     if (bRet) {
-	p_haskey = true;
+    p_haskey = true;
     } else {
-	p_haskey = false;
+    p_haskey = false;
     }
 
     return bRet;
@@ -141,7 +141,7 @@ bool AES::SetKey(const uint8_t* key, const size_t keylen) {
 
 bool AES::Encrypt(const uint8_t* plain, uint8_t* cipher) {
     if (!p_haskey) {
-	return false;
+    return false;
     }
 
     memcpy(cipher, plain, sizeof(uint8_t) * 16);
@@ -149,10 +149,10 @@ bool AES::Encrypt(const uint8_t* plain, uint8_t* cipher) {
     addroundkey(cipher, p_roundkey);
 
     for (size_t r = 1; r < p_rounds; ++r) {
-	subbytes(cipher, SBox);
-	shiftrows(cipher);
-	mixcolumns(cipher);
-	addroundkey(cipher, p_roundkey + (r << 4));
+    subbytes(cipher, SBox);
+    shiftrows(cipher);
+    mixcolumns(cipher);
+    addroundkey(cipher, p_roundkey + (r << 4));
     }
     subbytes(cipher, SBox);
     shiftrows(cipher);
@@ -163,7 +163,7 @@ bool AES::Encrypt(const uint8_t* plain, uint8_t* cipher) {
 
 bool AES::Decrypt(const uint8_t* cipher, uint8_t* plain) {
     if (!p_haskey) {
-	return false;
+    return false;
     }
 
     memcpy(plain, cipher, sizeof(uint8_t) * 16);
@@ -171,10 +171,10 @@ bool AES::Decrypt(const uint8_t* cipher, uint8_t* plain) {
     addroundkey(plain, p_roundkey + (p_rounds << 4));
 
     for (size_t r = p_rounds - 1; r > 0; --r) {
-	rshiftrows(plain);
-	subbytes(plain, RSBox);
-	addroundkey(plain, p_roundkey + (r << 4));
-	rmixcolumns(plain);
+    rshiftrows(plain);
+    subbytes(plain, RSBox);
+    addroundkey(plain, p_roundkey + (r << 4));
+    rmixcolumns(plain);
     }
     rshiftrows(plain);
     subbytes(plain, RSBox);
@@ -190,36 +190,36 @@ bool AES::KeyExpand() {
 
     uint32_t mod = p_keylen >> 2;
     for (size_t i = mod; i < p_roundkeylen; ++i) {
-	uint8_t temp[4] = {
-	    p_roundkey[(i - 1) << 2], p_roundkey[((i - 1) << 2) + 1],
-	    p_roundkey[((i - 1) << 2) + 2], p_roundkey[((i - 1) << 2) + 3]};
-	if (!(i % mod)) {
-	    uint8_t tmp = temp[0];
-	    temp[0] = temp[1];
-	    temp[1] = temp[2];
-	    temp[2] = temp[3];
-	    temp[3] = tmp;
+    uint8_t temp[4] = {
+        p_roundkey[(i - 1) << 2], p_roundkey[((i - 1) << 2) + 1],
+        p_roundkey[((i - 1) << 2) + 2], p_roundkey[((i - 1) << 2) + 3]};
+    if (!(i % mod)) {
+        uint8_t tmp = temp[0];
+        temp[0] = temp[1];
+        temp[1] = temp[2];
+        temp[2] = temp[3];
+        temp[3] = tmp;
 
-	    temp[0] = SBox[temp[0]];
-	    temp[1] = SBox[temp[1]];
-	    temp[2] = SBox[temp[2]];
-	    temp[3] = SBox[temp[3]];
+        temp[0] = SBox[temp[0]];
+        temp[1] = SBox[temp[1]];
+        temp[2] = SBox[temp[2]];
+        temp[3] = SBox[temp[3]];
 
-	    temp[0] ^= Rcon[i / mod - 1][0];
-	    temp[1] ^= Rcon[i / mod - 1][1];
-	    temp[2] ^= Rcon[i / mod - 1][2];
-	    temp[3] ^= Rcon[i / mod - 1][3];
-	} else if ((mod == 8) && ((i % mod) == 4)) {
-	    temp[0] = SBox[temp[0]];
-	    temp[1] = SBox[temp[1]];
-	    temp[2] = SBox[temp[2]];
-	    temp[3] = SBox[temp[3]];
-	}
+        temp[0] ^= Rcon[i / mod - 1][0];
+        temp[1] ^= Rcon[i / mod - 1][1];
+        temp[2] ^= Rcon[i / mod - 1][2];
+        temp[3] ^= Rcon[i / mod - 1][3];
+    } else if ((mod == 8) && ((i % mod) == 4)) {
+        temp[0] = SBox[temp[0]];
+        temp[1] = SBox[temp[1]];
+        temp[2] = SBox[temp[2]];
+        temp[3] = SBox[temp[3]];
+    }
 
-	p_roundkey[i << 2] = temp[0] ^ p_roundkey[(i - mod) << 2];
-	p_roundkey[(i << 2) + 1] = temp[1] ^ p_roundkey[((i - mod) << 2) + 1];
-	p_roundkey[(i << 2) + 2] = temp[2] ^ p_roundkey[((i - mod) << 2) + 2];
-	p_roundkey[(i << 2) + 3] = temp[3] ^ p_roundkey[((i - mod) << 2) + 3];
+    p_roundkey[i << 2] = temp[0] ^ p_roundkey[(i - mod) << 2];
+    p_roundkey[(i << 2) + 1] = temp[1] ^ p_roundkey[((i - mod) << 2) + 1];
+    p_roundkey[(i << 2) + 2] = temp[2] ^ p_roundkey[((i - mod) << 2) + 2];
+    p_roundkey[(i << 2) + 3] = temp[3] ^ p_roundkey[((i - mod) << 2) + 3];
     }
 
     return true;

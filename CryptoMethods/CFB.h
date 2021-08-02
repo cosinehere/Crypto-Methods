@@ -14,9 +14,9 @@ class CFB : public CipherModeBase {
     virtual bool SetIV(const uint8_t* iv, const size_t ivlen) override;
 
     virtual bool Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
-			 size_t& outlen) override;
+             size_t& outlen) override;
     virtual bool Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
-			 size_t& outlen) override;
+             size_t& outlen) override;
 
     virtual bool GetTemp(uint8_t* temp, const uint32_t templen) override;
 
@@ -52,11 +52,11 @@ CFB::CFB(CipherBase* base) {
 
 CFB::~CFB() {
     if (p_iv != nullptr) {
-	delete[] p_iv;
+    delete[] p_iv;
     }
 
     if (p_temp != nullptr) {
-	delete[] p_temp;
+    delete[] p_temp;
     }
 }
 
@@ -66,7 +66,7 @@ bool CFB::SetKey(const uint8_t* key, const size_t keylen) {
 
 bool CFB::SetIV(const uint8_t* iv, const size_t ivlen) {
     if (iv == nullptr || ivlen != p_ivlen) {
-	return false;
+    return false;
     }
 
     memcpy(p_iv, iv, sizeof(uint8_t) * p_ivlen);
@@ -75,40 +75,40 @@ bool CFB::SetIV(const uint8_t* iv, const size_t ivlen) {
 }
 
 bool CFB::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
-		  size_t& outlen) {
+          size_t& outlen) {
     outlen = 0;
     for (size_t i = 0; i < inlen; i += p_blocksize) {
-	size_t len = (i + p_blocksize <= inlen) ? p_blocksize : (inlen - i);
-	outlen += len;
-	if (i == 0) {
-	    p_cipher->Encrypt(p_iv, p_temp);
-	} else {
-	    p_cipher->Encrypt(&out[i - p_blocksize], p_temp);
-	}
+    size_t len = (i + p_blocksize <= inlen) ? p_blocksize : (inlen - i);
+    outlen += len;
+    if (i == 0) {
+        p_cipher->Encrypt(p_iv, p_temp);
+    } else {
+        p_cipher->Encrypt(&out[i - p_blocksize], p_temp);
+    }
 
-	for (size_t j = 0; j < len; ++j) {
-	    out[i + j] = p_temp[j] ^ in[i + j];
-	}
+    for (size_t j = 0; j < len; ++j) {
+        out[i + j] = p_temp[j] ^ in[i + j];
+    }
     }
 
     return true;
 }
 
 bool CFB::Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
-		  size_t& outlen) {
+          size_t& outlen) {
     outlen = 0;
     for (size_t i = 0; i < inlen; i += p_blocksize) {
-	size_t len = (i + p_blocksize <= inlen) ? p_blocksize : (inlen - i);
-	outlen += len;
-	if (i == 0) {
-	    p_cipher->Encrypt(p_iv, p_temp);
-	} else {
-	    p_cipher->Encrypt(&out[i - p_blocksize], p_temp);
-	}
+    size_t len = (i + p_blocksize <= inlen) ? p_blocksize : (inlen - i);
+    outlen += len;
+    if (i == 0) {
+        p_cipher->Encrypt(p_iv, p_temp);
+    } else {
+        p_cipher->Encrypt(&out[i - p_blocksize], p_temp);
+    }
 
-	for (size_t j = 0; j < len; ++j) {
-	    out[i + j] = p_temp[j] ^ in[i + j];
-	}
+    for (size_t j = 0; j < len; ++j) {
+        out[i + j] = p_temp[j] ^ in[i + j];
+    }
     }
 
     return true;
@@ -116,7 +116,7 @@ bool CFB::Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
 
 bool CFB::GetTemp(uint8_t* temp, const uint32_t templen) {
     if (templen != p_blocksize) {
-	return false;
+    return false;
     }
 
     memcpy(temp, p_temp, sizeof(uint8_t) * templen);
