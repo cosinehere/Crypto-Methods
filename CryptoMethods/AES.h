@@ -132,7 +132,7 @@ public:
 	AES();
 	virtual ~AES();
 
-	virtual const enum_crypt_methods CryptMethod() { return p_method; }
+	virtual const enum_crypt_methods CryptMethod() override { return p_method; }
 	virtual const size_t BlockSize() override;
 	virtual bool SetKey(const uint8_t* key, const size_t keylen) override;
 	virtual bool Encrypt(const uint8_t* plain, uint8_t* cipher) override;

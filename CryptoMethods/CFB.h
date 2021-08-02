@@ -9,7 +9,7 @@ public:
 	CFB(CipherBase* base);
 	virtual ~CFB();
 
-	virtual const enum_crypt_modes CryptMode() { return p_mode; }
+	virtual const enum_crypt_modes CryptMode() override { return p_mode; }
 
 	virtual bool SetKey(const uint8_t* key, const size_t keylen) override;
 	virtual bool SetIV(const uint8_t* iv, const size_t ivlen) override;
