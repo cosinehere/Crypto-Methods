@@ -4,16 +4,16 @@
 #ifdef _CRYPTOMETHODSLIB_EXPORT_
 #define CRYPTOEXT
 #elif defined(_CRYPTOMETHODSDLL_EXPORT_)
-#define CRYPTOEXT extern "C" __declspec(dllexport)
+#define CRYPTOEXT __declspec(dllexport)
 #else
-#define CRYPTOEXT extern "C" __declspec(dllimport)
+#define CRYPTOEXT __declspec(dllimport)
 #endif
 
 #define NOVTABLE __declspec(novtable)
 
 #else
 #ifdef _CRYPTOMETHODSDLL_EXPORT_
-#define CRYPTOEXT extern "C" __attribute__((visibility("default")))
+#define CRYPTOEXT __attribute__((visibility("default")))
 #else
 #define CRYPTOEXT
 #endif
