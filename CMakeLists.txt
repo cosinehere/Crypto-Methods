@@ -38,8 +38,11 @@ add_library(${cryptolib} SHARED
     ${CMAKE_SOURCE_DIR}/CryptoMethods/CryptoMethodDefines.cpp
     )
 target_precompile_headers(${cryptolib} PRIVATE
-    ${CMAKE_SOURCE_DIR}/CryptoMethods/pch.h)
-set_target_properties(${cryptolib} PROPERTIES COMPILE_FLAGS "-fvisibility=hidden -Wl,-s")
+    ${CMAKE_SOURCE_DIR}/CryptoMethods/pch.h
+    )
+target_compile_options(${cryptolib}
+    PRIVATE -fvisibility=hidden -Wl,-s
+    )
 
 # CryptoTest
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
