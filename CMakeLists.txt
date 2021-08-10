@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.16)
 
 # specify project name and version
 project(CryptoMethods
-	VERSION 1.0
-	LANGUAGES CXX)
+    VERSION 1.0
+    LANGUAGES CXX)
 
 # generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -17,30 +17,32 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
 if(${CMAKE_BUILD_TYPE} MATCHES Debug)
-	set(cryptolib CryptoMethods_debug)
-	set(cryptotest testd)
+    set(cryptolib CryptoMethods_debug)
+    set(cryptotest testd)
 else()
-	set(cryptolib CryptoMethods)
-	set(cryptotest test)
+    set(cryptolib CryptoMethods)
+    set(cryptotest test)
 endif()
 
 # CryptoMethods.so
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
 add_library(${cryptolib} SHARED
-	#${CMAKE_SOURCE_DIR}/CryptoMethods/pch.cpp
-	${CMAKE_SOURCE_DIR}/CryptoMethods/AES.cpp
-	${CMAKE_SOURCE_DIR}/CryptoMethods/DES.cpp
-	${CMAKE_SOURCE_DIR}/CryptoMethods/TripDES.cpp
-	${CMAKE_SOURCE_DIR}/CryptoMethods/Blowfish.cpp
-	${CMAKE_SOURCE_DIR}/CryptoMethods/Twofish.cpp
-	${CMAKE_SOURCE_DIR}/CryptoMethods/Camellia.cpp
-	${CMAKE_SOURCE_DIR}/CryptoMethods/RC5.cpp
-	${CMAKE_SOURCE_DIR}/CryptoMethods/RC6.cpp
-	${CMAKE_SOURCE_DIR}/CryptoMethods/CryptoMethodDefines.cpp
-	)
-target_precompile_headers(${cryptolib} PUBLIC
-	${CMAKE_SOURCE_DIR}/CryptoMethods/pch.h)
-set_target_properties(${cryptolib} PROPERTIES COMPILE_FLAGS "-fvisibility=hidden -Wl,-s")
+    ${CMAKE_SOURCE_DIR}/CryptoMethods/AES.cpp
+    ${CMAKE_SOURCE_DIR}/CryptoMethods/DES.cpp
+    ${CMAKE_SOURCE_DIR}/CryptoMethods/TripDES.cpp
+    ${CMAKE_SOURCE_DIR}/CryptoMethods/Blowfish.cpp
+    ${CMAKE_SOURCE_DIR}/CryptoMethods/Twofish.cpp
+    ${CMAKE_SOURCE_DIR}/CryptoMethods/Camellia.cpp
+    ${CMAKE_SOURCE_DIR}/CryptoMethods/RC5.cpp
+    ${CMAKE_SOURCE_DIR}/CryptoMethods/RC6.cpp
+    ${CMAKE_SOURCE_DIR}/CryptoMethods/CryptoMethodDefines.cpp
+    )
+target_precompile_headers(${cryptolib} PRIVATE
+    ${CMAKE_SOURCE_DIR}/CryptoMethods/pch.h
+    )
+target_compile_options(${cryptolib}
+    PRIVATE -fvisibility=hidden -Wl,-s
+    )
 
 # CryptoTest
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
