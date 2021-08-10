@@ -1358,6 +1358,17 @@ Camellia::~Camellia() {}
 
 const size_t Camellia::BlockSize() { return p_blocksize; }
 
+const size_t Camellia::KeyLength(size_t *min, size_t *max) {
+    if (min != nullptr) {
+        *min = 16;
+    }
+    if (max != nullptr) {
+        *max = 32;
+    }
+
+    return 16;
+}
+
 bool Camellia::SetKey(const uint8_t *key, const size_t keylen) {
     p_keylen = keylen;
     memcpy(p_key, key, sizeof(uint8_t) * keylen);

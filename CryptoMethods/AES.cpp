@@ -19,13 +19,13 @@ inline uint8_t gmult(uint8_t a, uint8_t b) {
     return (uint8_t)p;
 }
 
-inline void subbytes(uint8_t* state, const uint8_t* box) {
+inline void subbytes(uint8_t *state, const uint8_t *box) {
     for (size_t i = 0; i < 16; ++i) {
         state[i] = box[state[i]];
     }
 }
 
-inline void shiftrows(uint8_t* state) {
+inline void shiftrows(uint8_t *state) {
     uint8_t tmp = state[1];
     state[1] = state[5];
     state[5] = state[9];
@@ -46,7 +46,7 @@ inline void shiftrows(uint8_t* state) {
     state[7] = tmp;
 }
 
-inline void rshiftrows(uint8_t* state) {
+inline void rshiftrows(uint8_t *state) {
     uint8_t tmp = state[13];
     state[13] = state[9];
     state[9] = state[5];
@@ -67,7 +67,7 @@ inline void rshiftrows(uint8_t* state) {
     state[3] = tmp;
 }
 
-inline void mixcolumns(uint8_t* state) {
+inline void mixcolumns(uint8_t *state) {
     uint8_t tmp[4];
     for (size_t i = 0; i < 4; ++i) {
         tmp[0] = gmult(2, state[4 * i]) ^ gmult(3, state[4 * i + 1]) ^
@@ -85,7 +85,7 @@ inline void mixcolumns(uint8_t* state) {
     }
 }
 
-inline void rmixcolumns(uint8_t* state) {
+inline void rmixcolumns(uint8_t *state) {
     uint8_t tmp[4];
     for (size_t i = 0; i < 4; ++i) {
         tmp[0] = gmult(14, state[4 * i]) ^ gmult(11, state[4 * i + 1]) ^
@@ -103,7 +103,7 @@ inline void rmixcolumns(uint8_t* state) {
     }
 }
 
-inline void addroundkey(uint8_t* state, const uint8_t* word) {
+inline void addroundkey(uint8_t *state, const uint8_t *word) {
     for (size_t i = 0; i < 16; ++i) {
         state[i] ^= word[i];
     }
@@ -120,7 +120,18 @@ AES::~AES() {}
 
 const size_t AES::BlockSize() { return p_blocksize; }
 
-bool AES::SetKey(const uint8_t* key, const size_t keylen) {
+const size_t AES::KeyLength(size_t *min, size_t *max) {
+    if (min != nullptr) {
+        *min = 16;
+    }
+    if (max != nullptr) {
+        *max = 32;
+    }
+
+    return 16;
+}
+
+bool AES::SetKey(const uint8_t *key, const size_t keylen) {
     if (key == nullptr || (keylen != 16 && keylen != 24 && keylen != 32)) {
         return false;
     }
@@ -139,7 +150,7 @@ bool AES::SetKey(const uint8_t* key, const size_t keylen) {
     return bRet;
 }
 
-bool AES::Encrypt(const uint8_t* plain, uint8_t* cipher) {
+bool AES::Encrypt(const uint8_t *plain, uint8_t *cipher) {
     if (!p_haskey) {
         return false;
     }
@@ -161,7 +172,7 @@ bool AES::Encrypt(const uint8_t* plain, uint8_t* cipher) {
     return true;
 }
 
-bool AES::Decrypt(const uint8_t* cipher, uint8_t* plain) {
+bool AES::Decrypt(const uint8_t *cipher, uint8_t *plain) {
     if (!p_haskey) {
         return false;
     }

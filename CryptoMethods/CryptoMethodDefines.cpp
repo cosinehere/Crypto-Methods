@@ -20,7 +20,7 @@ constexpr uint8_t c_iv[] = {0x5eu, 0x95u, 0x7cu, 0xe3u, 0x2bu, 0x79u,
                             0xa1u, 0xf9u, 0x35u, 0x17u, 0x8eu, 0xdau,
                             0x6cu, 0xdeu, 0x1du, 0x2fu};
 
-size_t Padding(uint8_t* buffer, size_t len, size_t blocksize) {
+size_t Padding(uint8_t *buffer, size_t len, size_t blocksize) {
     size_t left = blocksize - (len % blocksize);
     size_t lenret = len;
     if (left == 0) left += blocksize;
@@ -32,7 +32,7 @@ size_t Padding(uint8_t* buffer, size_t len, size_t blocksize) {
     return lenret;
 }
 
-void GenerateIV(uint8_t* iv, size_t ivlen) {
+void GenerateIV(uint8_t *iv, size_t ivlen) {
 #if defined(_MSC_VER)
     HCRYPTPROV crypt;
     CryptAcquireContext(&crypt, nullptr, nullptr, PROV_RSA_FULL,
@@ -47,14 +47,14 @@ void GenerateIV(uint8_t* iv, size_t ivlen) {
 #endif
 }
 
-void MixBytes(uint8_t* key, uint8_t* iv, uint8_t* cipher, size_t cipherlen,
-              uint8_t* mix) {
+void MixBytes(uint8_t *key, uint8_t *iv, uint8_t *cipher, size_t cipherlen,
+              uint8_t *mix) {
     GenerateIV(mix, 8);
     for (size_t i = 0; i < 4; ++i) {
         uint32_t pos =
             *reinterpret_cast<uint32_t*>(&mix[i]) % (4 + cipherlen / 8);
-        uint64_t* cur = nullptr;
-        uint64_t* post = nullptr;
+        uint64_t *cur = nullptr;
+        uint64_t *post = nullptr;
         if (i < 2) {
             cur = reinterpret_cast<uint64_t*>(&key[i * 8]);
         } else {
@@ -75,13 +75,13 @@ void MixBytes(uint8_t* key, uint8_t* iv, uint8_t* cipher, size_t cipherlen,
     }
 }
 
-void ScatterBytes(uint8_t* key, uint8_t* iv, uint8_t* cipher, size_t cipherlen,
-                  uint8_t* mix) {
+void ScatterBytes(uint8_t *key, uint8_t *iv, uint8_t *cipher, size_t cipherlen,
+                  uint8_t *mix) {
     for (int i = 3; i >= 0; --i) {
         uint32_t pos =
             *reinterpret_cast<uint32_t*>(&mix[i]) % (4 + cipherlen / 8);
-        uint64_t* cur = nullptr;
-        uint64_t* post = nullptr;
+        uint64_t *cur = nullptr;
+        uint64_t *post = nullptr;
         if (i < 2) {
             cur = reinterpret_cast<uint64_t*>(&key[i * 8]);
         } else {
@@ -163,7 +163,7 @@ void ReleaseCipherBase(CipherBase*& base) {
     }
 }
 
-void CreateCipherMode(enum_crypt_modes mode, CipherBase* cipher,
+void CreateCipherMode(enum_crypt_modes mode, CipherBase *cipher,
                       CipherModeBase*& base) {
     switch (mode) {
         case CryptoMethods::enum_crypt_mode_cbc:
@@ -196,14 +196,14 @@ void ReleaseCipherMode(CipherModeBase*& base) {
     }
 }
 
-// void AESCBCEncrypt(const uint8_t* key, const size_t keylen, const uint8_t*
-// in, const size_t inlen, uint8_t* out, size_t& outlen)
+// void AESCBCEncrypt(const uint8_t *key, const size_t keylen, const uint8_t*
+// in, const size_t inlen, uint8_t *out, size_t& outlen)
 // {
 // 	CBC<AES> cbc;
 // 	cbc.SetKey(key, keylen);
 // 	cbc.SetIV(c_iv, 16);
 //
-// 	uint8_t* temp = new uint8_t[inlen + 16];
+// 	uint8_t *temp = new uint8_t[inlen + 16];
 // 	memcpy(temp, in, sizeof(uint8_t)*inlen);
 // 	size_t templen = PKCS7(temp, inlen, 16);
 //
@@ -212,8 +212,8 @@ void ReleaseCipherMode(CipherModeBase*& base) {
 // 	delete[] temp;
 // }
 //
-// void AESCBCDecrypt(const uint8_t* key, const size_t keylen, const uint8_t*
-// in, const size_t inlen, uint8_t* out, size_t& outlen)
+// void AESCBCDecrypt(const uint8_t *key, const size_t keylen, const uint8_t*
+// in, const size_t inlen, uint8_t *out, size_t& outlen)
 // {
 // 	CBC<AES> cbc;
 // 	cbc.SetKey(key, keylen);
@@ -222,8 +222,8 @@ void ReleaseCipherMode(CipherModeBase*& base) {
 // 16); 	cbc.Decrypt(in, inlen, out, outlen);
 // }
 //
-// void AESCFBEncrypt(const uint8_t* key, const size_t keylen, const uint8_t*
-// in, const size_t inlen, uint8_t* out, size_t& outlen)
+// void AESCFBEncrypt(const uint8_t *key, const size_t keylen, const uint8_t*
+// in, const size_t inlen, uint8_t *out, size_t& outlen)
 // {
 // 	CFB<AES> cfb;
 // 	cfb.SetKey(key, keylen);
@@ -232,7 +232,7 @@ void ReleaseCipherMode(CipherModeBase*& base) {
 // 	//GenerateIV(iv, 16);
 // 	cfb.SetIV(iv, 16);
 //
-// 	uint8_t* temp = new uint8_t[inlen];
+// 	uint8_t *temp = new uint8_t[inlen];
 // 	memcpy(temp, in, sizeof(uint8_t)*inlen);
 // 	size_t templen = inlen;
 //
@@ -241,8 +241,8 @@ void ReleaseCipherMode(CipherModeBase*& base) {
 // 	delete[] temp;
 // }
 //
-// void AESCFBDecrypt(const uint8_t* key, const size_t keylen, const uint8_t*
-// in, const size_t inlen, uint8_t* out, size_t& outlen)
+// void AESCFBDecrypt(const uint8_t *key, const size_t keylen, const uint8_t*
+// in, const size_t inlen, uint8_t *out, size_t& outlen)
 // {
 // 	CFB<AES> cfb;
 // 	cfb.SetKey(key, keylen);
@@ -253,8 +253,8 @@ void ReleaseCipherMode(CipherModeBase*& base) {
 // 	cfb.Decrypt(in, inlen, out, outlen);
 // }
 //
-// void AESCTREncrypt(const uint8_t* key, const size_t keylen, const uint8_t*
-// in, const size_t inlen, uint8_t* out, size_t& outlen)
+// void AESCTREncrypt(const uint8_t *key, const size_t keylen, const uint8_t*
+// in, const size_t inlen, uint8_t *out, size_t& outlen)
 // {
 // 	CTR<AES> cbc;
 // 	cbc.SetKey(key, keylen);
@@ -263,7 +263,7 @@ void ReleaseCipherMode(CipherModeBase*& base) {
 // 	//GenerateIV(iv, 16);
 // 	cbc.SetIV(iv, 16);
 //
-// 	uint8_t* temp = new uint8_t[inlen];
+// 	uint8_t *temp = new uint8_t[inlen];
 // 	memcpy(temp, in, sizeof(uint8_t)*inlen);
 // 	size_t templen = inlen;
 //
@@ -272,8 +272,8 @@ void ReleaseCipherMode(CipherModeBase*& base) {
 // 	delete[] temp;
 // }
 //
-// void AESCTRDecrypt(const uint8_t* key, const size_t keylen, const uint8_t*
-// in, const size_t inlen, uint8_t* out, size_t& outlen)
+// void AESCTRDecrypt(const uint8_t *key, const size_t keylen, const uint8_t*
+// in, const size_t inlen, uint8_t *out, size_t& outlen)
 // {
 // 	CTR<AES> cbc;
 // 	cbc.SetKey(key, keylen);
@@ -284,8 +284,8 @@ void ReleaseCipherMode(CipherModeBase*& base) {
 // 	cbc.Decrypt(in, inlen, out, outlen);
 // }
 //
-// void RC5CBCEncrypt(const uint8_t* key, const size_t keylen, const uint8_t*
-// in, const size_t inlen, uint8_t* out, size_t& outlen)
+// void RC5CBCEncrypt(const uint8_t *key, const size_t keylen, const uint8_t*
+// in, const size_t inlen, uint8_t *out, size_t& outlen)
 // {
 // 	CBC<RC5> cbc;
 // 	cbc.SetKey(key, keylen);
@@ -293,8 +293,8 @@ void ReleaseCipherMode(CipherModeBase*& base) {
 // 	cbc.Encrypt(in, inlen, out, outlen);
 // }
 //
-// void RC5CBCDecrypt(const uint8_t* key, const size_t keylen, const uint8_t*
-// in, const size_t inlen, uint8_t* out, size_t& outlen)
+// void RC5CBCDecrypt(const uint8_t *key, const size_t keylen, const uint8_t*
+// in, const size_t inlen, uint8_t *out, size_t& outlen)
 // {
 // 	CBC<RC5> cbc;
 // 	cbc.SetKey(key, keylen);
@@ -302,8 +302,8 @@ void ReleaseCipherMode(CipherModeBase*& base) {
 // 	cbc.Decrypt(in, inlen, out, outlen);
 // }
 //
-// void RC5CFBEncrypt(const uint8_t* key, const size_t keylen, const uint8_t*
-// in, const size_t inlen, uint8_t* out, size_t& outlen)
+// void RC5CFBEncrypt(const uint8_t *key, const size_t keylen, const uint8_t*
+// in, const size_t inlen, uint8_t *out, size_t& outlen)
 // {
 // 	CFB<RC5> cfb;
 // 	cfb.SetKey(key, keylen);
@@ -311,8 +311,8 @@ void ReleaseCipherMode(CipherModeBase*& base) {
 // 	cfb.Encrypt(in, inlen, out, outlen);
 // }
 //
-// void RC5CFBDecrypt(const uint8_t* key, const size_t keylen, const uint8_t*
-// in, const size_t inlen, uint8_t* out, size_t& outlen)
+// void RC5CFBDecrypt(const uint8_t *key, const size_t keylen, const uint8_t*
+// in, const size_t inlen, uint8_t *out, size_t& outlen)
 // {
 // 	CFB<RC5> cfb;
 // 	cfb.SetKey(key, keylen);
@@ -320,8 +320,8 @@ void ReleaseCipherMode(CipherModeBase*& base) {
 // 	cfb.Decrypt(in, inlen, out, outlen);
 // }
 //
-// void RC6CBCEncrypt(const uint8_t* key, const size_t keylen, const uint8_t*
-// in, const size_t inlen, uint8_t* out, size_t& outlen)
+// void RC6CBCEncrypt(const uint8_t *key, const size_t keylen, const uint8_t*
+// in, const size_t inlen, uint8_t *out, size_t& outlen)
 // {
 // 	CBC<RC6> cbc;
 // 	cbc.SetKey(key, keylen);
@@ -329,8 +329,8 @@ void ReleaseCipherMode(CipherModeBase*& base) {
 // 	cbc.Encrypt(in, inlen, out, outlen);
 // }
 //
-// void RC6CBCDecrypt(const uint8_t* key, const size_t keylen, const uint8_t*
-// in, const size_t inlen, uint8_t* out, size_t& outlen)
+// void RC6CBCDecrypt(const uint8_t *key, const size_t keylen, const uint8_t*
+// in, const size_t inlen, uint8_t *out, size_t& outlen)
 // {
 // 	CBC<RC6> cbc;
 // 	cbc.SetKey(key, keylen);
@@ -338,8 +338,8 @@ void ReleaseCipherMode(CipherModeBase*& base) {
 // 	cbc.Decrypt(in, inlen, out, outlen);
 // }
 //
-// void RC6CFBEncrypt(const uint8_t* key, const size_t keylen, const uint8_t*
-// in, const size_t inlen, uint8_t* out, size_t& outlen)
+// void RC6CFBEncrypt(const uint8_t *key, const size_t keylen, const uint8_t*
+// in, const size_t inlen, uint8_t *out, size_t& outlen)
 // {
 // 	CFB<RC6> cfb;
 // 	cfb.SetKey(key, keylen);
@@ -347,8 +347,8 @@ void ReleaseCipherMode(CipherModeBase*& base) {
 // 	cfb.Encrypt(in, inlen, out, outlen);
 // }
 //
-// void RC6CFBDecrypt(const uint8_t* key, const size_t keylen, const uint8_t*
-// in, const size_t inlen, uint8_t* out, size_t& outlen)
+// void RC6CFBDecrypt(const uint8_t *key, const size_t keylen, const uint8_t*
+// in, const size_t inlen, uint8_t *out, size_t& outlen)
 // {
 // 	CFB<RC6> cfb;
 // 	cfb.SetKey(key, keylen);
@@ -356,8 +356,8 @@ void ReleaseCipherMode(CipherModeBase*& base) {
 // 	cfb.Decrypt(in, inlen, out, outlen);
 // }
 //
-// void CamelliaCBCEncrypt(const uint8_t* key, const size_t keylen, const
-// uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+// void CamelliaCBCEncrypt(const uint8_t *key, const size_t keylen, const
+// uint8_t *in, const size_t inlen, uint8_t *out, size_t& outlen)
 // {
 // 	CBC<Camellia> cbc;
 // 	cbc.SetKey(key, keylen);
@@ -365,8 +365,8 @@ void ReleaseCipherMode(CipherModeBase*& base) {
 // 	cbc.Encrypt(in, inlen, out, outlen);
 // }
 //
-// void CamelliaCBCDecrypt(const uint8_t* key, const size_t keylen, const
-// uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+// void CamelliaCBCDecrypt(const uint8_t *key, const size_t keylen, const
+// uint8_t *in, const size_t inlen, uint8_t *out, size_t& outlen)
 // {
 // 	CBC<Camellia> cbc;
 // 	cbc.SetKey(key, keylen);
@@ -374,8 +374,8 @@ void ReleaseCipherMode(CipherModeBase*& base) {
 // 	cbc.Decrypt(in, inlen, out, outlen);
 // }
 //
-// void CamelliaCFBEncrypt(const uint8_t* key, const size_t keylen, const
-// uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+// void CamelliaCFBEncrypt(const uint8_t *key, const size_t keylen, const
+// uint8_t *in, const size_t inlen, uint8_t *out, size_t& outlen)
 // {
 // 	CFB<Camellia> cfb;
 // 	cfb.SetKey(key, keylen);
@@ -383,8 +383,8 @@ void ReleaseCipherMode(CipherModeBase*& base) {
 // 	cfb.Encrypt(in, inlen, out, outlen);
 // }
 //
-// void CamelliaCFBDecrypt(const uint8_t* key, const size_t keylen, const
-// uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+// void CamelliaCFBDecrypt(const uint8_t *key, const size_t keylen, const
+// uint8_t *in, const size_t inlen, uint8_t *out, size_t& outlen)
 // {
 // 	CFB<Camellia> cfb;
 // 	cfb.SetKey(key, keylen);
@@ -392,8 +392,8 @@ void ReleaseCipherMode(CipherModeBase*& base) {
 // 	cfb.Decrypt(in, inlen, out, outlen);
 // }
 //
-// void TwofishCBCEncrypt(const uint8_t* key, const size_t keylen, const
-// uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+// void TwofishCBCEncrypt(const uint8_t *key, const size_t keylen, const
+// uint8_t *in, const size_t inlen, uint8_t *out, size_t& outlen)
 // {
 // 	CBC<Twofish> cbc;
 // 	cbc.SetKey(key, keylen);
@@ -401,8 +401,8 @@ void ReleaseCipherMode(CipherModeBase*& base) {
 // 	cbc.Encrypt(in, inlen, out, outlen);
 // }
 //
-// void TwofishCBCDecrypt(const uint8_t* key, const size_t keylen, const
-// uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+// void TwofishCBCDecrypt(const uint8_t *key, const size_t keylen, const
+// uint8_t *in, const size_t inlen, uint8_t *out, size_t& outlen)
 // {
 // 	CBC<Twofish> cbc;
 // 	cbc.SetKey(key, keylen);
@@ -410,8 +410,8 @@ void ReleaseCipherMode(CipherModeBase*& base) {
 // 	cbc.Decrypt(in, inlen, out, outlen);
 // }
 //
-// void TwofishCFBEncrypt(const uint8_t* key, const size_t keylen, const
-// uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+// void TwofishCFBEncrypt(const uint8_t *key, const size_t keylen, const
+// uint8_t *in, const size_t inlen, uint8_t *out, size_t& outlen)
 // {
 // 	CFB<Twofish> cfb;
 // 	cfb.SetKey(key, keylen);
@@ -419,8 +419,8 @@ void ReleaseCipherMode(CipherModeBase*& base) {
 // 	cfb.Encrypt(in, inlen, out, outlen);
 // }
 //
-// void TwofishCFBDecrypt(const uint8_t* key, const size_t keylen, const
-// uint8_t* in, const size_t inlen, uint8_t* out, size_t& outlen)
+// void TwofishCFBDecrypt(const uint8_t *key, const size_t keylen, const
+// uint8_t *in, const size_t inlen, uint8_t *out, size_t& outlen)
 // {
 // 	CFB<Twofish> cfb;
 // 	cfb.SetKey(key, keylen);

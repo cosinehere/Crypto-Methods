@@ -17,7 +17,18 @@ RC6::~RC6() {}
 
 const size_t RC6::BlockSize() { return p_blocksize; }
 
-bool RC6::SetKey(const uint8_t* key, const size_t keylen) {
+const size_t RC6::KeyLength(size_t *min, size_t *max) {
+    if (min != nullptr) {
+        *min = c_rc6b;
+    }
+    if (max != nullptr) {
+        *max = c_rc6b;
+    }
+
+    return 16;
+}
+
+bool RC6::SetKey(const uint8_t *key, const size_t keylen) {
     if (key == nullptr || keylen != c_rc6b) {
         return false;
     }
@@ -34,7 +45,7 @@ bool RC6::SetKey(const uint8_t* key, const size_t keylen) {
     return bRet;
 }
 
-bool RC6::Encrypt(const uint8_t* plain, uint8_t* cipher) {
+bool RC6::Encrypt(const uint8_t *plain, uint8_t *cipher) {
     if (!p_haskey) {
         return false;
     }
@@ -63,10 +74,10 @@ bool RC6::Encrypt(const uint8_t* plain, uint8_t* cipher) {
     A += p_roundkey[2 * c_rc6r + 2];
     C += p_roundkey[2 * c_rc6r + 3];
 
-    rc6_word* c0 = reinterpret_cast<rc6_word*>(cipher);
-    rc6_word* c1 = reinterpret_cast<rc6_word*>(&cipher[4]);
-    rc6_word* c2 = reinterpret_cast<rc6_word*>(&cipher[8]);
-    rc6_word* c3 = reinterpret_cast<rc6_word*>(&cipher[12]);
+    rc6_word *c0 = reinterpret_cast<rc6_word*>(cipher);
+    rc6_word *c1 = reinterpret_cast<rc6_word*>(&cipher[4]);
+    rc6_word *c2 = reinterpret_cast<rc6_word*>(&cipher[8]);
+    rc6_word *c3 = reinterpret_cast<rc6_word*>(&cipher[12]);
 
     *c0 = A;
     *c1 = B;
@@ -76,7 +87,7 @@ bool RC6::Encrypt(const uint8_t* plain, uint8_t* cipher) {
     return true;
 }
 
-bool RC6::Decrypt(const uint8_t* cipher, uint8_t* plain) {
+bool RC6::Decrypt(const uint8_t *cipher, uint8_t *plain) {
     if (!p_haskey) {
         return false;
     }
@@ -106,10 +117,10 @@ bool RC6::Decrypt(const uint8_t* cipher, uint8_t* plain) {
     B -= p_roundkey[0];
     D -= p_roundkey[1];
 
-    rc6_word* c0 = reinterpret_cast<rc6_word*>(plain);
-    rc6_word* c1 = reinterpret_cast<rc6_word*>(&plain[4]);
-    rc6_word* c2 = reinterpret_cast<rc6_word*>(&plain[8]);
-    rc6_word* c3 = reinterpret_cast<rc6_word*>(&plain[12]);
+    rc6_word *c0 = reinterpret_cast<rc6_word*>(plain);
+    rc6_word *c1 = reinterpret_cast<rc6_word*>(&plain[4]);
+    rc6_word *c2 = reinterpret_cast<rc6_word*>(&plain[8]);
+    rc6_word *c3 = reinterpret_cast<rc6_word*>(&plain[12]);
 
     *c0 = A;
     *c1 = B;

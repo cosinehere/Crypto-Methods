@@ -15,7 +15,18 @@ TripDES::~TripDES() {}
 
 const size_t TripDES::BlockSize() { return p_blocksize; }
 
-bool TripDES::SetKey(const uint8_t* key, const size_t keylen) {
+const size_t TripDES::KeyLength(size_t *min, size_t *max) {
+    if (min != nullptr) {
+        *min = c_deskeylen;
+    }
+    if (max != nullptr) {
+        *max = c_deskeylen;
+    }
+
+    return 16;
+}
+
+bool TripDES::SetKey(const uint8_t *key, const size_t keylen) {
     if (key == nullptr || (keylen != c_deskeylen && keylen != c_deskeylen * 2 &&
                            keylen != c_deskeylen * 3)) {
         return false;
@@ -46,7 +57,7 @@ bool TripDES::SetKey(const uint8_t* key, const size_t keylen) {
     return true;
 }
 
-bool TripDES::Encrypt(const uint8_t* plain, uint8_t* cipher) {
+bool TripDES::Encrypt(const uint8_t *plain, uint8_t *cipher) {
     if (!p_haskey) {
         return false;
     }
@@ -59,7 +70,7 @@ bool TripDES::Encrypt(const uint8_t* plain, uint8_t* cipher) {
 
     return true;
 }
-bool TripDES::Decrypt(const uint8_t* cipher, uint8_t* plain) {
+bool TripDES::Decrypt(const uint8_t *cipher, uint8_t *plain) {
     if (!p_haskey) {
         return false;
     }

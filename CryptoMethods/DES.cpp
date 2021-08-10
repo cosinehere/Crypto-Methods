@@ -17,7 +17,18 @@ DES::~DES() {}
 
 const size_t DES::BlockSize() { return p_blocksize; }
 
-bool DES::SetKey(const uint8_t* key, const size_t keylen) {
+const size_t DES::KeyLength(size_t *min, size_t *max) {
+    if (min != nullptr) {
+        *min = c_deskeylen;
+    }
+    if (max != nullptr) {
+        *max = c_deskeylen;
+    }
+
+    return 8;
+}
+
+bool DES::SetKey(const uint8_t *key, const size_t keylen) {
     if (key == nullptr || keylen != c_deskeylen) {
         return false;
     }
@@ -34,7 +45,7 @@ bool DES::SetKey(const uint8_t* key, const size_t keylen) {
     return bRet;
 }
 
-bool DES::Encrypt(const uint8_t* plain, uint8_t* cipher) {
+bool DES::Encrypt(const uint8_t *plain, uint8_t *cipher) {
     if (!p_haskey) {
         return false;
     }
@@ -70,7 +81,7 @@ bool DES::Encrypt(const uint8_t* plain, uint8_t* cipher) {
     return true;
 }
 
-bool DES::Decrypt(const uint8_t* cipher, uint8_t* plain) {
+bool DES::Decrypt(const uint8_t *cipher, uint8_t *plain) {
     if (!p_haskey) {
         return false;
     }
@@ -133,7 +144,7 @@ bool DES::KeySchedule() {
     return true;
 }
 
-uint32_t DES::Feistel(const uint32_t rn_1, const uint8_t* k) {
+uint32_t DES::Feistel(const uint32_t rn_1, const uint8_t *k) {
     uint8_t e[6];
     for (size_t i = 0; i < 48; ++i) {
         setbit(e, i, getbit(reinterpret_cast<const uint8_t*>(&rn_1), E[i] - 1));

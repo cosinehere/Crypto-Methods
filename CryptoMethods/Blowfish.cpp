@@ -15,7 +15,19 @@ Blowfish::~Blowfish() {}
 
 const size_t Blowfish::BlockSize() { return p_blocksize; }
 
-bool Blowfish::SetKey(const uint8_t* key, const size_t keylen) {
+const size_t Blowfish::KeyLength(size_t *min, size_t *max) {
+    if (min != nullptr)
+    {
+        *min = 8;
+    }
+    if (max != nullptr) {
+        *max = 56;
+    }
+
+    return 16;
+}
+
+bool Blowfish::SetKey(const uint8_t *key, const size_t keylen) {
     if (key == nullptr || keylen < 8 || keylen > 56) {
         return false;
     }
@@ -56,7 +68,7 @@ bool Blowfish::SetKey(const uint8_t* key, const size_t keylen) {
     return true;
 }
 
-bool Blowfish::Encrypt(const uint8_t* plain, uint8_t* cipher) {
+bool Blowfish::Encrypt(const uint8_t *plain, uint8_t *cipher) {
     if (!p_haskey) {
         return false;
     }
@@ -83,7 +95,7 @@ bool Blowfish::Encrypt(const uint8_t* plain, uint8_t* cipher) {
     return true;
 }
 
-bool Blowfish::Decrypt(const uint8_t* cipher, uint8_t* plain) {
+bool Blowfish::Decrypt(const uint8_t *cipher, uint8_t *plain) {
     if (!p_haskey) {
         return false;
     }

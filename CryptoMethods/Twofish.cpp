@@ -375,7 +375,7 @@ uint32_t mds_rem(uint32_t p0, uint32_t p1) {
 
 /* initialise the key schedule from the user supplied key   */
 
-uint32_t* Twofish::set_key(const uint32_t in_key[], const uint32_t key_len) {
+uint32_t *Twofish::set_key(const uint32_t in_key[], const uint32_t key_len) {
     uint32_t i, a, b, me_key[4], mo_key[4];
 #ifdef Q_TABLES
     if (!qt_gen) {
@@ -420,7 +420,7 @@ uint32_t* Twofish::set_key(const uint32_t in_key[], const uint32_t key_len) {
 /* encrypt a block of text  */
 
 inline void Twofish::f_rnd(uint32_t i, uint32_t& t0, uint32_t& t1,
-                           uint32_t* blk) {
+                           uint32_t *blk) {
     t1 = g1_fun(blk[1]);
     t0 = g0_fun(blk[0]);
     blk[2] = rotr(blk[2] ^ (t0 + t1 + p_l_key[4 * (i) + 8]), 1);
@@ -456,7 +456,7 @@ void Twofish::encrypt(const uint32_t in_blk[4], uint32_t out_blk[4]) {
 /* decrypt a block of text  */
 
 inline void Twofish::i_rnd(uint32_t i, uint32_t& t0, uint32_t& t1,
-                           uint32_t* blk) {
+                           uint32_t *blk) {
     t1 = g1_fun(blk[1]);
     t0 = g0_fun(blk[0]);
     blk[2] = rotl(blk[2], 1) ^ (t0 + t1 + p_l_key[4 * (i) + 10]);
@@ -499,7 +499,18 @@ Twofish::~Twofish() {}
 
 const size_t Twofish::BlockSize() { return p_blocksize; }
 
-bool Twofish::SetKey(const uint8_t* key, const size_t keylen) {
+const size_t Twofish::KeyLength(size_t *min, size_t *max) {
+    if (min != nullptr) {
+        *min = 16;
+    }
+    if (max != nullptr) {
+        *max = 32;
+    }
+
+    return 16;
+}
+
+bool Twofish::SetKey(const uint8_t *key, const size_t keylen) {
     if (key == nullptr || (keylen != 16 && keylen != 24 && keylen != 32)) {
         return false;
     }
@@ -512,7 +523,7 @@ bool Twofish::SetKey(const uint8_t* key, const size_t keylen) {
     return true;
 }
 
-bool Twofish::Encrypt(const uint8_t* plain, uint8_t* cipher) {
+bool Twofish::Encrypt(const uint8_t *plain, uint8_t *cipher) {
     if (!p_haskey) {
         return false;
     }
@@ -523,7 +534,7 @@ bool Twofish::Encrypt(const uint8_t* plain, uint8_t* cipher) {
     return true;
 }
 
-bool Twofish::Decrypt(const uint8_t* cipher, uint8_t* plain) {
+bool Twofish::Decrypt(const uint8_t *cipher, uint8_t *plain) {
     if (!p_haskey) {
         return false;
     }

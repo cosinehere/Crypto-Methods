@@ -71,7 +71,7 @@ constexpr size_t P[32] = {16, 7, 20, 21, 29, 12, 28, 17, 1,  15, 23,
                           26, 5, 18, 31, 10, 2,  8,  24, 14, 32, 27,
                           3,  9, 19, 13, 30, 6,  22, 11, 4,  25};
 
-inline void setbit(uint8_t* p, size_t i, bool v) {
+inline void setbit(uint8_t *p, size_t i, bool v) {
     if (v) {
         p[i >> 3] |= 0x01 << (7 - (i & 0x07));
     } else {
@@ -79,7 +79,7 @@ inline void setbit(uint8_t* p, size_t i, bool v) {
     }
 }
 
-inline bool getbit(const uint8_t* p, size_t i) {
+inline bool getbit(const uint8_t *p, size_t i) {
     return p[i >> 3] & (0x01 << (7 - (i & 0x07)));
 }
 
@@ -90,10 +90,11 @@ class DES : public CipherBase {
 
     virtual const enum_crypt_methods CryptMethod() override { return p_method; }
     virtual const size_t BlockSize() override;
+    virtual const size_t KeyLength(size_t *min, size_t *max) override;
 
-    virtual bool SetKey(const uint8_t* key, const size_t keylen) override;
-    virtual bool Encrypt(const uint8_t* plain, uint8_t* cipher) override;
-    virtual bool Decrypt(const uint8_t* cipher, uint8_t* plain) override;
+    virtual bool SetKey(const uint8_t *key, const size_t keylen) override;
+    virtual bool Encrypt(const uint8_t *plain, uint8_t *cipher) override;
+    virtual bool Decrypt(const uint8_t *cipher, uint8_t *plain) override;
 
    private:
     enum_crypt_methods p_method;
@@ -106,7 +107,7 @@ class DES : public CipherBase {
     uint8_t p_subkey[16][6];
 
     bool KeySchedule();
-    uint32_t Feistel(const uint32_t rn_1, const uint8_t* k);
+    uint32_t Feistel(const uint32_t rn_1, const uint8_t *k);
 };
 
 NAMESPACE_END

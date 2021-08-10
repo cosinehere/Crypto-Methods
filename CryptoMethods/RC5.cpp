@@ -17,7 +17,18 @@ RC5::~RC5() {}
 
 const size_t RC5::BlockSize() { return p_blocksize; }
 
-bool RC5::SetKey(const uint8_t* key, const size_t keylen) {
+const size_t RC5::KeyLength(size_t *min, size_t *max) {
+    if (min != nullptr) {
+        *min = c_rc5b;
+    }
+    if (max != nullptr) {
+        *max = c_rc5b;
+    }
+
+    return 16;
+}
+
+bool RC5::SetKey(const uint8_t *key, const size_t keylen) {
     if (key == nullptr || keylen != c_rc5b) {
         return false;
     }
@@ -34,7 +45,7 @@ bool RC5::SetKey(const uint8_t* key, const size_t keylen) {
     return bRet;
 }
 
-bool RC5::Encrypt(const uint8_t* plain, uint8_t* cipher) {
+bool RC5::Encrypt(const uint8_t *plain, uint8_t *cipher) {
     if (!p_haskey) {
         return false;
     }
@@ -48,8 +59,8 @@ bool RC5::Encrypt(const uint8_t* plain, uint8_t* cipher) {
         B = l_rot<rc5_word>(B ^ A, A & 0x1f) + p_roundkey[(i << 1) + 1];
     }
 
-    rc5_word* c0 = reinterpret_cast<rc5_word*>(cipher);
-    rc5_word* c1 = reinterpret_cast<rc5_word*>(&cipher[4]);
+    rc5_word *c0 = reinterpret_cast<rc5_word*>(cipher);
+    rc5_word *c1 = reinterpret_cast<rc5_word*>(&cipher[4]);
 
     *c0 = A;
     *c1 = B;
@@ -57,7 +68,7 @@ bool RC5::Encrypt(const uint8_t* plain, uint8_t* cipher) {
     return true;
 }
 
-bool RC5::Decrypt(const uint8_t* cipher, uint8_t* plain) {
+bool RC5::Decrypt(const uint8_t *cipher, uint8_t *plain) {
     if (!p_haskey) {
         return false;
     }
@@ -69,8 +80,8 @@ bool RC5::Decrypt(const uint8_t* cipher, uint8_t* plain) {
         A = r_rot<rc5_word>(A - p_roundkey[i << 1], B & 0x1f) ^ B;
     }
 
-    rc5_word* p1 = reinterpret_cast<rc5_word*>(&plain[4]);
-    rc5_word* p0 = reinterpret_cast<rc5_word*>(plain);
+    rc5_word *p1 = reinterpret_cast<rc5_word*>(&plain[4]);
+    rc5_word *p0 = reinterpret_cast<rc5_word*>(plain);
 
     *p1 = B - p_roundkey[1];
     *p0 = A - p_roundkey[0];

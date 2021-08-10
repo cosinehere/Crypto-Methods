@@ -179,10 +179,11 @@ class Twofish : public CipherBase {
 
     virtual const enum_crypt_methods CryptMethod() override { return p_method; }
     virtual const size_t BlockSize() override;
+    virtual const size_t KeyLength(size_t *min, size_t *max) override;
 
-    virtual bool SetKey(const uint8_t* key, const size_t keylen) override;
-    virtual bool Encrypt(const uint8_t* plain, uint8_t* cipher) override;
-    virtual bool Decrypt(const uint8_t* cipher, uint8_t* plain) override;
+    virtual bool SetKey(const uint8_t *key, const size_t keylen) override;
+    virtual bool Encrypt(const uint8_t *plain, uint8_t *cipher) override;
+    virtual bool Decrypt(const uint8_t *cipher, uint8_t *plain) override;
 
    private:
     enum_crypt_methods p_method;
@@ -199,10 +200,10 @@ class Twofish : public CipherBase {
 
     uint32_t h_fun(const uint32_t x, const uint32_t key[]);
     void gen_mk_tab(uint32_t key[]);
-    uint32_t* set_key(const uint32_t in_key[], const uint32_t key_len);
-    void f_rnd(uint32_t i, uint32_t& t0, uint32_t& t1, uint32_t* blk);
+    uint32_t *set_key(const uint32_t in_key[], const uint32_t key_len);
+    void f_rnd(uint32_t i, uint32_t& t0, uint32_t& t1, uint32_t *blk);
     void encrypt(const uint32_t in_blk[4], uint32_t out_blk[4]);
-    void i_rnd(uint32_t i, uint32_t& t0, uint32_t& t1, uint32_t* blk);
+    void i_rnd(uint32_t i, uint32_t& t0, uint32_t& t1, uint32_t *blk);
     void decrypt(const uint32_t in_blk[4], uint32_t out_blk[4]);
 };
 

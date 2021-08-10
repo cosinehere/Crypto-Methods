@@ -5,20 +5,28 @@ NAMESPACE_BEGIN(CryptoMethods)
 
 class CTR : public CipherModeBase {
    public:
-    CTR(CipherBase* base);
+    CTR(CipherBase *base);
     virtual ~CTR();
 
     virtual const enum_crypt_modes CryptMode() override { return p_mode; }
 
-    virtual bool SetKey(const uint8_t* key, const size_t keylen) override;
-    virtual bool SetIV(const uint8_t* iv, const size_t ivlen) override;
+    virtual bool SetKey(const uint8_t *key, const size_t keylen) override;
+    virtual bool SetIV(const uint8_t *iv, const size_t ivlen) override;
 
-    virtual bool Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
+    virtual bool Encrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
                          size_t& outlen) override;
-    virtual bool Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
+    virtual bool Decrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
                          size_t& outlen) override;
 
-    virtual bool GetTemp(uint8_t* temp, const uint32_t templen) override;
+    virtual bool GetTemp(uint8_t *temp, const uint32_t templen) override;
+
+    virtual size_t GetKeyLength(size_t *min, size_t *max) override {
+        return p_cipher->KeyLength(min, max);
+    }
+
+    virtual size_t GetBlockSize() override {
+        return p_cipher->BlockSize();
+    }
 
 #ifndef CXX11_NOT_SUPPORT
    private:
@@ -31,15 +39,15 @@ class CTR : public CipherModeBase {
    private:
     enum_crypt_modes p_mode;
 
-    CipherBase* p_cipher;
+    CipherBase *p_cipher;
     size_t p_blocksize;
 
-    uint8_t* p_iv;
+    uint8_t *p_iv;
     size_t p_ivlen;
-    uint8_t* p_temp;
+    uint8_t *p_temp;
 };
 
-CTR::CTR(CipherBase* base) {
+CTR::CTR(CipherBase *base) {
     p_mode = enum_crypt_mode_ctr;
 
     p_cipher = base;
@@ -60,11 +68,11 @@ CTR::~CTR() {
     }
 }
 
-bool CTR::SetKey(const uint8_t* key, const size_t keylen) {
+bool CTR::SetKey(const uint8_t *key, const size_t keylen) {
     return p_cipher->SetKey(key, keylen);
 }
 
-bool CTR::SetIV(const uint8_t* iv, const size_t ivlen) {
+bool CTR::SetIV(const uint8_t *iv, const size_t ivlen) {
     if (iv == nullptr || ivlen != p_ivlen) {
         return false;
     }
@@ -74,9 +82,9 @@ bool CTR::SetIV(const uint8_t* iv, const size_t ivlen) {
     return true;
 }
 
-bool CTR::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
+bool CTR::Encrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
                   size_t& outlen) {
-    uint8_t* counter = new uint8_t[p_blocksize];
+    uint8_t *counter = new uint8_t[p_blocksize];
     memcpy(counter, p_iv, sizeof(uint8_t) * p_blocksize);
     outlen = 0;
     for (size_t i = 0; i < inlen; i += p_blocksize) {
@@ -103,9 +111,9 @@ bool CTR::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
     return true;
 }
 
-bool CTR::Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
+bool CTR::Decrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
                   size_t& outlen) {
-    uint8_t* counter = new uint8_t[p_blocksize];
+    uint8_t *counter = new uint8_t[p_blocksize];
     memcpy(counter, p_iv, sizeof(uint8_t) * p_blocksize);
     outlen = 0;
     for (size_t i = 0; i < inlen; i += p_blocksize) {
@@ -132,7 +140,7 @@ bool CTR::Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
     return true;
 }
 
-bool CTR::GetTemp(uint8_t* temp, const uint32_t templen) {
+bool CTR::GetTemp(uint8_t *temp, const uint32_t templen) {
     if (templen != p_blocksize) {
         return false;
     }

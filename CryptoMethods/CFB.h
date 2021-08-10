@@ -5,20 +5,28 @@ NAMESPACE_BEGIN(CryptoMethods)
 
 class CFB : public CipherModeBase {
    public:
-    CFB(CipherBase* base);
+    CFB(CipherBase *base);
     virtual ~CFB();
 
     virtual const enum_crypt_modes CryptMode() override { return p_mode; }
 
-    virtual bool SetKey(const uint8_t* key, const size_t keylen) override;
-    virtual bool SetIV(const uint8_t* iv, const size_t ivlen) override;
+    virtual bool SetKey(const uint8_t *key, const size_t keylen) override;
+    virtual bool SetIV(const uint8_t *iv, const size_t ivlen) override;
 
-    virtual bool Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
-                         size_t& outlen) override;
-    virtual bool Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
-                         size_t& outlen) override;
+    virtual bool Encrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
+                         size_t &outlen) override;
+    virtual bool Decrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
+                         size_t &outlen) override;
 
-    virtual bool GetTemp(uint8_t* temp, const uint32_t templen) override;
+    virtual bool GetTemp(uint8_t *temp, const uint32_t templen) override;
+
+    virtual size_t GetKeyLength(size_t *min, size_t *max) override {
+        return p_cipher->KeyLength(min, max);
+    }
+
+    virtual size_t GetBlockSize() override {
+        return p_cipher->BlockSize();
+    }
 
 #ifndef CXX11_NOT_SUPPORT
    private:
@@ -31,15 +39,15 @@ class CFB : public CipherModeBase {
    private:
     enum_crypt_modes p_mode;
 
-    CipherBase* p_cipher;
+    CipherBase *p_cipher;
     size_t p_blocksize;
 
-    uint8_t* p_iv;
+    uint8_t *p_iv;
     size_t p_ivlen;
-    uint8_t* p_temp;
+    uint8_t *p_temp;
 };
 
-CFB::CFB(CipherBase* base) {
+CFB::CFB(CipherBase *base) {
     p_mode = enum_crypt_mode_cfb;
 
     p_cipher = base;
@@ -60,11 +68,11 @@ CFB::~CFB() {
     }
 }
 
-bool CFB::SetKey(const uint8_t* key, const size_t keylen) {
+bool CFB::SetKey(const uint8_t *key, const size_t keylen) {
     return p_cipher->SetKey(key, keylen);
 }
 
-bool CFB::SetIV(const uint8_t* iv, const size_t ivlen) {
+bool CFB::SetIV(const uint8_t *iv, const size_t ivlen) {
     if (iv == nullptr || ivlen != p_ivlen) {
         return false;
     }
@@ -74,7 +82,7 @@ bool CFB::SetIV(const uint8_t* iv, const size_t ivlen) {
     return true;
 }
 
-bool CFB::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
+bool CFB::Encrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
                   size_t& outlen) {
     outlen = 0;
     for (size_t i = 0; i < inlen; i += p_blocksize) {
@@ -94,7 +102,7 @@ bool CFB::Encrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
     return true;
 }
 
-bool CFB::Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
+bool CFB::Decrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
                   size_t& outlen) {
     outlen = 0;
     for (size_t i = 0; i < inlen; i += p_blocksize) {
@@ -114,7 +122,7 @@ bool CFB::Decrypt(const uint8_t* in, const size_t inlen, uint8_t* out,
     return true;
 }
 
-bool CFB::GetTemp(uint8_t* temp, const uint32_t templen) {
+bool CFB::GetTemp(uint8_t *temp, const uint32_t templen) {
     if (templen != p_blocksize) {
         return false;
     }
