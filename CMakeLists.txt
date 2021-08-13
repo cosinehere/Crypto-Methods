@@ -41,7 +41,10 @@ target_precompile_headers(${cryptolib} PRIVATE
     ${CMAKE_SOURCE_DIR}/CryptoMethods/pch.h
     )
 target_compile_options(${cryptolib}
-    PRIVATE -fvisibility=hidden -Wl,-s
+    PRIVATE -fvisibility=hidden
+    )
+target_link_options(${cryptolib}
+    PRIVATE -Wl,-s
     )
 
 # CryptoTest
