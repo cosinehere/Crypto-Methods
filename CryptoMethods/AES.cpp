@@ -6,7 +6,6 @@ namespace CryptoMethods {
 
 inline uint8_t gmult(uint8_t a, uint8_t b) {
     uint8_t p = 0, hbs = 0;
-    uint8_t tempa = a, tempb = b;
     for (size_t i = 0; i < 8; i++) {
         if (b & 1) p ^= a;
 

@@ -93,7 +93,7 @@ bool RC5::Decrypt(const uint8_t *cipher, uint8_t *plain) {
 bool RC5::Setup() {
     rc5_word L[c_rc5c] = { 0 };
     L[c_rc5c - 1] = 0;
-    for (size_t i = c_rc5b - 1; i != -1; --i) {
+    for (size_t i = c_rc5b - 1; i != (size_t)-1; --i) {
         L[i / c_rc5u] = (L[i / c_rc5u] << 8) + p_key[i];
     }
 

@@ -134,7 +134,7 @@ bool RC6::Decrypt(const uint8_t *cipher, uint8_t *plain) {
 bool RC6::Setup() {
     rc6_word L[c_rc6c] = { 0 };
     L[c_rc6c - 1] = 0;
-    for (size_t i = c_rc6b - 1; i != -1; --i) {
+    for (size_t i = c_rc6b - 1; i != (size_t)-1; --i) {
         L[i / c_rc6u] = (L[i / c_rc6u] << 8) + p_key[i];
     }
 
