@@ -1,7 +1,7 @@
 #pragma once
 #include "CryptoMethodDefines.h"
 
-NAMESPACE_BEGIN(CryptoMethods)
+namespace CryptoMethods {
 
 constexpr size_t c_blowfishblocksize = 8;
 
@@ -10,7 +10,7 @@ constexpr uint32_t c_InitP[18] = {
     0x243f6a88ul, 0x85a308d3ul, 0x13198a2eul, 0x03707344ul, 0xa4093822ul,
     0x299f31d0ul, 0x082efa98ul, 0xec4e6c89ul, 0x452821e6ul, 0x38d01377ul,
     0xbe5466cful, 0x34e90c6cul, 0xc0ac29b7ul, 0xc97c50ddul, 0x3f84d5b5ul,
-    0xb5470917ul, 0x9216d5d9ul, 0x8979fb1bul};
+    0xb5470917ul, 0x9216d5d9ul, 0x8979fb1bul };
 
 // Four 32-bit S-boxes with 256 entries each
 constexpr uint32_t c_InitS[4][256] = {
@@ -185,10 +185,10 @@ constexpr uint32_t c_InitS[4][256] = {
      0x38abbd60, 0x2547adf0, 0xba38209c, 0xf746ce76, 0x77afa1c5, 0x20756060,
      0x85cbfe4e, 0x8ae88dd8, 0x7aaaf9b0, 0x4cf9aa7e, 0x1948c25c, 0x02fb8a8c,
      0x01c36ae4, 0xd6ebe1f9, 0x90d4f869, 0xa65cdea0, 0x3f09252d, 0xc208e69f,
-     0xb74e6132, 0xce77e25b, 0x578fdfe3, 0x3ac372e6}};
+     0xb74e6132, 0xce77e25b, 0x578fdfe3, 0x3ac372e6} };
 
 class Blowfish : public CipherBase {
-   public:
+public:
     Blowfish();
     virtual ~Blowfish();
 
@@ -200,7 +200,7 @@ class Blowfish : public CipherBase {
     virtual bool Encrypt(const uint8_t *plain, uint8_t *cipher) override;
     virtual bool Decrypt(const uint8_t *cipher, uint8_t *plain) override;
 
-   private:
+private:
     enum_crypt_methods p_method;
     size_t p_blocksize;
 
@@ -216,9 +216,9 @@ class Blowfish : public CipherBase {
     void Decrypt(uint32_t& L, uint32_t& R);
     inline uint32_t f(uint32_t x) {
         return ((p_S[0][(x >> 24) & 0xff] + p_S[1][(x >> 16) & 0xff]) ^
-                p_S[2][(x >> 8) & 0xff]) +
-               p_S[3][x & 0xff];
+            p_S[2][(x >> 8) & 0xff]) +
+            p_S[3][x & 0xff];
     }
 };
 
-NAMESPACE_END
+}

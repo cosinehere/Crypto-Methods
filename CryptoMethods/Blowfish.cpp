@@ -2,7 +2,7 @@
 
 #include "Blowfish.h"
 
-NAMESPACE_BEGIN(CryptoMethods)
+namespace CryptoMethods {
 
 Blowfish::Blowfish() {
     p_method = enum_crypt_methods_blowfish;
@@ -156,4 +156,4 @@ void Blowfish::Decrypt(uint32_t& L, uint32_t& R) {
     L = L ^ p_P[0];
 }
 
-NAMESPACE_END
+}

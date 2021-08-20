@@ -4,7 +4,7 @@
 
 #include "CryptoTemplates.h"
 
-NAMESPACE_BEGIN(CryptoMethods)
+namespace CryptoMethods {
 
 RC6::RC6() {
     p_method = enum_crypt_methods_rc6;
@@ -38,7 +38,8 @@ bool RC6::SetKey(const uint8_t *key, const size_t keylen) {
     bool bRet = Setup();
     if (bRet) {
         p_haskey = true;
-    } else {
+    }
+    else {
         p_haskey = false;
     }
 
@@ -131,7 +132,7 @@ bool RC6::Decrypt(const uint8_t *cipher, uint8_t *plain) {
 }
 
 bool RC6::Setup() {
-    rc6_word L[c_rc6c] = {0};
+    rc6_word L[c_rc6c] = { 0 };
     L[c_rc6c - 1] = 0;
     for (size_t i = c_rc6b - 1; i != -1; --i) {
         L[i / c_rc6u] = (L[i / c_rc6u] << 8) + p_key[i];
@@ -144,7 +145,7 @@ bool RC6::Setup() {
 
     rc6_word A = 0, B = 0;
     for (size_t i = 0, j = 0, k = 0; k < 3 * c_rc6t;
-         ++k, i = (i + 1) % c_rc6t, j = (j + 1) % c_rc6c) {
+        ++k, i = (i + 1) % c_rc6t, j = (j + 1) % c_rc6c) {
         A = p_roundkey[i] = l_rot<rc6_word>(p_roundkey[i] + A + B, 3);
         B = L[j] = l_rot<rc6_word>(L[j] + A + B, (A + B) & 0x1f);
     }
@@ -152,4 +153,4 @@ bool RC6::Setup() {
     return true;
 }
 
-NAMESPACE_END
+}

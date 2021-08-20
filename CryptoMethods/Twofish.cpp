@@ -4,7 +4,7 @@
 
 #include "CryptoTemplates.h"
 
-NAMESPACE_BEGIN(CryptoMethods)
+namespace CryptoMethods {
 
 #define M_TABLE
 
@@ -17,38 +17,38 @@ NAMESPACE_BEGIN(CryptoMethods)
 
 constexpr uint16_t G_M = 0x0169;
 
-constexpr uint8_t tab_5b[4] = {0, G_M >> 2, G_M >> 1, (G_M >> 1) ^ (G_M >> 2)};
-constexpr uint8_t tab_ef[4] = {0, (G_M >> 1) ^ (G_M >> 2), G_M >> 1, G_M >> 2};
+constexpr uint8_t tab_5b[4] = { 0, G_M >> 2, G_M >> 1, (G_M >> 1) ^ (G_M >> 2) };
+constexpr uint8_t tab_ef[4] = { 0, (G_M >> 1) ^ (G_M >> 2), G_M >> 1, G_M >> 2 };
 
 //#define ffm_01(x)    (x)
 inline uint8_t ffm_01(uint8_t x) { return x; }
 //#define ffm_5b(x)   ((x) ^ ((x) >> 2) ^ tab_5b[(x) & 3])
-inline uint8_t ffm_5b(uint8_t x) { return ((x) ^ ((x) >> 2) ^ tab_5b[(x)&3]); }
+inline uint8_t ffm_5b(uint8_t x) { return ((x) ^ ((x) >> 2) ^ tab_5b[(x) & 3]); }
 //#define ffm_ef(x)   ((x) ^ ((x) >> 1) ^ ((x) >> 2) ^ tab_ef[(x) & 3])
 inline uint8_t ffm_ef(uint8_t x) {
-    return ((x) ^ ((x) >> 1) ^ ((x) >> 2) ^ tab_ef[(x)&3]);
+    return ((x) ^ ((x) >> 1) ^ ((x) >> 2) ^ tab_ef[(x) & 3]);
 }
 
-constexpr uint8_t ror4[16] = {0, 8,  1, 9,  2, 10, 3, 11,
-                              4, 12, 5, 13, 6, 14, 7, 15};
-constexpr uint8_t ashx[16] = {0, 9, 2,  11, 4,  13, 6,  15,
-                              8, 1, 10, 3,  12, 5,  14, 7};
+constexpr uint8_t ror4[16] = { 0, 8,  1, 9,  2, 10, 3, 11,
+                              4, 12, 5, 13, 6, 14, 7, 15 };
+constexpr uint8_t ashx[16] = { 0, 9, 2,  11, 4,  13, 6,  15,
+                              8, 1, 10, 3,  12, 5,  14, 7 };
 
 constexpr uint8_t qt0[2][16] = {
     {8, 1, 7, 13, 6, 15, 3, 2, 0, 11, 5, 9, 14, 12, 10, 4},
-    {2, 8, 11, 13, 15, 7, 6, 14, 3, 1, 9, 4, 0, 10, 12, 5}};
+    {2, 8, 11, 13, 15, 7, 6, 14, 3, 1, 9, 4, 0, 10, 12, 5} };
 
 constexpr uint8_t qt1[2][16] = {
     {14, 12, 11, 8, 1, 2, 3, 5, 15, 4, 10, 6, 7, 0, 9, 13},
-    {1, 14, 2, 11, 4, 12, 3, 7, 6, 13, 10, 5, 15, 9, 0, 8}};
+    {1, 14, 2, 11, 4, 12, 3, 7, 6, 13, 10, 5, 15, 9, 0, 8} };
 
 constexpr uint8_t qt2[2][16] = {
     {11, 10, 5, 14, 6, 13, 9, 0, 12, 8, 15, 3, 2, 4, 7, 1},
-    {4, 12, 7, 5, 1, 6, 9, 10, 0, 14, 13, 8, 2, 11, 3, 15}};
+    {4, 12, 7, 5, 1, 6, 9, 10, 0, 14, 13, 8, 2, 11, 3, 15} };
 
 constexpr uint8_t qt3[2][16] = {
     {13, 7, 15, 4, 1, 2, 6, 14, 9, 11, 3, 0, 8, 5, 12, 10},
-    {11, 9, 5, 1, 12, 3, 13, 14, 6, 4, 7, 15, 2, 0, 8, 10}};
+    {11, 9, 5, 1, 12, 3, 13, 14, 6, 4, 7, 15, 2, 0, 8, 10} };
 
 inline uint8_t qp(const uint32_t n, const uint8_t x) {
     uint8_t a0, a1, a2, a3, a4, b0, b1, b2, b3, b4;
@@ -155,21 +155,21 @@ inline uint32_t Twofish::h_fun(const uint32_t x, const uint32_t key[]) {
     b2 = byte(x, 2);
     b3 = byte(x, 3);
     switch (p_k_len) {
-        case 4:
-            b0 = q(1, b0) ^ byte(key[3], 0);
-            b1 = q(0, b1) ^ byte(key[3], 1);
-            b2 = q(0, b2) ^ byte(key[3], 2);
-            b3 = q(1, b3) ^ byte(key[3], 3);
-        case 3:
-            b0 = q(1, b0) ^ byte(key[2], 0);
-            b1 = q(1, b1) ^ byte(key[2], 1);
-            b2 = q(0, b2) ^ byte(key[2], 2);
-            b3 = q(0, b3) ^ byte(key[2], 3);
-        case 2:
-            b0 = q(0, q(0, b0) ^ byte(key[1], 0)) ^ byte(key[0], 0);
-            b1 = q(0, q(1, b1) ^ byte(key[1], 1)) ^ byte(key[0], 1);
-            b2 = q(1, q(0, b2) ^ byte(key[1], 2)) ^ byte(key[0], 2);
-            b3 = q(1, q(1, b3) ^ byte(key[1], 3)) ^ byte(key[0], 3);
+    case 4:
+        b0 = q(1, b0) ^ byte(key[3], 0);
+        b1 = q(0, b1) ^ byte(key[3], 1);
+        b2 = q(0, b2) ^ byte(key[3], 2);
+        b3 = q(1, b3) ^ byte(key[3], 3);
+    case 3:
+        b0 = q(1, b0) ^ byte(key[2], 0);
+        b1 = q(1, b1) ^ byte(key[2], 1);
+        b2 = q(0, b2) ^ byte(key[2], 2);
+        b3 = q(0, b3) ^ byte(key[2], 3);
+    case 2:
+        b0 = q(0, q(0, b0) ^ byte(key[1], 0)) ^ byte(key[0], 0);
+        b1 = q(0, q(1, b1) ^ byte(key[1], 1)) ^ byte(key[0], 1);
+        b2 = q(1, q(0, b2) ^ byte(key[1], 2)) ^ byte(key[0], 2);
+        b3 = q(1, q(1, b3) ^ byte(key[1], 3)) ^ byte(key[0], 3);
     }
 
 #ifdef M_TABLE
@@ -235,53 +235,53 @@ void Twofish::gen_mk_tab(uint32_t key[]) {
     uint32_t i;
     uint8_t by;
     switch (p_k_len) {
-        case 2:
-            for (i = 0; i < 256; ++i) {
-                by = (uint8_t)i;
+    case 2:
+        for (i = 0; i < 256; ++i) {
+            by = (uint8_t)i;
 #ifdef ONE_STEP
-                mk_tab[0][i] = mds(0, q20(by));
-                mk_tab[1][i] = mds(1, q21(by));
-                mk_tab[2][i] = mds(2, q22(by));
-                mk_tab[3][i] = mds(3, q23(by));
+            mk_tab[0][i] = mds(0, q20(by));
+            mk_tab[1][i] = mds(1, q21(by));
+            mk_tab[2][i] = mds(2, q22(by));
+            mk_tab[3][i] = mds(3, q23(by));
 #else
-                sb[0][i] = q20(by);
-                sb[1][i] = q21(by);
-                sb[2][i] = q22(by);
-                sb[3][i] = q23(by);
+            sb[0][i] = q20(by);
+            sb[1][i] = q21(by);
+            sb[2][i] = q22(by);
+            sb[3][i] = q23(by);
 #endif
-            }
-            break;
-        case 3:
-            for (i = 0; i < 256; ++i) {
-                by = (uint8_t)i;
+        }
+        break;
+    case 3:
+        for (i = 0; i < 256; ++i) {
+            by = (uint8_t)i;
 #ifdef ONE_STEP
-                mk_tab[0][i] = mds(0, q30(by));
-                mk_tab[1][i] = mds(1, q31(by));
-                mk_tab[2][i] = mds(2, q32(by));
-                mk_tab[3][i] = mds(3, q33(by));
+            mk_tab[0][i] = mds(0, q30(by));
+            mk_tab[1][i] = mds(1, q31(by));
+            mk_tab[2][i] = mds(2, q32(by));
+            mk_tab[3][i] = mds(3, q33(by));
 #else
-                sb[0][i] = q30(by);
-                sb[1][i] = q31(by);
-                sb[2][i] = q32(by);
-                sb[3][i] = q33(by);
+            sb[0][i] = q30(by);
+            sb[1][i] = q31(by);
+            sb[2][i] = q32(by);
+            sb[3][i] = q33(by);
 #endif
-            }
-            break;
-        case 4:
-            for (i = 0; i < 256; ++i) {
-                by = (uint8_t)i;
+        }
+        break;
+    case 4:
+        for (i = 0; i < 256; ++i) {
+            by = (uint8_t)i;
 #ifdef ONE_STEP
-                mk_tab[0][i] = mds(0, q40(by));
-                mk_tab[1][i] = mds(1, q41(by));
-                mk_tab[2][i] = mds(2, q42(by));
-                mk_tab[3][i] = mds(3, q43(by));
+            mk_tab[0][i] = mds(0, q40(by));
+            mk_tab[1][i] = mds(1, q41(by));
+            mk_tab[2][i] = mds(2, q42(by));
+            mk_tab[3][i] = mds(3, q43(by));
 #else
-                sb[0][i] = q40(by);
-                sb[1][i] = q41(by);
-                sb[2][i] = q42(by);
-                sb[3][i] = q43(by);
+            sb[0][i] = q40(by);
+            sb[1][i] = q41(by);
+            sb[2][i] = q42(by);
+            sb[3][i] = q43(by);
 #endif
-            }
+        }
     }
 };
 
@@ -289,12 +289,12 @@ void Twofish::gen_mk_tab(uint32_t key[]) {
 inline uint32_t g0_fun(uint32_t x) {
     /*#    define g0_fun(x)*/
     return (mk_tab[0][byte(x, 0)] ^ mk_tab[1][byte(x, 1)] ^
-            mk_tab[2][byte(x, 2)] ^ mk_tab[3][byte(x, 3)]);
+        mk_tab[2][byte(x, 2)] ^ mk_tab[3][byte(x, 3)]);
 }
 inline uint32_t g1_fun(uint32_t x) {
     /*#    define g1_fun(x)*/
     return (mk_tab[0][byte(x, 3)] ^ mk_tab[1][byte(x, 0)] ^
-            mk_tab[2][byte(x, 1)] ^ mk_tab[3][byte(x, 2)]);
+        mk_tab[2][byte(x, 1)] ^ mk_tab[3][byte(x, 2)]);
 }
 #else
 #define g0_fun(x)                                            \
@@ -420,15 +420,15 @@ uint32_t *Twofish::set_key(const uint32_t in_key[], const uint32_t key_len) {
 /* encrypt a block of text  */
 
 inline void Twofish::f_rnd(uint32_t i, uint32_t& t0, uint32_t& t1,
-                           uint32_t *blk) {
+    uint32_t *blk) {
     t1 = g1_fun(blk[1]);
     t0 = g0_fun(blk[0]);
-    blk[2] = rotr(blk[2] ^ (t0 + t1 + p_l_key[4 * (i) + 8]), 1);
-    blk[3] = rotl(blk[3], 1) ^ (t0 + 2 * t1 + p_l_key[4 * (i) + 9]);
+    blk[2] = rotr(blk[2] ^ (t0 + t1 + p_l_key[4 * (i)+8]), 1);
+    blk[3] = rotl(blk[3], 1) ^ (t0 + 2 * t1 + p_l_key[4 * (i)+9]);
     t1 = g1_fun(blk[3]);
     t0 = g0_fun(blk[2]);
-    blk[0] = rotr(blk[0] ^ (t0 + t1 + p_l_key[4 * (i) + 10]), 1);
-    blk[1] = rotl(blk[1], 1) ^ (t0 + 2 * t1 + p_l_key[4 * (i) + 11]);
+    blk[0] = rotr(blk[0] ^ (t0 + t1 + p_l_key[4 * (i)+10]), 1);
+    blk[1] = rotl(blk[1], 1) ^ (t0 + 2 * t1 + p_l_key[4 * (i)+11]);
 }
 
 void Twofish::encrypt(const uint32_t in_blk[4], uint32_t out_blk[4]) {
@@ -456,15 +456,15 @@ void Twofish::encrypt(const uint32_t in_blk[4], uint32_t out_blk[4]) {
 /* decrypt a block of text  */
 
 inline void Twofish::i_rnd(uint32_t i, uint32_t& t0, uint32_t& t1,
-                           uint32_t *blk) {
+    uint32_t *blk) {
     t1 = g1_fun(blk[1]);
     t0 = g0_fun(blk[0]);
-    blk[2] = rotl(blk[2], 1) ^ (t0 + t1 + p_l_key[4 * (i) + 10]);
-    blk[3] = rotr(blk[3] ^ (t0 + 2 * t1 + p_l_key[4 * (i) + 11]), 1);
+    blk[2] = rotl(blk[2], 1) ^ (t0 + t1 + p_l_key[4 * (i)+10]);
+    blk[3] = rotr(blk[3] ^ (t0 + 2 * t1 + p_l_key[4 * (i)+11]), 1);
     t1 = g1_fun(blk[3]);
     t0 = g0_fun(blk[2]);
-    blk[0] = rotl(blk[0], 1) ^ (t0 + t1 + p_l_key[4 * (i) + 8]);
-    blk[1] = rotr(blk[1] ^ (t0 + 2 * t1 + p_l_key[4 * (i) + 9]), 1);
+    blk[0] = rotl(blk[0], 1) ^ (t0 + t1 + p_l_key[4 * (i)+8]);
+    blk[1] = rotr(blk[1] ^ (t0 + 2 * t1 + p_l_key[4 * (i)+9]), 1);
 }
 
 void Twofish::decrypt(const uint32_t in_blk[4], uint32_t out_blk[4]) {
@@ -495,6 +495,7 @@ Twofish::Twofish() {
 
     p_haskey = false;
 }
+
 Twofish::~Twofish() {}
 
 const size_t Twofish::BlockSize() { return p_blocksize; }
@@ -529,7 +530,7 @@ bool Twofish::Encrypt(const uint8_t *plain, uint8_t *cipher) {
     }
 
     encrypt(reinterpret_cast<const uint32_t*>(plain),
-            reinterpret_cast<uint32_t*>(cipher));
+        reinterpret_cast<uint32_t*>(cipher));
 
     return true;
 }
@@ -540,9 +541,9 @@ bool Twofish::Decrypt(const uint8_t *cipher, uint8_t *plain) {
     }
 
     decrypt(reinterpret_cast<const uint32_t*>(cipher),
-            reinterpret_cast<uint32_t*>(plain));
+        reinterpret_cast<uint32_t*>(plain));
 
     return true;
 }
 
-NAMESPACE_END
+}

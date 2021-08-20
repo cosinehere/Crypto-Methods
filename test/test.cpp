@@ -3,14 +3,14 @@
 #include <memory.h>
 
 #include "../CryptoMethods/CryptoMethodDefines.h"
+#include "../CryptoMethods/Padding.h"
 #pragma comment(lib,"../CryptoMethods/Debug/CryptoMethods")
 
 void PaddingTest()
 {
 	uint8_t buffer[16] = { 0 };
-	//CryptoMethods::PKCS7(buffer, 8, 8);
-	//CryptoMethods::PKCS5(buffer, 8);
-	for (size_t i = 0; i < 16; ++i)
+	size_t len = CryptoMethods::pkcs_5(buffer, 16, 11);
+	for (size_t i = 0; i < len; ++i)
 	{
 		printf("%02x ", buffer[i]);
 	}
@@ -269,18 +269,26 @@ void PaddingTest()
 
 int main()
 {
-	
+    PaddingTest();
 
 	//	CryptoMethods::CipherBase* base = nullptr;
 	// 	CryptoMethods::CreateAES(base);
 
-	uint8_t key[] = "abcdefghijklmnopqrstuvwxyz";
+    uint8_t key[] = { 0x2b,0x7e,0x15,0x16,0x28,0xae,0xd2,0xa6,0xab,0xf7,0x15,0x88,0x09,0xcf,0x4f,0x3c }/*"abcdefghijklmnopqrstuvwxyz"*/;
 	size_t keylen = 16;
 	//	base->SetKey(key, keylen);
 
-	uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
-	size_t plainlen = 17;
-	uint8_t cipher[33] = { 0 };
+	//uint8_t plain[33] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+    uint8_t plain[] = { 0x6b,0xc1,0xbe,0xe2,0x2e,0x40,0x9f,0x96,
+        0xe9,0x3d,0x7e,0x11,0x73,0x93,0x17,0x2a,
+        0xae,0x2d,0x8a,0x57,0x1e,0x03,0xac,0x9c,
+        0x9e,0xb7,0x6f,0xac,0x45,0xaf,0x8e,0x51,
+        0x30,0xc8,0x1c,0x46,0xa3,0x5c,0xe4,0x11,
+        0xe5,0xfb,0xc1,0x19,0x1a,0x0a,0x52,0xef,
+        0xf6,0x9f,0x24,0x45,0xdf,0x4f,0x9b,0x17,
+        0xad,0x2b,0x41,0x7b,0xe6,0x6c,0x37,0x10 };
+	size_t plainlen = 64;
+	uint8_t cipher[64] = { 0 };
 	size_t cipherlen = 0;
 
 	// 	base->Encrypt(plain, cipher);
@@ -303,7 +311,7 @@ int main()
 	//
 	// 	CryptoMethods::ReleaseAES(base);
 
-	uint8_t iv[16] = { '0','0', '0', '0', '1', '1', '1', '1', '2', '2', '2', '2', '3', '3', '3','3' };
+	uint8_t iv[16] = /*{ '0','0', '0', '0', '1', '1', '1', '1', '2', '2', '2', '2', '3', '3', '3','3' };*/{ 0xf0,0xf1,0xf2,0xf3,0xf4,0xf5,0xf6,0xf7,0xf8,0xf9,0xfa,0xfb,0xfc,0xfd,0xfe,0xff };
 
 // 	CryptoMethods::CreateTwofish(base);
 // 

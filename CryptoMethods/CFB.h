@@ -1,10 +1,10 @@
 #pragma once
 #include "CryptoMethodDefines.h"
 
-NAMESPACE_BEGIN(CryptoMethods)
+namespace CryptoMethods {
 
 class CFB : public CipherModeBase {
-   public:
+public:
     CFB(CipherBase *base);
     virtual ~CFB();
 
@@ -14,9 +14,9 @@ class CFB : public CipherModeBase {
     virtual bool SetIV(const uint8_t *iv, const size_t ivlen) override;
 
     virtual bool Encrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
-                         size_t &outlen) override;
+        size_t &outlen) override;
     virtual bool Decrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
-                         size_t &outlen) override;
+        size_t &outlen) override;
 
     virtual bool GetTemp(uint8_t *temp, const uint32_t templen) override;
 
@@ -29,14 +29,14 @@ class CFB : public CipherModeBase {
     }
 
 #ifndef CXX11_NOT_SUPPORT
-   private:
+private:
     CFB(const CFB&) = delete;
     CFB(const CFB&&) = delete;
     CFB& operator=(const CFB&) = delete;
     CFB& operator=(const CFB&&) = delete;
 #endif  // CXX11_NOT_SUPPORT
 
-   private:
+private:
     enum_crypt_modes p_mode;
 
     CipherBase *p_cipher;
@@ -83,14 +83,15 @@ bool CFB::SetIV(const uint8_t *iv, const size_t ivlen) {
 }
 
 bool CFB::Encrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
-                  size_t& outlen) {
+    size_t& outlen) {
     outlen = 0;
     for (size_t i = 0; i < inlen; i += p_blocksize) {
         size_t len = (i + p_blocksize <= inlen) ? p_blocksize : (inlen - i);
         outlen += len;
         if (i == 0) {
             p_cipher->Encrypt(p_iv, p_temp);
-        } else {
+        }
+        else {
             p_cipher->Encrypt(&out[i - p_blocksize], p_temp);
         }
 
@@ -103,14 +104,15 @@ bool CFB::Encrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
 }
 
 bool CFB::Decrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
-                  size_t& outlen) {
+    size_t& outlen) {
     outlen = 0;
     for (size_t i = 0; i < inlen; i += p_blocksize) {
         size_t len = (i + p_blocksize <= inlen) ? p_blocksize : (inlen - i);
         outlen += len;
         if (i == 0) {
             p_cipher->Encrypt(p_iv, p_temp);
-        } else {
+        }
+        else {
             p_cipher->Encrypt(&out[i - p_blocksize], p_temp);
         }
 
@@ -132,4 +134,4 @@ bool CFB::GetTemp(uint8_t *temp, const uint32_t templen) {
     return true;
 }
 
-NAMESPACE_END
+}

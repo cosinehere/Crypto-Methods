@@ -4,7 +4,7 @@
 
 #include <cstdio>
 
-NAMESPACE_BEGIN(CryptoMethods)
+namespace CryptoMethods {
 
 DES::DES() {
     p_method = enum_crypt_methods_des;
@@ -38,7 +38,8 @@ bool DES::SetKey(const uint8_t *key, const size_t keylen) {
     bool bRet = KeySchedule();
     if (bRet) {
         p_haskey = true;
-    } else {
+    }
+    else {
         p_haskey = false;
     }
 
@@ -56,9 +57,9 @@ bool DES::Encrypt(const uint8_t *plain, uint8_t *cipher) {
 
     uint32_t ln, rn, ln_1, rn_1;
     ln_1 = (cipher[0] << 0) | (cipher[1] << 8) | (cipher[2] << 16) |
-           (cipher[3] << 24);
+        (cipher[3] << 24);
     rn_1 = (cipher[4] << 0) | (cipher[5] << 8) | (cipher[6] << 16) |
-           (cipher[7] << 24);
+        (cipher[7] << 24);
 
     for (size_t i = 0; i < 16; ++i) {
         ln = rn_1;
@@ -71,7 +72,7 @@ bool DES::Encrypt(const uint8_t *plain, uint8_t *cipher) {
     uint64_t fp;
     for (size_t i = 0; i < 64; ++i) {
         setbit(reinterpret_cast<uint8_t*>(&fp), i,
-               getbit(reinterpret_cast<uint8_t*>(&rnln), FP[i] - 1));
+            getbit(reinterpret_cast<uint8_t*>(&rnln), FP[i] - 1));
     }
 
     for (size_t i = 0; i < 8; ++i) {
@@ -108,7 +109,7 @@ bool DES::Decrypt(const uint8_t *cipher, uint8_t *plain) {
     uint64_t fp;
     for (size_t i = 64; i > 0; --i) {
         setbit(reinterpret_cast<uint8_t*>(&fp), i - 1,
-               getbit(reinterpret_cast<uint8_t*>(&rnln), FP[i - 1] - 1));
+            getbit(reinterpret_cast<uint8_t*>(&rnln), FP[i - 1] - 1));
     }
 
     for (size_t i = 0; i < 8; ++i) {
@@ -119,7 +120,7 @@ bool DES::Decrypt(const uint8_t *cipher, uint8_t *plain) {
 }
 
 bool DES::KeySchedule() {
-    uint8_t key_p[7] = {0};
+    uint8_t key_p[7] = { 0 };
 
     for (size_t i = 0; i < 56; ++i) {
         setbit(key_p, i, getbit(p_key, PC_1[i] - 1));
@@ -158,25 +159,25 @@ uint32_t DES::Feistel(const uint32_t rn_1, const uint8_t *k) {
     for (size_t i = 0; i < 8; ++i) {
         uint8_t Sbox_value =
             S[i][(getbit(e, 6 * i + 0) << 5) | (getbit(e, 6 * i + 5) << 4) |
-                 (getbit(e, 6 * i + 1) << 3) | (getbit(e, 6 * i + 2) << 2) |
-                 (getbit(e, 6 * i + 3) << 1) | (getbit(e, 6 * i + 4) << 0)];
+            (getbit(e, 6 * i + 1) << 3) | (getbit(e, 6 * i + 2) << 2) |
+            (getbit(e, 6 * i + 3) << 1) | (getbit(e, 6 * i + 4) << 0)];
         setbit(reinterpret_cast<uint8_t*>(&val), i * 4 + 0,
-               getbit(&Sbox_value, 4));
+            getbit(&Sbox_value, 4));
         setbit(reinterpret_cast<uint8_t*>(&val), i * 4 + 1,
-               getbit(&Sbox_value, 5));
+            getbit(&Sbox_value, 5));
         setbit(reinterpret_cast<uint8_t*>(&val), i * 4 + 2,
-               getbit(&Sbox_value, 6));
+            getbit(&Sbox_value, 6));
         setbit(reinterpret_cast<uint8_t*>(&val), i * 4 + 3,
-               getbit(&Sbox_value, 7));
+            getbit(&Sbox_value, 7));
     }
 
     uint32_t ret;
     for (size_t i = 0; i < 32; ++i) {
         setbit(reinterpret_cast<uint8_t*>(&ret), i,
-               getbit(reinterpret_cast<uint8_t*>(&val), P[i] - 1));
+            getbit(reinterpret_cast<uint8_t*>(&val), P[i] - 1));
     }
 
     return ret;
 }
 
-NAMESPACE_END
+}

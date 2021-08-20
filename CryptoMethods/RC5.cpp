@@ -4,7 +4,7 @@
 
 #include "CryptoTemplates.h"
 
-NAMESPACE_BEGIN(CryptoMethods)
+namespace CryptoMethods {
 
 RC5::RC5() {
     p_method = enum_crypt_methods_rc5;
@@ -38,7 +38,8 @@ bool RC5::SetKey(const uint8_t *key, const size_t keylen) {
     bool bRet = Setup();
     if (bRet) {
         p_haskey = true;
-    } else {
+    }
+    else {
         p_haskey = false;
     }
 
@@ -51,9 +52,9 @@ bool RC5::Encrypt(const uint8_t *plain, uint8_t *cipher) {
     }
 
     rc5_word A = *reinterpret_cast<rc5_word*>(const_cast<uint8_t*>(plain)) +
-                 p_roundkey[0];
+        p_roundkey[0];
     rc5_word B = *reinterpret_cast<rc5_word*>(const_cast<uint8_t*>(&plain[4])) +
-                 p_roundkey[1];
+        p_roundkey[1];
     for (size_t i = 1; i <= c_rc5r; ++i) {
         A = l_rot<rc5_word>(A ^ B, B & 0x1f) + p_roundkey[i << 1];
         B = l_rot<rc5_word>(B ^ A, A & 0x1f) + p_roundkey[(i << 1) + 1];
@@ -90,7 +91,7 @@ bool RC5::Decrypt(const uint8_t *cipher, uint8_t *plain) {
 }
 
 bool RC5::Setup() {
-    rc5_word L[c_rc5c] = {0};
+    rc5_word L[c_rc5c] = { 0 };
     L[c_rc5c - 1] = 0;
     for (size_t i = c_rc5b - 1; i != -1; --i) {
         L[i / c_rc5u] = (L[i / c_rc5u] << 8) + p_key[i];
@@ -103,7 +104,7 @@ bool RC5::Setup() {
 
     rc5_word A = 0, B = 0;
     for (size_t i = 0, j = 0, k = 0; k < 3 * c_rc5t;
-         ++k, i = (i + 1) % c_rc5t, j = (j + 1) % c_rc5c) {
+        ++k, i = (i + 1) % c_rc5t, j = (j + 1) % c_rc5c) {
         A = p_roundkey[i] = l_rot<rc5_word>(p_roundkey[i] + A + B, 3);
         B = L[j] = l_rot<rc5_word>(L[j] + A + B, (A + B) & 0x1f);
     }
@@ -111,4 +112,4 @@ bool RC5::Setup() {
     return true;
 }
 
-NAMESPACE_END
+}

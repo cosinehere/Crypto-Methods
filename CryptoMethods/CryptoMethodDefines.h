@@ -21,24 +21,14 @@
 #define NOVTABLE
 #endif
 
-#if !defined(NAMESPACE_BEGIN) && !defined(NAMESPACE_END)
-#define NAMESPACE_BEGIN(name) namespace name {
-#define NAMESPACE_END }
-#endif  // !defined(NAMESPACE_BEGIN) && !defined(NAMESPACE_END)
-
-NAMESPACE_BEGIN(CryptoMethods)
-
-CRYPTOEXT size_t Padding(uint8_t *buffer, size_t len, size_t blocksize);
+namespace CryptoMethods {
 
 CRYPTOEXT void GenerateIV(uint8_t *iv, size_t ivlen);
 
 CRYPTOEXT void MixBytes(uint8_t *key, uint8_t *iv, uint8_t *cipher,
-                        size_t cipherlen, uint8_t *mix);
+    size_t cipherlen, uint8_t *mix);
 CRYPTOEXT void ScatterBytes(uint8_t *key, uint8_t *iv, uint8_t *cipher,
-                            size_t cipherlen, uint8_t *mix);
-
-#define PKCS7(buffer, len, blocksize) Padding(buffer, len, blocksize)
-#define PKCS5(buffer, len) Padding(buffer, len, 8)
+    size_t cipherlen, uint8_t *mix);
 
 enum enum_crypt_methods {
     enum_crypt_methods_des = 0,
@@ -64,7 +54,7 @@ enum enum_crypt_modes {
 };
 
 class NOVTABLE CipherBase {
-   public:
+public:
     virtual const enum_crypt_methods CryptMethod() = 0;
     virtual const size_t BlockSize() = 0;
     virtual const size_t KeyLength(size_t *min, size_t *max) = 0;
@@ -77,16 +67,16 @@ class NOVTABLE CipherBase {
 };
 
 class NOVTABLE CipherModeBase {
-   public:
+public:
     virtual const enum_crypt_modes CryptMode() = 0;
 
     virtual bool SetKey(const uint8_t *key, const size_t keylen) = 0;
     virtual bool SetIV(const uint8_t *iv, const size_t ivlen) = 0;
 
     virtual bool Encrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
-                         size_t& outlen) = 0;
+        size_t& outlen) = 0;
     virtual bool Decrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
-                         size_t& outlen) = 0;
+        size_t& outlen) = 0;
 
     virtual bool GetTemp(uint8_t *temp, const uint32_t templen) = 0;
 
@@ -100,7 +90,7 @@ CRYPTOEXT void CreateCipherBase(enum_crypt_methods method, CipherBase*& base);
 CRYPTOEXT void ReleaseCipherBase(CipherBase*& base);
 
 CRYPTOEXT void CreateCipherMode(enum_crypt_modes mode, CipherBase *cipher,
-                                CipherModeBase*& base);
+    CipherModeBase*& base);
 CRYPTOEXT void ReleaseCipherMode(CipherModeBase*& base);
 
 // CRYPTOEXT void AESCBCEncrypt(const uint8_t *key, const size_t keylen, const
@@ -158,4 +148,4 @@ CRYPTOEXT void ReleaseCipherMode(CipherModeBase*& base);
 // CRYPTOEXT void TwofishCFBDecrypt(const uint8_t *key, const size_t keylen,
 // const uint8_t *in, const size_t inlen, uint8_t *out, size_t& outlen);
 
-NAMESPACE_END
+}

@@ -1,7 +1,7 @@
 #pragma once
 #include "CryptoMethodDefines.h"
 
-NAMESPACE_BEGIN(CryptoMethods)
+namespace CryptoMethods {
 
 constexpr size_t c_twofishblocksize = 16;
 
@@ -53,7 +53,7 @@ constexpr uint8_t c_Qtab[2][256] = {
         0x89, 0xd4, 0xed, 0xab, 0x12, 0xa2, 0x0d, 0x52, 0xbb, 0x02, 0x2f, 0xa9,
         0xd7, 0x61, 0x1e, 0xb4, 0x50, 0x04, 0xf6, 0xc2, 0x16, 0x25, 0x86, 0x56,
         0x55, 0x09, 0xbe, 0x91,
-    }};
+    } };
 
 /* 2. Standard interface for AES cryptographic routines             */
 
@@ -173,7 +173,7 @@ inline uint8_t byte(uint32_t x, uint32_t n) { return x >> (n << 3); }
 #endif
 
 class Twofish : public CipherBase {
-   public:
+public:
     Twofish();
     virtual ~Twofish();
 
@@ -185,7 +185,7 @@ class Twofish : public CipherBase {
     virtual bool Encrypt(const uint8_t *plain, uint8_t *cipher) override;
     virtual bool Decrypt(const uint8_t *cipher, uint8_t *plain) override;
 
-   private:
+private:
     enum_crypt_methods p_method;
     size_t p_blocksize;
 
@@ -207,4 +207,4 @@ class Twofish : public CipherBase {
     void decrypt(const uint32_t in_blk[4], uint32_t out_blk[4]);
 };
 
-NAMESPACE_END
+}

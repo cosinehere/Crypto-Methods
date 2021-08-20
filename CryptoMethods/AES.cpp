@@ -2,7 +2,7 @@
 
 #include "AES.h"
 
-NAMESPACE_BEGIN(CryptoMethods)
+namespace CryptoMethods {
 
 inline uint8_t gmult(uint8_t a, uint8_t b) {
     uint8_t p = 0, hbs = 0;
@@ -71,13 +71,13 @@ inline void mixcolumns(uint8_t *state) {
     uint8_t tmp[4];
     for (size_t i = 0; i < 4; ++i) {
         tmp[0] = gmult(2, state[4 * i]) ^ gmult(3, state[4 * i + 1]) ^
-                 gmult(1, state[4 * i + 2]) ^ gmult(1, state[4 * i + 3]);
+            gmult(1, state[4 * i + 2]) ^ gmult(1, state[4 * i + 3]);
         tmp[1] = gmult(1, state[4 * i]) ^ gmult(2, state[4 * i + 1]) ^
-                 gmult(3, state[4 * i + 2]) ^ gmult(1, state[4 * i + 3]);
+            gmult(3, state[4 * i + 2]) ^ gmult(1, state[4 * i + 3]);
         tmp[2] = gmult(1, state[4 * i]) ^ gmult(1, state[4 * i + 1]) ^
-                 gmult(2, state[4 * i + 2]) ^ gmult(3, state[4 * i + 3]);
+            gmult(2, state[4 * i + 2]) ^ gmult(3, state[4 * i + 3]);
         tmp[3] = gmult(3, state[4 * i]) ^ gmult(1, state[4 * i + 1]) ^
-                 gmult(1, state[4 * i + 2]) ^ gmult(2, state[4 * i + 3]);
+            gmult(1, state[4 * i + 2]) ^ gmult(2, state[4 * i + 3]);
         state[4 * i] = tmp[0];
         state[4 * i + 1] = tmp[1];
         state[4 * i + 2] = tmp[2];
@@ -89,13 +89,13 @@ inline void rmixcolumns(uint8_t *state) {
     uint8_t tmp[4];
     for (size_t i = 0; i < 4; ++i) {
         tmp[0] = gmult(14, state[4 * i]) ^ gmult(11, state[4 * i + 1]) ^
-                 gmult(13, state[4 * i + 2]) ^ gmult(9, state[4 * i + 3]);
+            gmult(13, state[4 * i + 2]) ^ gmult(9, state[4 * i + 3]);
         tmp[1] = gmult(9, state[4 * i]) ^ gmult(14, state[4 * i + 1]) ^
-                 gmult(11, state[4 * i + 2]) ^ gmult(13, state[4 * i + 3]);
+            gmult(11, state[4 * i + 2]) ^ gmult(13, state[4 * i + 3]);
         tmp[2] = gmult(13, state[4 * i]) ^ gmult(9, state[4 * i + 1]) ^
-                 gmult(14, state[4 * i + 2]) ^ gmult(11, state[4 * i + 3]);
+            gmult(14, state[4 * i + 2]) ^ gmult(11, state[4 * i + 3]);
         tmp[3] = gmult(11, state[4 * i]) ^ gmult(13, state[4 * i + 1]) ^
-                 gmult(9, state[4 * i + 2]) ^ gmult(14, state[4 * i + 3]);
+            gmult(9, state[4 * i + 2]) ^ gmult(14, state[4 * i + 3]);
         state[4 * i] = tmp[0];
         state[4 * i + 1] = tmp[1];
         state[4 * i + 2] = tmp[2];
@@ -143,7 +143,8 @@ bool AES::SetKey(const uint8_t *key, const size_t keylen) {
     bool bRet = KeyExpand();
     if (bRet) {
         p_haskey = true;
-    } else {
+    }
+    else {
         p_haskey = false;
     }
 
@@ -203,7 +204,7 @@ bool AES::KeyExpand() {
     for (size_t i = mod; i < p_roundkeylen; ++i) {
         uint8_t temp[4] = {
             p_roundkey[(i - 1) << 2], p_roundkey[((i - 1) << 2) + 1],
-            p_roundkey[((i - 1) << 2) + 2], p_roundkey[((i - 1) << 2) + 3]};
+            p_roundkey[((i - 1) << 2) + 2], p_roundkey[((i - 1) << 2) + 3] };
         if (!(i % mod)) {
             uint8_t tmp = temp[0];
             temp[0] = temp[1];
@@ -220,7 +221,8 @@ bool AES::KeyExpand() {
             temp[1] ^= Rcon[i / mod - 1][1];
             temp[2] ^= Rcon[i / mod - 1][2];
             temp[3] ^= Rcon[i / mod - 1][3];
-        } else if ((mod == 8) && ((i % mod) == 4)) {
+        }
+        else if ((mod == 8) && ((i % mod) == 4)) {
             temp[0] = SBox[temp[0]];
             temp[1] = SBox[temp[1]];
             temp[2] = SBox[temp[2]];
@@ -236,4 +238,4 @@ bool AES::KeyExpand() {
     return true;
 }
 
-NAMESPACE_END
+}

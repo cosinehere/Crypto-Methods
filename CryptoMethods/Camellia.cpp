@@ -4,7 +4,7 @@
 
 #include <cstdlib>
 
-NAMESPACE_BEGIN(CryptoMethods)
+namespace CryptoMethods {
 
 /* key constants */
 
@@ -1398,4 +1398,4 @@ bool Camellia::Decrypt(const uint8_t *cipher, uint8_t *plain) {
     return Camellia_DecryptBlock(p_keylen << 3, cipher, p_keytable, plain);
 }
 
-NAMESPACE_END
+}

@@ -165,6 +165,7 @@
     <ClInclude Include="CTR.h" />
     <ClInclude Include="DES.h" />
     <ClInclude Include="endianness.h" />
+    <ClInclude Include="Padding.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="RC5.h" />
     <ClInclude Include="RC6.h" />

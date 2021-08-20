@@ -1,10 +1,11 @@
 #pragma once
 #include "CryptoMethodDefines.h"
+#include "Padding.h"
 
-NAMESPACE_BEGIN(CryptoMethods)
+namespace CryptoMethods {
 
 class CBC : public CipherModeBase {
-   public:
+public:
     CBC(CipherBase *base);
     virtual ~CBC();
 
@@ -14,9 +15,9 @@ class CBC : public CipherModeBase {
     virtual bool SetIV(const uint8_t *iv, const size_t ivlen) override;
 
     virtual bool Encrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
-                         size_t &outlen) override;
+        size_t &outlen) override;
     virtual bool Decrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
-                         size_t &outlen) override;
+        size_t &outlen) override;
 
     virtual bool GetTemp(uint8_t *temp, const uint32_t templen) override;
 
@@ -29,14 +30,14 @@ class CBC : public CipherModeBase {
     }
 
 #ifndef CXX11_NOT_SUPPORT
-   private:
+private:
     CBC(const CBC&) = delete;
     CBC(const CBC&&) = delete;
     CBC& operator=(const CBC&) = delete;
     CBC& operator=(const CBC&&) = delete;
 #endif  // CXX11_NOT_SUPPORT
 
-   private:
+private:
     enum_crypt_modes p_mode;
 
     CipherBase *p_cipher;
@@ -83,7 +84,7 @@ bool CBC::SetIV(const uint8_t *iv, const size_t ivlen) {
 }
 
 bool CBC::Encrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
-                  size_t& outlen) {
+    size_t& outlen) {
     outlen = 0;
     for (size_t i = 0; i < inlen; i += p_blocksize) {
         outlen += p_blocksize;
@@ -91,7 +92,8 @@ bool CBC::Encrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
             for (size_t j = 0; j < p_blocksize; ++j) {
                 p_temp[j] = in[j] ^ p_iv[j];
             }
-        } else {
+        }
+        else {
             for (size_t j = 0; j < p_blocksize; ++j) {
                 p_temp[j] = out[i - p_blocksize + j] ^ in[i + j];
             }
@@ -104,7 +106,7 @@ bool CBC::Encrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
 }
 
 bool CBC::Decrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
-                  size_t& outlen) {
+    size_t& outlen) {
     outlen = 0;
     for (size_t i = 0; i < inlen; i += p_blocksize) {
         outlen += p_blocksize;
@@ -113,7 +115,8 @@ bool CBC::Decrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
             for (size_t j = 0; j < p_blocksize; ++j) {
                 out[j] = p_temp[j] ^ p_iv[j];
             }
-        } else {
+        }
+        else {
             for (size_t j = 0; j < p_blocksize; ++j) {
                 out[i + j] = p_temp[j] ^ in[i - p_blocksize + j];
             }
@@ -133,4 +136,4 @@ bool CBC::GetTemp(uint8_t *temp, const uint32_t templen) {
     return true;
 }
 
-NAMESPACE_END
+}

@@ -1,7 +1,7 @@
 #pragma once
 #include "CryptoMethodDefines.h"
 
-NAMESPACE_BEGIN(CryptoMethods)
+namespace CryptoMethods {
 
 #define RC5_WORD_W 32
 #if RC5_WORD_W == 32
@@ -25,11 +25,11 @@ constexpr size_t c_rc5b = 16;          // length of the key in bytes
 constexpr size_t c_rc5u = c_rc5w / 8;        // length of a word in bytes
 constexpr size_t c_rc5t = 2 * (c_rc5r + 1);  // number of round subkeys
 constexpr size_t c_rc5c = (1 < 8 * c_rc5b / c_rc5w)
-                              ? (8 * c_rc5b / c_rc5w)
-                              : 1;  // length of the key in words
+    ? (8 * c_rc5b / c_rc5w)
+    : 1;  // length of the key in words
 
 class RC5 : public CipherBase {
-   public:
+public:
     RC5();
     virtual ~RC5();
 
@@ -41,7 +41,7 @@ class RC5 : public CipherBase {
     virtual bool Encrypt(const uint8_t *plain, uint8_t *cipher) override;
     virtual bool Decrypt(const uint8_t *cipher, uint8_t *plain) override;
 
-   private:
+private:
     enum_crypt_methods p_method;
     size_t p_blocksize;
 
@@ -54,4 +54,4 @@ class RC5 : public CipherBase {
     bool Setup();
 };
 
-NAMESPACE_END
+}
