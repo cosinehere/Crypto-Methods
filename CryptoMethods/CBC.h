@@ -11,15 +11,11 @@ public:
 
     virtual const enum_crypt_modes CryptMode() override { return p_mode; }
 
-    virtual bool SetKey(const uint8_t *key, const size_t keylen) override;
+    virtual bool SetKey(const uint8_t *key, const size_t keylen) override {
+        return p_cipher->SetKey(key, keylen);
+    }
+
     virtual bool SetIV(const uint8_t *iv, const size_t ivlen) override;
-
-    virtual bool Encrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
-        size_t &outlen) override;
-    virtual bool Decrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
-        size_t &outlen) override;
-
-    virtual bool GetTemp(uint8_t *temp, const uint32_t templen) override;
 
     virtual size_t GetKeyLength(size_t *min, size_t *max) override {
         return p_cipher->KeyLength(min, max);
@@ -28,6 +24,13 @@ public:
     virtual size_t GetBlockSize() override {
         return p_cipher->BlockSize();
     }
+
+    virtual size_t GetVector(uint8_t *buffer, const uint32_t buflen) override;
+
+    virtual bool Encrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
+        size_t &outlen) override;
+    virtual bool Decrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
+        size_t &outlen) override;
 
 #ifndef CXX11_NOT_SUPPORT
 private:
@@ -43,9 +46,8 @@ private:
     CipherBase *p_cipher;
     size_t p_blocksize;
 
+    bool p_hasiv;
     uint8_t *p_iv;
-    size_t p_ivlen;
-    uint8_t *p_temp;
 };
 
 CBC::CBC(CipherBase *base) {
@@ -54,84 +56,79 @@ CBC::CBC(CipherBase *base) {
     p_cipher = base;
     p_blocksize = p_cipher->BlockSize();
 
+    p_hasiv = false;
     p_iv = new uint8_t[p_blocksize];
-    p_ivlen = p_blocksize;
-    p_temp = new uint8_t[p_blocksize];
 }
 
 CBC::~CBC() {
     if (p_iv != nullptr) {
         delete[] p_iv;
     }
-
-    if (p_temp != nullptr) {
-        delete[] p_temp;
-    }
-}
-
-bool CBC::SetKey(const uint8_t *key, const size_t keylen) {
-    return p_cipher->SetKey(key, keylen);
 }
 
 bool CBC::SetIV(const uint8_t *iv, const size_t ivlen) {
-    if (iv == nullptr || ivlen != p_ivlen) {
+    if (iv == nullptr || ivlen < p_blocksize) {
         return false;
     }
 
-    memcpy(p_iv, iv, sizeof(uint8_t) * p_ivlen);
+    memcpy(p_iv, iv, sizeof(uint8_t) * p_blocksize);
+    p_hasiv = true;
 
     return true;
 }
 
+size_t CBC::GetVector(uint8_t *buffer, const uint32_t buflen) {
+    if (buflen < p_blocksize) {
+        return 0;
+    }
+
+    memcpy(buffer, p_iv, sizeof(uint8_t) * p_blocksize);
+
+    return p_blocksize;
+}
+
 bool CBC::Encrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
-    size_t& outlen) {
+    size_t &outlen) {
+    if (in == nullptr || inlen == 0 || out == nullptr || !p_hasiv) {
+        return false;
+    }
+
+    uint8_t *p_temp = new uint8_t[p_blocksize];
     outlen = 0;
     for (size_t i = 0; i < inlen; i += p_blocksize) {
         outlen += p_blocksize;
-        if (i == 0) {
-            for (size_t j = 0; j < p_blocksize; ++j) {
-                p_temp[j] = in[j] ^ p_iv[j];
-            }
-        }
-        else {
-            for (size_t j = 0; j < p_blocksize; ++j) {
-                p_temp[j] = out[i - p_blocksize + j] ^ in[i + j];
-            }
+        for (size_t j = 0; j < p_blocksize; ++j) {
+            p_temp[j] = p_iv[j] ^ in[i + j];
         }
 
         p_cipher->Encrypt(p_temp, &out[i]);
+
+        memcpy(p_iv, &out[i], sizeof(uint8_t) * p_blocksize);
     }
+    delete[] p_temp;
 
     return true;
 }
 
 bool CBC::Decrypt(const uint8_t *in, const size_t inlen, uint8_t *out,
-    size_t& outlen) {
+    size_t &outlen) {
+    if (in == nullptr || inlen == 0 || out == nullptr || !p_hasiv) {
+        return false;
+    }
+
+    uint8_t *p_temp = new uint8_t[p_blocksize];
     outlen = 0;
     for (size_t i = 0; i < inlen; i += p_blocksize) {
         outlen += p_blocksize;
         p_cipher->Decrypt(&in[i], p_temp);
-        if (i == 0) {
-            for (size_t j = 0; j < p_blocksize; ++j) {
-                out[j] = p_temp[j] ^ p_iv[j];
-            }
+
+        for (size_t j = 0; j < p_blocksize; ++j) {
+            out[i + j] = p_temp[j] ^ p_iv[j];
         }
-        else {
-            for (size_t j = 0; j < p_blocksize; ++j) {
-                out[i + j] = p_temp[j] ^ in[i - p_blocksize + j];
-            }
-        }
+
+        memcpy(p_iv, &in[i], sizeof(uint8_t) * p_blocksize);
     }
-
-    return true;
-}
-
-bool CBC::GetTemp(uint8_t *temp, const uint32_t templen) {
-    if (templen != p_blocksize) {
-        return false;
-    }
-
-    memcpy(temp, p_temp, sizeof(uint8_t) * templen);
+    delete[] p_temp;
 
     return true;
 }
