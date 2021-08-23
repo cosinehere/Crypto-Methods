@@ -341,23 +341,32 @@ int main()
 // 	TwofishCBCtest();
 // 	TwofishCFBtest();
 
+    for (size_t i = 0; i < plainlen; ++i)
+    {
+        printf("%02x%s", plain[i], (i % 8 == 7) ? " " : "");
+    }
+    printf("\n");
+
 	CryptoMethods::CipherBase* base = nullptr;
 	CryptoMethods::CreateCipherBase(CryptoMethods::enum_crypt_methods_aes, base);
 	CryptoMethods::CipherModeBase* modebase = nullptr;
-	CryptoMethods::CreateCipherMode(CryptoMethods::enum_crypt_mode_ctr, base, modebase);
+	CryptoMethods::CreateCipherMode(CryptoMethods::enum_crypt_mode_cbc, base, modebase);
 	modebase->SetKey(key, keylen);
 	modebase->SetIV(iv, base->BlockSize());
 	modebase->Encrypt(plain, plainlen, cipher, cipherlen);
-	for (size_t i = 0; i < plainlen; ++i)
-	{
-		printf("%02x%s", plain[i], (i % 8 == 7) ? " " : "");
-	}
-	printf("\n");
 	for (size_t i = 0; i < cipherlen; ++i)
 	{
 		printf("%02x%s", cipher[i], (i % 8 == 7) ? " " : "");
 	}
 	printf("\n");
+
+    modebase->SetIV(iv, base->BlockSize());
+    modebase->Decrypt(cipher, cipherlen, plain, plainlen);
+    for (size_t i = 0; i < plainlen; ++i)
+    {
+        printf("%02x%s", plain[i], (i % 8 == 7) ? " " : "");
+    }
+    printf("\n");
 
 	CryptoMethods::ReleaseCipherMode(modebase);
 	CryptoMethods::ReleaseCipherBase(base);
