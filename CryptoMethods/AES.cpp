@@ -223,7 +223,7 @@ inline void addroundkey(uint8_t *state, const uint8_t *word) {
 
 AES::AES() {
     p_method = enum_crypt_methods_aes;
-    p_blocksize = 16;
+    p_blocksize = c_aesblocksize;
 
     p_haskey = false;
 }
