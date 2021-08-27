@@ -9,6 +9,7 @@ add_library(${cryptolib} SHARED
     ${CMAKE_CURRENT_SOURCE_DIR}/Camellia.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/RC5.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/RC6.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/SM4.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/CryptoMethodDefines.cpp
     )
 
