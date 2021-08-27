@@ -24,33 +24,12 @@ else()
     set(cryptotest test)
 endif()
 
-# CryptoMethods.so
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
-add_library(${cryptolib} SHARED
-    ${CMAKE_SOURCE_DIR}/CryptoMethods/AES.cpp
-    ${CMAKE_SOURCE_DIR}/CryptoMethods/DES.cpp
-    ${CMAKE_SOURCE_DIR}/CryptoMethods/TripDES.cpp
-    ${CMAKE_SOURCE_DIR}/CryptoMethods/Blowfish.cpp
-    ${CMAKE_SOURCE_DIR}/CryptoMethods/Twofish.cpp
-    ${CMAKE_SOURCE_DIR}/CryptoMethods/Camellia.cpp
-    ${CMAKE_SOURCE_DIR}/CryptoMethods/RC5.cpp
-    ${CMAKE_SOURCE_DIR}/CryptoMethods/RC6.cpp
-    ${CMAKE_SOURCE_DIR}/CryptoMethods/CryptoMethodDefines.cpp
-    )
-target_precompile_headers(${cryptolib} PRIVATE
-    ${CMAKE_SOURCE_DIR}/CryptoMethods/pch.h
-    )
-target_compile_options(${cryptolib}
-    PRIVATE -fvisibility=hidden
-    )
-target_link_options(${cryptolib}
-    PRIVATE -Wl,-s
-    )
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+
+# CryptoMethods.so
+add_subdirectory(CryptoMethods)
 
 # CryptoTest
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
-add_executable(${cryptotest}
-	${CMAKE_SOURCE_DIR}/test/test.cpp
-	)
-target_link_libraries(${cryptotest} ${cryptolib})
+add_subdirectory(test)
 
