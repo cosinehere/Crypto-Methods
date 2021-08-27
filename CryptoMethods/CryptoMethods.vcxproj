@@ -169,6 +169,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="RC5.h" />
     <ClInclude Include="RC6.h" />
+    <ClInclude Include="SM4.h" />
     <ClInclude Include="TripDES.h" />
     <ClInclude Include="Twofish.h" />
   </ItemGroup>
@@ -186,6 +187,7 @@
     </ClCompile>
     <ClCompile Include="RC5.cpp" />
     <ClCompile Include="RC6.cpp" />
+    <ClCompile Include="SM4.cpp" />
     <ClCompile Include="TripDES.cpp" />
     <ClCompile Include="Twofish.cpp" />
   </ItemGroup>

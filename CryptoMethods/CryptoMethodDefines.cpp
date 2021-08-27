@@ -13,6 +13,7 @@
 #include "RC6.h"
 #include "TripDES.h"
 #include "Twofish.h"
+#include "SM4.h"
 
 namespace CryptoMethods {
 
@@ -111,6 +112,9 @@ void CreateCipherBase(enum_crypt_methods method, CipherBase *&base) {
     case CryptoMethods::enum_crypt_methods_twofish:
         base = new Twofish();
         break;
+    case CryptoMethods::enum_crypt_methods_sm4:
+        base = new SM4();
+        break;
     default:
         break;
     }
@@ -141,6 +145,9 @@ void ReleaseCipherBase(CipherBase *&base) {
         break;
     case CryptoMethods::enum_crypt_methods_twofish:
         delete static_cast<Twofish *>(base);
+        break;
+    case CryptoMethods::enum_crypt_methods_sm4:
+        delete static_cast<SM4 *>(base);
         break;
     default:
         break;

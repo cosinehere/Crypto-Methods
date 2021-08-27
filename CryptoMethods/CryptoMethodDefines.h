@@ -39,6 +39,7 @@ enum enum_crypt_methods {
     enum_crypt_methods_camellia,
     enum_crypt_methods_blowfish,
     enum_crypt_methods_twofish,
+    enum_crypt_methods_sm4,
 
     enum_crypt_methods_end,
     enum_crypt_methods_num = enum_crypt_methods_end - enum_crypt_methods_des
