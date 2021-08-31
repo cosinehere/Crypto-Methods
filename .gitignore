@@ -434,6 +434,8 @@ CTestTestfile.cmake
 _deps
 out
 build
+bin
+lib
 
 # clangd
 .clangd
