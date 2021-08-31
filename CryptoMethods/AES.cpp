@@ -209,8 +209,8 @@ constexpr uint8_t gmult_14[] = {
     0xd7, 0xd9, 0xcb, 0xc5, 0xef, 0xe1, 0xf3, 0xfd, 0xa7, 0xa9, 0xbb, 0xb5,
     0x9f, 0x91, 0x83, 0x8d};
 
+/*
 inline uint8_t gmult(uint8_t a, uint8_t b) {
-    /*
     uint8_t p = 0, hbs = 0;
     for (size_t i = 0; i < 8; i++) {
         if (b & 1) p ^= a;
@@ -222,24 +222,8 @@ inline uint8_t gmult(uint8_t a, uint8_t b) {
     }
 
     return (uint8_t)p;
-    */
-
-    if (a == 1) {
-        return b;
-    } else if (a == 2) {
-        return gmult_2[b];
-    } else if (a == 3) {
-        return gmult_3[b];
-    } else if (a == 9) {
-        return gmult_9[b];
-    } else if (a == 11) {
-        return gmult_11[b];
-    } else if (a == 13) {
-        return gmult_13[b];
-    } else {
-        return gmult_14[b];
-    }
 }
+*/
 
 inline void subbytes(uint8_t *state, const uint8_t *box) {
     for (size_t i = 0; i < 16; ++i) {
@@ -292,6 +276,7 @@ inline void rshiftrows(uint8_t *state) {
 inline void mixcolumns(uint8_t *state) {
     uint8_t tmp[4];
     for (size_t i = 0; i < 4; ++i) {
+        /*
         tmp[0] = gmult(2, state[4 * i]) ^ gmult(3, state[4 * i + 1]) ^
                  gmult(1, state[4 * i + 2]) ^ gmult(1, state[4 * i + 3]);
         tmp[1] = gmult(1, state[4 * i]) ^ gmult(2, state[4 * i + 1]) ^
@@ -300,6 +285,15 @@ inline void mixcolumns(uint8_t *state) {
                  gmult(2, state[4 * i + 2]) ^ gmult(3, state[4 * i + 3]);
         tmp[3] = gmult(3, state[4 * i]) ^ gmult(1, state[4 * i + 1]) ^
                  gmult(1, state[4 * i + 2]) ^ gmult(2, state[4 * i + 3]);
+        */
+        tmp[0] = gmult_2[state[4 * i]] ^ gmult_3[state[4 * i + 1]] ^
+                 state[4 * i + 2] ^ state[4 * i + 3];
+        tmp[1] = state[4 * i] ^ gmult_2[state[4 * i + 1]] ^
+                 gmult_3[state[4 * i + 2]] ^ state[4 * i + 3];
+        tmp[2] = state[4 * i] ^ state[4 * i + 1] ^
+                 gmult_2[state[4 * i + 2]] ^ gmult_3[state[4 * i + 3]];
+        tmp[3] = gmult_3[state[4 * i]] ^ state[4 * i + 1] ^
+                 state[4 * i + 2] ^ gmult_2[state[4 * i + 3]];
         state[4 * i] = tmp[0];
         state[4 * i + 1] = tmp[1];
         state[4 * i + 2] = tmp[2];
@@ -310,6 +304,7 @@ inline void mixcolumns(uint8_t *state) {
 inline void rmixcolumns(uint8_t *state) {
     uint8_t tmp[4];
     for (size_t i = 0; i < 4; ++i) {
+        /*
         tmp[0] = gmult(14, state[4 * i]) ^ gmult(11, state[4 * i + 1]) ^
                  gmult(13, state[4 * i + 2]) ^ gmult(9, state[4 * i + 3]);
         tmp[1] = gmult(9, state[4 * i]) ^ gmult(14, state[4 * i + 1]) ^
@@ -318,6 +313,15 @@ inline void rmixcolumns(uint8_t *state) {
                  gmult(14, state[4 * i + 2]) ^ gmult(11, state[4 * i + 3]);
         tmp[3] = gmult(11, state[4 * i]) ^ gmult(13, state[4 * i + 1]) ^
                  gmult(9, state[4 * i + 2]) ^ gmult(14, state[4 * i + 3]);
+        */
+        tmp[0] = gmult_14[state[4 * i]] ^ gmult_11[state[4 * i + 1]] ^
+                 gmult_13[state[4 * i + 2]] ^ gmult_9[state[4 * i + 3]];
+        tmp[1] = gmult_9[state[4 * i]] ^ gmult_14[state[4 * i + 1]] ^
+                 gmult_11[state[4 * i + 2]] ^ gmult_13[state[4 * i + 3]];
+        tmp[2] = gmult_13[state[4 * i]] ^ gmult_9[state[4 * i + 1]] ^
+                 gmult_14[state[4 * i + 2]] ^ gmult_11[state[4 * i + 3]];
+        tmp[3] = gmult_11[state[4 * i]] ^ gmult_13[state[4 * i + 1]] ^
+                 gmult_9[state[4 * i + 2]] ^ gmult_14[state[4 * i + 3]];
         state[4 * i] = tmp[0];
         state[4 * i + 1] = tmp[1];
         state[4 * i + 2] = tmp[2];
